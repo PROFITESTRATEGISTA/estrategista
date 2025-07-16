@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  
+  <!-- Estrategista Trading Solutions Homepage Images -->
+  <url>
+    <loc>https://estrategistatradingsolutions.com.br/</loc>
+    <image:image>
+      <image:loc>https://images.pexels.com/photos/6801648/pexels-photo-6801648.jpeg</image:loc>
+      <image:caption><![CDATA[Pack de Robôs da Estrategista Trading Solutions operando no mercado financeiro brasileiro]]></image:caption>
+      <image:title><![CDATA[Automação de Trading - Pack de Robôs da Estrategista Trading Solutions]]></image:title>
+      <image:license>https://pexels.com/license/</image:license>
+    </image:image>
+    <image:image>
+      <image:loc>https://images.pexels.com/photos/6802049/pexels-photo-6802049.jpeg</image:loc>
+      <image:caption><![CDATA[Dashboard de controle do Pack de Robôs da Estrategista Trading Solutions com métricas de performance]]></image:caption>
+      <image:title><![CDATA[Painel de Controle - Pack de Robôs da Estrategista Trading Solutions]]></image:title>
+      <image:license>https://pexels.com/license/</image:license>
+    </image:image>
+  </url>
+  
+  <!-- Plans Page Images -->
+  <url>
+    <loc>https://estrategistatradingsolutions.com.br/plans</loc>
+    <image:image>
+      <image:loc>https://images.pexels.com/photos/6801874/pexels-photo-6801874.jpeg</image:loc>
+      <image:caption><![CDATA[Gráficos de performance do Pack de Robôs da Estrategista Trading Solutions para trading automatizado]]></image:caption>
+      <image:title><![CDATA[Performance do Pack de Robôs da Estrategista Trading Solutions - Resultados de Trading]]></image:title>
+      <image:license>https://pexels.com/license/</image:license>
+    </image:image>
+  </url>
+  
+  <!-- White Label Page Images -->
+  <url>
+    <loc>https://estrategistatradingsolutions.com.br/whitelabel</loc>
+    <image:image>
+      <image:loc>https://images.pexels.com/photos/6802042/pexels-photo-6802042.jpeg</image:loc>
+      <image:caption><![CDATA[Soluções white label da Estrategista Trading Solutions para automação empresarial]]></image:caption>
+      <image:title><![CDATA[Soluções White Label da Estrategista Trading Solutions - Automação Empresarial]]></image:title>
+      <image:license>https://pexels.com/license/</image:license>
+    </image:image>
+  </url>
+  
+  <!-- Members Area Images -->
+  <url>
+    <loc>https://estrategistatradingsolutions.com.br/members</loc>
+    <image:image>
+      <image:loc>https://images.pexels.com/photos/6801855/pexels-photo-6801855.jpeg</image:loc>
+      <image:caption><![CDATA[Área de membros com acesso ao Pack de Robôs premium da Estrategista Trading Solutions]]></image:caption>
+      <image:title><![CDATA[Área de Membros - Pack de Robôs Premium da Estrategista Trading Solutions]]></image:title>
+      <image:license>https://pexels.com/license/</image:license>
+    </image:image>
+  </url>
+  
+</urlset>
