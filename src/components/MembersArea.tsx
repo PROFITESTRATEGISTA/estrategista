@@ -5,14 +5,28 @@ import { RobotMarketplace } from './RobotMarketplace';
 import { TutorialSystem } from './TutorialSystem';
 import VPSServicesPage from './VPSServicesPage';
 import { SetPasswordModal } from './SetPasswordModal';
+import { AdminPanel } from './AdminPanel';
 import { Bot, BookOpen, Settings, LogOut, User, Crown, Zap, Monitor, Shield, Key } from 'lucide-react';
 
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  plan: 'free' | 'pro' | 'master';
+  is_active: boolean;
+  created_at: string;
+  last_login?: string;
+  phone_verified: boolean;
+}
 export default function MembersArea() {
   const { user, loading: authLoading, logout, updateUser } = useAuth();
   const [currentView, setCurrentView] = useState<'dashboard' | 'robots' | 'tutorials' | 'admin' | 'vps'>('dashboard');
   const [realTimePlan, setRealTimePlan] = useState(user?.plan || 'master');
   const [showSetPasswordModal, setShowSetPasswordModal] = useState(false);
   const [isSmsUser, setIsSmsUser] = useState(false);
+  const [users, setUsers] = useState<User[]>([]);
+  const [loadingUsers, setLoadingUsers] = useState(false);
   
   // Enhanced admin check for Pedro Pardal
   const isPedroAdmin = user?.email === 'pedropardal04@gmail.com';
@@ -110,6 +124,109 @@ export default function MembersArea() {
     };
   }, [user?.id, realTimePlan, updateUser]);
   
+  // Load users for admin panel
+  useEffect(() => {
+    if (hasAdminAccess && currentView === 'admin') {
+      loadUsers();
+    }
+  }, [hasAdminAccess, currentView]);
+
+  const loadUsers = async () => {
+    if (!hasAdminAccess) return;
+    
+    setLoadingUsers(true);
+    try {
+      const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (error) {
+        console.error('Error loading users:', error);
+        // Fallback to mock data for demo
+        setUsers([
+          {
+            id: '1',
+            name: 'Pedro Pardal',
+            email: 'pedropardal04@gmail.com',
+            plan: 'master',
+            is_active: true,
+            created_at: new Date().toISOString(),
+            phone_verified: true
+          },
+          {
+            id: '2',
+            name: 'Usuário Teste',
+            email: 'teste@exemplo.com',
+            plan: 'pro',
+            is_active: true,
+            created_at: new Date().toISOString(),
+            phone_verified: false
+          }
+        ]);
+      } else {
+        setUsers(data || []);
+      }
+    } catch (error) {
+      console.error('Error loading users:', error);
+      setUsers([]);
+    } finally {
+      setLoadingUsers(false);
+    }
+  };
+
+  const handleUpdateUser = async (userId: string, updates: Partial<User>) => {
+    if (!hasAdminAccess) return;
+    
+    try {
+      const { error } = await supabase
+        .from('users')
+        .update(updates)
+        .eq('id', userId);
+      
+      if (error) {
+        console.error('Error updating user:', error);
+        alert('Erro ao atualizar usuário');
+        return;
+      }
+      
+      // Update local state
+      setUsers(prev => prev.map(u => u.id === userId ? { ...u, ...updates } : u));
+      alert('Usuário atualizado com sucesso');
+    } catch (error) {
+      console.error('Error updating user:', error);
+      alert('Erro ao atualizar usuário');
+    }
+  };
+
+  const handleDeleteUser = async (userId: string) => {
+    if (!hasAdminAccess) return;
+    
+    if (!confirm('Tem certeza que deseja excluir este usuário?')) {
+      return;
+    }
+    
+    try {
+      const { error } = await supabase
+        .from('users')
+        .delete()
+        .eq('id', userId);
+      
+      if (error) {
+        console.error('Error deleting user:', error);
+        alert('Erro ao excluir usuário');
+        return;
+      }
+      
+      // Update local state
+      setUsers(prev => prev.filter(u => u.id !== userId));
+      alert('Usuário excluído com sucesso');
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      alert('Erro ao excluir usuário');
+    }
+  };
+
   // Loading state
   if (authLoading) {
     return (
@@ -175,17 +292,11 @@ export default function MembersArea() {
     <div className="min-h-screen bg-gray-950">
       {/* Admin Panel */}
       {currentView === 'admin' && hasAdminAccess && (
-        // TODO: Fix AdminPanel props - needs users, onUpdateUser, onDeleteUser
-        // <AdminPanel onBack={() => setCurrentView('dashboard')} />
-        <div className="p-8 text-white text-center">
-          <p>Admin Panel - Em manutenção</p>
-          <button 
-            onClick={() => setCurrentView('dashboard')}
-            className="mt-4 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg"
-          >
-            Voltar ao Dashboard
-          </button>
-        </div>
+        <AdminPanel 
+          users={users}
+          onUpdateUser={handleUpdateUser}
+          onDeleteUser={handleDeleteUser}
+        />
       )}
 
       {/* VPS Services */}

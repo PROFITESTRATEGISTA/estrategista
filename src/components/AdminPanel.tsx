@@ -19,7 +19,7 @@ interface AdminPanelProps {
   onDeleteUser: (userId: string) => void;
 }
 
-const AdminPanel: React.FC<AdminPanelProps> = ({ users = [], onUpdateUser, onDeleteUser }) => {
+export const AdminPanel: React.FC<AdminPanelProps> = ({ users = [], onUpdateUser, onDeleteUser }) => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [searchTerm, setSearchTerm] = useState('');
   const [filterPlan, setFilterPlan] = useState<string>('all');
@@ -127,7 +127,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ users = [], onUpdateUser, onDel
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white">
       {/* Header */}
-      <div className="bg-slate-800/50 backdrop-blur-sm border-b border-slate-700/50 sticky top-0 z-50">
+      <div className="bg-slate-800/50 backdrop-blur-sm border-b border-slate-700/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-4">
@@ -603,5 +603,3 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ users = [], onUpdateUser, onDel
     </div>
   );
 };
-
-export { AdminPanel };
