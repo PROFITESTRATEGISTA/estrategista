@@ -160,9 +160,9 @@ export const SolutionRequestsPanel: React.FC<SolutionRequestsPanelProps> = ({ on
                          request.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          request.description?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || request.status === statusFilter;
-    const matchesPriority = priorityFilter === 'all' || request.priority === priorityFilter;
+    const matchesType = priorityFilter === 'all' || request.project_type === priorityFilter;
     
-    return matchesSearch && matchesStatus && matchesPriority;
+    return matchesSearch && matchesStatus && matchesType;
   });
 
   const stats = {
@@ -346,11 +346,11 @@ export const SolutionRequestsPanel: React.FC<SolutionRequestsPanelProps> = ({ on
                 onChange={(e) => setPriorityFilter(e.target.value)}
                 className="px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="all">Todas as prioridades</option>
-                <option value="low">Baixa</option>
-                <option value="medium">Média</option>
-                <option value="high">Alta</option>
-                <option value="urgent">Urgente</option>
+                <option value="all">Todos os tipos</option>
+                <option value="robot">Robô de Trading</option>
+                <option value="app">Dashboard/App</option>
+                <option value="copy">Copy Trade</option>
+                <option value="other">Personalizado</option>
               </select>
             </div>
           </div>
@@ -376,9 +376,6 @@ export const SolutionRequestsPanel: React.FC<SolutionRequestsPanelProps> = ({ on
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
                       Status
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
-                      Prioridade
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
                       Valor
@@ -419,24 +416,54 @@ export const SolutionRequestsPanel: React.FC<SolutionRequestsPanelProps> = ({ on
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <span className={`inline-flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(request.status)}`}>
-                          {getStatusIcon(request.status)}
-                          <span className="capitalize">
-                            {request.status === 'pending' ? 'Pendente' :
-                             request.status === 'in_progress' ? 'Em andamento' :
-                             request.status === 'completed' ? 'Concluída' : 'Cancelada'}
-                          </span>
-                        </span>
-                      </td>
-                      <td className="px-6 py-4">
-                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(request.priority)}`}>
-                          {request.priority === 'urgent' && <Star className="w-3 h-3 mr-1" />}
-                          <span className="capitalize">
-                            {request.priority === 'low' ? 'Baixa' :
-                             request.priority === 'medium' ? 'Média' :
-                             request.priority === 'high' ? 'Alta' : 'Urgente'}
-                          </span>
-                        </span>
+                        {editingRequest === request.id ? (
+                          <div className="flex items-center space-x-2">
+                            <select
+                              value={editForm.status || request.status}
+                              onChange={(e) => setEditForm(prev => ({ ...prev, status: e.target.value as any }))}
+                              className="px-2 py-1 bg-slate-700 border border-slate-600 rounded text-white text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            >
+                              <option value="pending">Pendente</option>
+                              <option value="in_progress">Em andamento</option>
+                              <option value="completed">Concluída</option>
+                              <option value="cancelled">Cancelada</option>
+                            </select>
+                            <button
+                              onClick={() => handleUpdateRequest(request.id, editForm)}
+                              className="p-1 hover:bg-green-600/50 rounded transition-colors text-green-400"
+                              title="Salvar"
+                            >
+                              <CheckCircle className="w-3 h-3" />
+                            </button>
+                            <button
+                              onClick={() => {
+                                setEditingRequest(null);
+                                setEditForm({});
+                              }}
+                              className="p-1 hover:bg-red-600/50 rounded transition-colors text-red-400"
+                              title="Cancelar"
+                            >
+                              <X className="w-3 h-3" />
+                            </button>
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => {
+                              setEditingRequest(request.id);
+                              setEditForm(request);
+                            }}
+                            className={`inline-flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium hover:opacity-80 transition-opacity ${getStatusColor(request.status)}`}
+                            title="Clique para editar status"
+                          >
+                            {getStatusIcon(request.status)}
+                            <span className="capitalize">
+                              {request.status === 'pending' ? 'Pendente' :
+                               request.status === 'in_progress' ? 'Em andamento' :
+                               request.status === 'completed' ? 'Concluída' : 'Cancelada'}
+                            </span>
+                            <Edit className="w-3 h-3 ml-1" />
+                          </button>
+                        )}
                       </td>
                       <td className="px-6 py-4 text-sm text-slate-300">
                         {request.estimated_value ? formatCurrency(request.estimated_value) : 'A definir'}
@@ -446,6 +473,20 @@ export const SolutionRequestsPanel: React.FC<SolutionRequestsPanelProps> = ({ on
                       </td>
                       <td className="px-6 py-4 text-right">
                         <div className="flex items-center justify-end space-x-2">
+                          <button
+                            onClick={() => {
+                              // Extract only numbers from phone
+                              const phoneNumbers = request.phone?.replace(/\D/g, '') || '';
+                              // Ensure it starts with 55 (Brazil country code)
+                              const formattedPhone = phoneNumbers.startsWith('55') ? phoneNumbers : `55${phoneNumbers}`;
+                              const whatsappUrl = `https://wa.me/+${formattedPhone}?text=Olá ${request.name}! Recebemos sua solicitação de projeto da Estrategista Solutions. Vamos conversar sobre os detalhes?`;
+                              window.open(whatsappUrl, '_blank');
+                            }}
+                            className="p-1 hover:bg-green-600/50 rounded transition-colors text-green-400"
+                            title="Enviar WhatsApp"
+                          >
+                            <MessageSquare className="w-4 h-4" />
+                          </button>
                           <button
                             onClick={() => {
                               setSelectedRequest(request);
@@ -458,11 +499,17 @@ export const SolutionRequestsPanel: React.FC<SolutionRequestsPanelProps> = ({ on
                           </button>
                           <button
                             onClick={() => {
-                              setEditingRequest(request.id);
-                              setEditForm(request);
+                              // Toggle editing for other fields if needed
+                              if (editingRequest === request.id) {
+                                setEditingRequest(null);
+                                setEditForm({});
+                              } else {
+                                setEditingRequest(request.id);
+                                setEditForm(request);
+                              }
                             }}
                             className="p-1 hover:bg-slate-600/50 rounded transition-colors"
-                            title="Editar"
+                            title="Editar outros campos"
                           >
                             <Edit className="w-4 h-4" />
                           </button>
