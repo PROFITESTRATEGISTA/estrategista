@@ -274,6 +274,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                         Usuário
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                        Telefone
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
                         Plano
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
@@ -315,8 +318,24 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                             <div>
                               <div className="font-medium text-white">{user.name}</div>
                               <div className="text-sm text-slate-400">{user.email}</div>
-                              {user.phone && (
-                                <div className="text-xs text-slate-500">{user.phone}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center space-x-2">
+                            <Phone className="w-4 h-4 text-slate-400" />
+                            <div>
+                              <div className="text-sm text-white">{user.phone || 'Não informado'}</div>
+                              {user.phone_verified ? (
+                                <div className="text-xs text-green-400 flex items-center">
+                                  <CheckCircle className="w-3 h-3 mr-1" />
+                                  Verificado
+                                </div>
+                              ) : (
+                                <div className="text-xs text-orange-400 flex items-center">
+                                  <AlertTriangle className="w-3 h-3 mr-1" />
+                                  Não verificado
+                                </div>
                               )}
                             </div>
                           </div>

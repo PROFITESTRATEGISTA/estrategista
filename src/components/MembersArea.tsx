@@ -137,83 +137,79 @@ export default function MembersArea() {
     setLoadingUsers(true);
     try {
       console.log('🔍 Loading users for admin panel...');
-      const { data, error } = await supabase
+      
+      // First try to get users from the public.users table
+      const { data: publicUsers, error: publicError } = await supabase
         .from('users')
         .select('*')
         .order('created_at', { ascending: false });
       
-      console.log('📊 Supabase users query result:', { data, error });
+      console.log('📊 Public users query result:', { data: publicUsers, error: publicError });
       
-      if (error) {
-        console.error('Error loading users:', error);
-        // Create mock data with current user included
-        const mockUsers = [
-          {
-            id: user?.id || '1',
-            name: user?.name || 'Pedro Pardal',
-            email: user?.email || 'pedropardal04@gmail.com',
-            plan: 'master',
-            is_active: true,
-            created_at: new Date().toISOString(),
-            phone_verified: true,
-            phone: user?.phone || '+5511999999999'
-          },
-          {
-            id: '2',
-            name: 'Usuário Teste',
-            email: 'teste@exemplo.com',
-            plan: 'pro',
-            is_active: true,
-            created_at: new Date().toISOString(),
-            phone_verified: false,
-            phone: '+5511888888888'
-          },
-          {
-            id: '3',
-            name: 'Maria Silva',
-            email: 'maria@exemplo.com',
-            plan: 'free',
-            is_active: true,
-            created_at: new Date(Date.now() - 86400000).toISOString(), // 1 day ago
-            phone_verified: true,
-            phone: '+5511777777777'
-          }
-        ];
-        console.log('📊 Using mock users:', mockUsers);
-        setUsers(mockUsers);
+      // Also try to get auth users to get phone numbers
+      const { data: { users: authUsers }, error: authError } = await supabase.auth.admin.listUsers();
+      console.log('📊 Auth users query result:', { users: authUsers, error: authError });
+      
+      let finalUsers = [];
+      
+      if (publicUsers && !publicError) {
+        // Use public users as base
+        finalUsers = publicUsers.map(publicUser => {
+          // Try to find matching auth user for phone
+          const authUser = authUsers?.find(au => au.id === publicUser.id);
+          return {
+            ...publicUser,
+            phone: authUser?.phone || publicUser.phone || 'Não informado',
+            phone_verified: authUser?.phone_confirmed_at ? true : false,
+            last_login: authUser?.last_sign_in_at || publicUser.last_login
+          };
+        });
+      } else if (authUsers && !authError) {
+        // Fallback to auth users only
+        finalUsers = authUsers.map(authUser => ({
+          id: authUser.id,
+          name: authUser.user_metadata?.name || authUser.email?.split('@')[0] || 'Usuário',
+          email: authUser.email || authUser.user_metadata?.email || 'Não informado',
+          phone: authUser.phone || 'Não informado',
+          plan: authUser.user_metadata?.plan || 'free',
+          is_active: !authUser.banned_until,
+          created_at: authUser.created_at,
+          last_login: authUser.last_sign_in_at,
+          phone_verified: authUser.phone_confirmed_at ? true : false
+        }));
       } else {
-        // Ensure current user is included in the list
-        const usersWithCurrent = data || [];
-        if (user && !usersWithCurrent.find(u => u.id === user.id)) {
-          usersWithCurrent.unshift({
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            plan: user.plan || 'master',
-            is_active: true,
-            created_at: user.createdAt || new Date().toISOString(),
-            phone_verified: true,
-            phone: user.phone || '+5511999999999'
-          });
-        }
-        console.log('📊 Using Supabase users:', usersWithCurrent);
-        setUsers(data || []);
-      }
-    } catch (error) {
-      console.error('Error loading users:', error);
-      // Fallback to at least show current user
-      setUsers([
-        {
+        console.error('Error loading users:', publicError || authError);
+        // Fallback to current user only
+        finalUsers = [{
           id: user?.id || '1',
           name: user?.name || 'Admin',
           email: user?.email || 'admin@estrategista.com',
+          phone: 'Não informado',
           plan: user?.plan || 'master',
           is_active: true,
           created_at: new Date().toISOString(),
-          phone_verified: true,
-          phone: '+5511999999999'
-        }
-      ]);
+          phone_verified: false,
+          last_login: new Date().toISOString()
+        }];
+      }
+      
+      console.log('📊 Final users list:', finalUsers);
+      setUsers(finalUsers);
+      
+    } catch (error) {
+      console.error('Error loading users:', error);
+      // Fallback to current user
+      setUsers([{
+        id: user?.id || '1',
+        name: user?.name || 'Admin',
+        email: user?.email || 'admin@estrategista.com',
+        phone: 'Erro ao carregar',
+        plan: user?.plan || 'master',
+        is_active: true,
+        created_at: new Date().toISOString(),
+        phone_verified: false,
+        last_login: new Date().toISOString()
+      }]);
     } finally {
       setLoadingUsers(false);
     }
