@@ -682,14 +682,6 @@ const PlansPage = ({ onAuthClick, scrollToFAQ = false }: PlansPageProps = {}) =>
                     
                     {/* FAQ Action Buttons */}
                     <div className="mt-4 pt-4 border-t border-gray-800 flex flex-col sm:flex-row gap-3">
-                      <button
-                        onClick={() => window.open('https://wa.me/5511999999999?text=Olá! Tenho uma dúvida sobre: ' + encodeURIComponent(faq.question), '_blank')}
-                        className="flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors text-sm"
-                      >
-                        <MessageSquare className="w-4 h-4" />
-                        <span>Falar sobre esta dúvida</span>
-                      </button>
-                      
                       {index < 4 && (
                         <button
                           onClick={() => handlePlanSelect(plans[1])}
