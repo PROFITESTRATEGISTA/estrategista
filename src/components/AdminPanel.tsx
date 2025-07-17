@@ -97,11 +97,20 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
       const user = users.find(u => u.id === userId);
       if (user) {
         switch (action) {
+          case 'reactivate':
+            onUpdateUser(userId, { is_active: true, plan: user.plan || 'free' });
+            break;
           case 'activate':
             onUpdateUser(userId, { is_active: true });
             break;
           case 'deactivate':
             onUpdateUser(userId, { is_active: false });
+            break;
+          case 'upgrade-pro':
+            onUpdateUser(userId, { plan: 'pro', is_active: true });
+            break;
+          case 'upgrade-master':
+            onUpdateUser(userId, { plan: 'master', is_active: true });
             break;
           case 'delete':
             onDeleteUser(userId);
@@ -248,6 +257,22 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                     />
                     <span>Mostrar inativos</span>
                   </label>
+                  
+                  {users.filter(u => !u.is_active).length > 0 && (
+                    <button
+                      onClick={() => {
+                        const inactiveUsers = users.filter(u => !u.is_active);
+                        if (confirm(`Reativar ${inactiveUsers.length} usuário(s) inativo(s)?`)) {
+                          inactiveUsers.forEach(user => {
+                            onUpdateUser(user.id, { is_active: true });
+                          });
+                        }
+                      }}
+                      className="px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg text-sm font-medium transition-colors"
+                    >
+                      🔄 Reativar Todos ({users.filter(u => !u.is_active).length})
+                    </button>
+                  )}
                 </div>
 
                 {selectedUsers.length > 0 && (
@@ -255,6 +280,12 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                     <span className="text-sm text-slate-400">
                       {selectedUsers.length} selecionados
                     </span>
+                    <button
+                      onClick={() => handleBulkAction('reactivate')}
+                      className="px-3 py-1 bg-green-600 hover:bg-green-700 rounded text-sm transition-colors"
+                    >
+                      Reativar
+                    </button>
                     <button
                       onClick={() => handleBulkAction('activate')}
                       className="px-3 py-1 bg-emerald-600 hover:bg-emerald-700 rounded text-sm transition-colors"
@@ -266,6 +297,18 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                       className="px-3 py-1 bg-orange-600 hover:bg-orange-700 rounded text-sm transition-colors"
                     >
                       Desativar
+                    </button>
+                    <button
+                      onClick={() => handleBulkAction('upgrade-pro')}
+                      className="px-3 py-1 bg-blue-600 hover:bg-blue-700 rounded text-sm transition-colors"
+                    >
+                      → PRO
+                    </button>
+                    <button
+                      onClick={() => handleBulkAction('upgrade-master')}
+                      className="px-3 py-1 bg-purple-600 hover:bg-purple-700 rounded text-sm transition-colors"
+                    >
+                      → MASTER
                     </button>
                     <button
                       onClick={() => handleBulkAction('delete')}
@@ -328,7 +371,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                   </thead>
                   <tbody className="divide-y divide-slate-700/50">
                     {filteredUsers.map(user => (
-                      <tr key={user.id} className="hover:bg-slate-700/30 transition-colors">
+                      <tr key={user.id} className={`hover:bg-slate-700/30 transition-colors ${
+                        !user.is_active ? 'opacity-60 bg-red-900/10' : ''
+                      }`}>
                         <td className="px-6 py-4">
                           <input
                             type="checkbox"
@@ -345,7 +390,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                         </td>
                         <td className="px-6 py-4">
                           <div className="flex items-center space-x-3">
-                            <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                              user.is_active ? 'bg-blue-600' : 'bg-gray-600'
+                            }`}>
                               {user.email === 'pedropardal04@gmail.com' ? (
                                 <Shield className="w-4 h-4 text-yellow-400" />
                               ) : (
@@ -353,15 +400,22 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                               )}
                             </div>
                             <div>
-                              <div className="font-medium text-white">
+                              <div className={`font-medium ${user.is_active ? 'text-white' : 'text-gray-400'}`}>
                                 {user.name}
                                 {user.email === 'pedropardal04@gmail.com' && (
                                   <span className="ml-2 text-xs bg-red-600 text-white px-2 py-1 rounded-full">
                                     ADMIN MASTER
                                   </span>
                                 )}
+                                {!user.is_active && (
+                                  <span className="ml-2 text-xs bg-red-800 text-red-200 px-2 py-1 rounded-full">
+                                    INATIVO
+                                  </span>
+                                )}
                               </div>
-                              <div className="text-sm text-slate-400">{user.email}</div>
+                              <div className={`text-sm ${user.is_active ? 'text-slate-400' : 'text-gray-500'}`}>
+                                {user.email}
+                              </div>
                             </div>
                           </div>
                         </td>
@@ -450,6 +504,15 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                         </td>
                         <td className="px-6 py-4 text-right">
                           <div className="flex items-center justify-end space-x-2">
+                            {!user.is_active && (
+                              <button
+                                onClick={() => onUpdateUser(user.id, { is_active: true })}
+                                className="p-1 hover:bg-green-600/50 rounded transition-colors text-green-400"
+                                title="Reativar usuário"
+                              >
+                                <RefreshCw className="w-4 h-4" />
+                              </button>
+                            )}
                             <button
                               onClick={() => setShowUserDetails(showUserDetails === user.id ? null : user.id)}
                               className="p-1 hover:bg-slate-600/50 rounded transition-colors"
