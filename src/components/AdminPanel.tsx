@@ -154,7 +154,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-4">
               <Shield className="w-8 h-8 text-blue-400" />
-              <h1 className="text-xl font-bold">Gerenciamento de Usuários - Estrategista Trading Solutions</h1>
+              <h1 className="text-xl font-bold">Gerenciamento de Usuários - Estrategista Solutions</h1>
             </div>
             
             <div className="flex items-center space-x-4">

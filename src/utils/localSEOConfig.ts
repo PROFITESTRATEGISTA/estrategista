@@ -1,6 +1,6 @@
 // Local SEO Configuration
 export const businessInfo = {
-  name: "Estrategista Trading Solutions",
+  name: "Estrategista Solutions",
   description: "Especialistas em desenvolvimento de Pack de Robôs para trading automatizado, soluções white label e automação financeira para traders e investidores brasileiros.",
   url: "https://estrategistatradingsolutions.com.br",
   telephone: "+55 (11) 99999-9999",

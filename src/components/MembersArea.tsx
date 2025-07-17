@@ -440,7 +440,7 @@ export default function MembersArea() {
                   </button>
                 </div>
                 <p className="text-gray-400 text-lg">
-                  Sua central da Estrategista Trading Solutions
+                  Sua central da Estrategista Solutions
                 </p>
               </div>
 
