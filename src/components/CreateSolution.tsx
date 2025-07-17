@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowRight, Check, Shield, Bot, Settings, MessageSquare, Clock, Code, Server, Smartphone, Layers, Zap, Users, Building2, Briefcase, Cpu, Database, Globe, FileText, CheckSquare, ChevronRight, Palette, DollarSign, Send, Mail, User, Phone, ChevronDown, ChevronUp, BarChart as ChartBar, BarChart3, Copy, AlertCircle, Info, Loader } from 'lucide-react';
+import supabase from '../lib/supabase';
 
 // Types for the form data
 interface FormData {
@@ -129,10 +130,35 @@ export default function CreateSolution() {
     setIsSubmitting(true);
     
     try {
-      console.log('Enviando dados do formulário "Crie sua Solução"...');
+      console.log('Enviando dados do formulário "Crie sua Solução"...', formData);
       
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Try to save to Supabase
+      try {
+        const { data, error } = await supabase
+          .from('solution_requests')
+          .insert([
+            {
+              name: formData.name,
+              email: formData.email,
+              phone: formData.phone,
+              project_type: formData.projectType,
+              platform: formData.platform,
+              modules: formData.modules,
+              description: formData.description,
+              status: 'pending',
+              priority: 'medium'
+            }
+          ]);
+
+        if (error) {
+          console.error('Supabase error:', error);
+          throw error;
+        }
+
+        console.log('✅ Solution request saved to database:', data);
+      } catch (dbError) {
+        console.warn('Database save failed, continuing with WhatsApp fallback:', dbError);
+      }
       
       // Show success message
       setSuccess('Solicitação enviada com sucesso! Nossa equipe entrará em contato em breve.');

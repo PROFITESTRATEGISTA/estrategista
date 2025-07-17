@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Users, TrendingUp, DollarSign, Activity, Server, Shield, Zap, Settings, Monitor, Database, Globe, CreditCard, Building2, Award, Clock, CheckCircle, AlertTriangle, Eye, EyeOff, Download, Search, Filter, MoreVertical, Edit, Trash2, UserPlus, Mail, Phone, Calendar, MapPin, Star, Crown, Gift, Target, BarChart3, PieChart, LineChart, ArrowUp, ArrowDown, Percent, RefreshCw, Bell, MessageSquare, FileText, ExternalLink, Copy, Share2, Lock, Unlock, Plus, Minus, X, Check, AlertCircle, Info, HelpCircle, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Home, Package, Briefcase, Headphones, LogOut, User, Menu, Save } from 'lucide-react';
+import { SolutionRequestsPanel } from './SolutionRequestsPanel';
 
 interface User {
   id: string;
@@ -21,6 +22,7 @@ interface AdminPanelProps {
 }
 
 export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUpdateUser, onDeleteUser }) => {
+  const [currentView, setCurrentView] = useState<'users' | 'solutions'>('users');
   const [searchTerm, setSearchTerm] = useState('');
   const [filterPlan, setFilterPlan] = useState<string>('all');
   const [showInactive, setShowInactive] = useState(false);
@@ -29,6 +31,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
   const [isLoading, setIsLoading] = useState(true);
   const [editingPlan, setEditingPlan] = useState<string | null>(null);
   const [tempPlan, setTempPlan] = useState<string>('');
+
+  // If viewing solution requests, render that component
+  if (currentView === 'solutions') {
+    return <SolutionRequestsPanel onBack={() => setCurrentView('users')} />;
+  }
 
   // Debug logging
   useEffect(() => {
@@ -151,6 +158,13 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
             </div>
             
             <div className="flex items-center space-x-4">
+              <button
+                onClick={() => setCurrentView('solutions')}
+                className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg transition-colors text-sm font-medium flex items-center space-x-2"
+              >
+                <FileText className="w-4 h-4" />
+                <span>Formulários</span>
+              </button>
               {onBack && (
                 <button
                   onClick={onBack}
