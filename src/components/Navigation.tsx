@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { Bot, Menu, X, User, LogOut, Shield } from 'lucide-react';
 
 interface User {
@@ -10,24 +11,19 @@ interface User {
 }
 
 interface NavigationProps {
-  currentPage: 'pack' | 'whitelabel' | 'createsolution' | 'admin' | 'members';
-  onPageChange: (page: 'pack' | 'whitelabel' | 'createsolution' | 'admin' | 'members') => void;
   user: User | null;
   onAuthClick: (mode: 'login' | 'register') => void;
 }
 
-const Navigation = ({ currentPage, onPageChange, user, onAuthClick }: NavigationProps) => {
+const Navigation = ({ user, onAuthClick }: NavigationProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const location = useLocation();
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  const handlePageChange = (page: 'pack' | 'whitelabel' | 'createsolution' | 'admin' | 'members') => {
-    onPageChange(page);
-    setIsMobileMenuOpen(false);
-  };
 
   const handleLogout = () => {
     try {
@@ -47,14 +43,14 @@ const Navigation = ({ currentPage, onPageChange, user, onAuthClick }: Navigation
   };
 
   const navItems = [
-    { id: 'pack', label: '🤖 Pack de Robôs', emoji: '🤖' },
-    { id: 'plans', label: '💎 Planos', emoji: '💎' },
-    { id: 'whitelabel', label: '🤝 White Label', emoji: '🤝' },
-    { id: 'createsolution', label: '🛠️ Criar Solução', emoji: '🛠️' }
+    { id: '/', label: '🤖 Pack de Robôs', emoji: '🤖' },
+    { id: '/planos', label: '💎 Planos', emoji: '💎' },
+    { id: '/white-label', label: '🤝 White Label', emoji: '🤝' },
+    { id: '/criar-solucao', label: '🛠️ Criar Solução', emoji: '🛠️' }
   ];
 
   const authItems = user ? [
-    { id: 'members', label: '👤 Área de Membros', emoji: '👤' },
+    { id: '/members', label: '👤 Área de Membros', emoji: '👤' },
   ] : [];
 
   const getPlanBadgeColor = (plan?: string) => {
@@ -83,39 +79,39 @@ const Navigation = ({ currentPage, onPageChange, user, onAuthClick }: Navigation
             {/* Main Nav Items */}
             <div className="flex space-x-2">
               {navItems.map((item) => (
-                <button
+                <Link
                   key={item.id}
-                  onClick={() => onPageChange(item.id as any)}
+                  to={item.id}
                   className={`px-4 py-2 rounded-lg font-semibold transition-all duration-300 text-sm ${
-                    currentPage === item.id
+                    location.pathname === item.id
                       ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
                       : 'bg-transparent text-gray-300 hover:text-white hover:bg-gray-800'
                   }`}
                 >
-                  {item.id === 'plans' && (
+                  {item.id === '/planos' && (
                     <span className="bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold mr-2">
                       70% OFF
                     </span>
                   )}
                   {item.label}
-                </button>
+                </Link>
               ))}
             </div>
 
             {/* Auth Items */}
             <div className="border-l border-gray-700 pl-4 flex items-center space-x-2">
               {authItems.map((item) => (
-                <button
+                <Link
                   key={item.id}
-                  onClick={() => onPageChange(item.id as any)}
+                  to={item.id}
                   className={`px-4 py-2 rounded-lg font-semibold transition-all duration-300 text-sm ${
-                    currentPage === item.id
+                    location.pathname === item.id
                       ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
                       : 'bg-transparent text-gray-300 hover:text-white hover:bg-gray-800'
                   }`}
                 >
                   {item.label}
-                </button>
+                </Link>
               ))}
 
               {/* User Menu or Auth Buttons */}
@@ -182,34 +178,36 @@ const Navigation = ({ currentPage, onPageChange, user, onAuthClick }: Navigation
             <div className="px-2 pt-2 pb-3 space-y-1">
               {/* Main Nav Items */}
               {navItems.map((item) => (
-                <button
+                <Link
                   key={item.id}
-                  onClick={() => handlePageChange(item.id as any)}
+                  to={item.id}
+                  onClick={() => setIsMobileMenuOpen(false)}
                   className={`w-full text-left px-3 py-2 rounded-md font-medium transition-colors duration-300 ${
-                    currentPage === item.id
+                    location.pathname === item.id
                       ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
                       : 'text-gray-300 hover:text-white hover:bg-gray-800'
                   }`}
                 >
                   {item.label}
-                </button>
+                </Link>
               ))}
 
               {/* Auth Items */}
               {authItems.length > 0 && (
                 <div className="border-t border-gray-700 pt-2 mt-2">
                   {authItems.map((item) => (
-                    <button
+                    <Link
                       key={item.id}
-                      onClick={() => handlePageChange(item.id as any)}
+                      to={item.id}
+                      onClick={() => setIsMobileMenuOpen(false)}
                       className={`w-full text-left px-3 py-2 rounded-md font-medium transition-colors duration-300 ${
-                        currentPage === item.id
+                        location.pathname === item.id
                           ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
                           : 'text-gray-300 hover:text-white hover:bg-gray-800'
                       }`}
                     >
                       {item.label}
-                    </button>
+                    </Link>
                   ))}
                 </div>
               )}

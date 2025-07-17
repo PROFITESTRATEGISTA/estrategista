@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import PackRobos from './components/PackRobos';
 import WhiteLabelPage from './components/WhiteLabelPage';
@@ -11,76 +12,17 @@ import FloatingButton from './components/FloatingButton';
 import LoginModal from './components/LoginModal';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 
-type Page = 'pack' | 'plans' | 'whitelabel' | 'createsolution' | 'admin' | 'members' | 'vps';
-
 function AppContent() {
-  const [currentPage, setCurrentPage] = useState<Page>('pack');
-  const [showAuthModal, setShowAuthModal] = useState(false);
-  const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
+  const [showAuthModal, setShowAuthModal] = React.useState(false);
+  const [authMode, setAuthMode] = React.useState<'login' | 'register'>('login');
   const { user, loading } = useAuth();
 
-  const handlePageChange = (page: Page) => {
-    // Check if user needs to be authenticated for certain pages
-    if ((page === 'admin' || page === 'members') && !user) {
-      setAuthMode('login');
-      setShowAuthModal(true);
-      return;
-    }
-    
-    // Check if user has admin access for admin page
-    if (page === 'admin' && user && user.role !== 'admin') {
-      alert('Acesso negado. Você precisa de permissões de administrador.');
-      return;
-    }
-    
-    setCurrentPage(page);
-  };
-
   const handleAuthSuccess = () => {
-    console.log('🔄 handleAuthSuccess called - closing modal');
     setShowAuthModal(false);
-    // If user was trying to access admin/members, redirect them there
-    if (currentPage === 'admin' || currentPage === 'members') {
-      // Page will be set after auth context updates
-    }
   };
 
   const handleNavigateToPlans = () => {
-    setCurrentPage('plans');
-  };
-
-  const renderCurrentPage = () => {
-    switch (currentPage) {
-      case 'pack':
-        return <PackRobos 
-          onPageChange={handlePageChange}
-          onAuthClick={(mode) => {
-            setAuthMode(mode);
-            setShowAuthModal(true);
-          }}
-        />;
-      case 'plans':
-        return <PlansPage onAuthClick={(mode) => {
-          setAuthMode(mode);
-          setShowAuthModal(true);
-        }} />;
-      case 'whitelabel':
-        return <WhiteLabelPage onNavigateToCreateSolution={() => setCurrentPage('createsolution')} />;
-      case 'createsolution':
-        return <CreateSolution />;
-      case 'admin':
-        return user?.role === 'admin' ? (
-          <AdminPanel onBack={() => setCurrentPage('pack')} />
-        ) : (
-          <PackRobos />
-        );
-      case 'members':
-        return user ? <MembersArea /> : <PackRobos />;
-      case 'vps':
-        return <VPSServicesPage onBack={() => setCurrentPage('pack')} />;
-      default:
-        return <PackRobos />;
-    }
+    window.location.href = '/planos';
   };
 
   if (loading) {
@@ -94,8 +36,6 @@ function AppContent() {
   return (
     <div className="min-h-screen bg-gray-900">
       <Navigation 
-        currentPage={currentPage} 
-        onPageChange={handlePageChange}
         user={user}
         onAuthClick={(mode) => {
           setAuthMode(mode);
@@ -103,26 +43,99 @@ function AppContent() {
         }}
       />
       
-      {renderCurrentPage()}
-      
-      {/* Floating Button - Always visible */}
-      {(currentPage === 'pack' || currentPage === 'plans' || currentPage === 'whitelabel' || currentPage === 'createsolution' || currentPage === 'members' || currentPage === 'vps') && (
-        <FloatingButton 
-          onNavigateToPlans={handleNavigateToPlans}
-          onOpenRegister={() => {
-            setAuthMode('register');
-            setShowAuthModal(true);
-          }}
+      <Routes>
+        {/* Pack de Robôs - Página Principal */}
+        <Route 
+          path="/" 
+          element={
+            <PackRobos 
+              onAuthClick={(mode) => {
+                setAuthMode(mode);
+                setShowAuthModal(true);
+              }}
+            />
+          } 
         />
-      )}
+        
+        {/* Planos */}
+        <Route 
+          path="/planos" 
+          element={
+            <PlansPage 
+              onAuthClick={(mode) => {
+                setAuthMode(mode);
+                setShowAuthModal(true);
+              }} 
+            />
+          } 
+        />
+        
+        {/* White Label */}
+        <Route 
+          path="/white-label" 
+          element={<WhiteLabelPage />} 
+        />
+        
+        {/* Criar Solução */}
+        <Route 
+          path="/criar-solucao" 
+          element={<CreateSolution />} 
+        />
+        
+        {/* Área de Membros - Protegida */}
+        <Route 
+          path="/members" 
+          element={
+            user ? (
+              <MembersArea />
+            ) : (
+              <Navigate to="/" replace />
+            )
+          } 
+        />
+        
+        {/* Admin Panel - Protegida */}
+        <Route 
+          path="/admin" 
+          element={
+            user?.role === 'admin' ? (
+              <AdminPanel onBack={() => window.location.href = '/'} />
+            ) : (
+              <Navigate to="/" replace />
+            )
+          } 
+        />
+        
+        {/* VPS Services */}
+        <Route 
+          path="/vps" 
+          element={<VPSServicesPage onBack={() => window.location.href = '/'} />} 
+        />
+        
+        {/* Redirect old routes */}
+        <Route path="/pack" element={<Navigate to="/" replace />} />
+        <Route path="/plans" element={<Navigate to="/planos" replace />} />
+        <Route path="/whitelabel" element={<Navigate to="/white-label" replace />} />
+        <Route path="/createsolution" element={<Navigate to="/criar-solucao" replace />} />
+        
+        {/* 404 - Redirect to home */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
       
+      {/* Floating Button - Sempre visível */}
+      <FloatingButton 
+        onNavigateToPlans={handleNavigateToPlans}
+        onOpenRegister={() => {
+          setAuthMode('register');
+          setShowAuthModal(true);
+        }}
+      />
+      
+      {/* Modal de Login */}
       {showAuthModal && (
         <LoginModal
           isOpen={showAuthModal}
-          onClose={() => {
-            console.log('🔄 Modal onClose called - closing modal');
-            setShowAuthModal(false);
-          }}
+          onClose={() => setShowAuthModal(false)}
           onLogin={handleAuthSuccess}
         />
       )}

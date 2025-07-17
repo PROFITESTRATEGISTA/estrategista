@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Bot, TrendingUp, Shield, Zap, ArrowRight, Target, Clock, Check, Star, Crown, Gift, Download, Settings, Play, Building2, Users, Award, X, Quote, AlertTriangle, Monitor, Copy, ExternalLink, ChevronDown, ChevronUp, CreditCard, Wrench, BarChart3, Menu } from 'lucide-react';
 
-const PackRobos = ({ onAuthClick, onPageChange }) => {
+const PackRobos = ({ onAuthClick }) => {
   const [openFAQIndex, setOpenFAQIndex] = useState<number | null>(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -472,7 +473,7 @@ const PackRobos = ({ onAuthClick, onPageChange }) => {
 
                 {/* Sob Medida */}
                 <button 
-                  onClick={() => onPageChange('whitelabel')}
+                  onClick={() => window.location.href = '/white-label'}
                   className="group relative w-full bg-gradient-to-br from-orange-500 via-red-500 to-pink-500 hover:from-orange-400 hover:via-red-400 hover:to-pink-400 text-white rounded-2xl sm:rounded-3xl font-semibold transition-all duration-500 transform hover:scale-[1.02] hover:-translate-y-1 shadow-2xl hover:shadow-orange-500/25 border border-white/20 backdrop-blur-sm overflow-hidden min-h-[44px] min-w-[44px]">
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                   <div className="relative p-4 sm:p-6 lg:p-8">
