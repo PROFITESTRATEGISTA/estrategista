@@ -13,6 +13,20 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Prevent flickering during navigation */
+  transition: none !important;
+  animation: none !important;
+}
+
+/* Prevent layout shifts and flickering */
+* {
+  box-sizing: border-box;
+}
+
+/* Optimize rendering performance */
+.min-h-screen {
+  min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport height for mobile */
 }
 
 /* Utility classes */
@@ -80,4 +94,28 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+/* Prevent flickering during route transitions */
+.route-container {
+  opacity: 1;
+  transition: opacity 0.1s ease-in-out;
+}
+
+.route-container.loading {
+  opacity: 0.95;
+}
+
+/* Optimize image loading */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Prevent flash of unstyled content */
+.no-fouc {
+  visibility: hidden;
+}
+
+.fouc-loaded .no-fouc {
+  visibility: visible;
 }
