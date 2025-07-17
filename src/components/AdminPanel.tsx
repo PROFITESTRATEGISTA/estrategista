@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Users, TrendingUp, DollarSign, Activity, Server, Shield, Zap, Settings, Monitor, Database, Globe, CreditCard, Building2, Award, Clock, CheckCircle, AlertTriangle, Eye, EyeOff, Download, Search, Filter, MoreVertical, Edit, Trash2, UserPlus, Mail, Phone, Calendar, MapPin, Star, Crown, Gift, Target, BarChart3, PieChart, LineChart, ArrowUp, ArrowDown, Percent, RefreshCw, Bell, MessageSquare, FileText, ExternalLink, Copy, Share2, Lock, Unlock, Plus, Minus, X, Check, AlertCircle, Info, HelpCircle, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Home, Package, Briefcase, Headphones, LogOut, User, Menu } from 'lucide-react';
+import { Users, TrendingUp, DollarSign, Activity, Server, Shield, Zap, Settings, Monitor, Database, Globe, CreditCard, Building2, Award, Clock, CheckCircle, AlertTriangle, Eye, EyeOff, Download, Search, Filter, MoreVertical, Edit, Trash2, UserPlus, Mail, Phone, Calendar, MapPin, Star, Crown, Gift, Target, BarChart3, PieChart, LineChart, ArrowUp, ArrowDown, Percent, RefreshCw, Bell, MessageSquare, FileText, ExternalLink, Copy, Share2, Lock, Unlock, Plus, Minus, X, Check, AlertCircle, Info, HelpCircle, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Home, Package, Briefcase, Headphones, LogOut, User, Menu, Save } from 'lucide-react';
 
 interface User {
   id: string;
@@ -27,6 +27,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [showUserDetails, setShowUserDetails] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [editingPlan, setEditingPlan] = useState<string | null>(null);
+  const [tempPlan, setTempPlan] = useState<string>('');
 
   // Debug logging
   useEffect(() => {
@@ -110,6 +112,23 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
     setSelectedUsers([]);
   };
 
+  const handlePlanEdit = (userId: string, currentPlan: string) => {
+    setEditingPlan(userId);
+    setTempPlan(currentPlan);
+  };
+
+  const handlePlanSave = (userId: string) => {
+    if (tempPlan !== '') {
+      onUpdateUser(userId, { plan: tempPlan as 'free' | 'pro' | 'master' });
+    }
+    setEditingPlan(null);
+    setTempPlan('');
+  };
+
+  const handlePlanCancel = () => {
+    setEditingPlan(null);
+    setTempPlan('');
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white">
@@ -355,10 +374,43 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                           </div>
                         </td>
                         <td className="px-6 py-4">
-                          <span className={`inline-flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium ${getPlanColor(user.plan)}`}>
-                            {getPlanIcon(user.plan)}
-                            <span>{user.plan.toUpperCase()}</span>
-                          </span>
+                          {editingPlan === user.id ? (
+                            <div className="flex items-center space-x-2">
+                              <select
+                                value={tempPlan}
+                                onChange={(e) => setTempPlan(e.target.value)}
+                                className="px-2 py-1 bg-slate-700 border border-slate-600 rounded text-white text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              >
+                                <option value="free">FREE</option>
+                                <option value="pro">PRO</option>
+                                <option value="master">MASTER</option>
+                              </select>
+                              <button
+                                onClick={() => handlePlanSave(user.id)}
+                                className="p-1 hover:bg-green-600/50 rounded transition-colors text-green-400"
+                                title="Salvar"
+                              >
+                                <Save className="w-3 h-3" />
+                              </button>
+                              <button
+                                onClick={handlePlanCancel}
+                                className="p-1 hover:bg-red-600/50 rounded transition-colors text-red-400"
+                                title="Cancelar"
+                              >
+                                <X className="w-3 h-3" />
+                              </button>
+                            </div>
+                          ) : (
+                            <button
+                              onClick={() => handlePlanEdit(user.id, user.plan)}
+                              className={`inline-flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium hover:opacity-80 transition-opacity ${getPlanColor(user.plan)}`}
+                              title="Clique para editar plano"
+                            >
+                              {getPlanIcon(user.plan)}
+                              <span>{user.plan.toUpperCase()}</span>
+                              <Edit className="w-3 h-3 ml-1" />
+                            </button>
+                          )}
                         </td>
                         <td className="px-6 py-4">
                           <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
