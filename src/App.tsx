@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import PackRobos from './components/PackRobos';
 import WhiteLabelPage from './components/WhiteLabelPage';
@@ -11,76 +12,25 @@ import FloatingButton from './components/FloatingButton';
 import LoginModal from './components/LoginModal';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 
-type Page = 'pack' | 'plans' | 'whitelabel' | 'createsolution' | 'admin' | 'members' | 'vps';
-
 function AppContent() {
-  const [currentPage, setCurrentPage] = useState<Page>('pack');
-  const [showAuthModal, setShowAuthModal] = useState(false);
-  const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
+  const [showAuthModal, setShowAuthModal] = React.useState(false);
+  const [authMode, setAuthMode] = React.useState<'login' | 'register'>('login');
   const { user, loading } = useAuth();
-
-  const handlePageChange = (page: Page) => {
-    // Check if user needs to be authenticated for certain pages
-    if ((page === 'admin' || page === 'members') && !user) {
-      setAuthMode('login');
-      setShowAuthModal(true);
-      return;
-    }
-    
-    // Check if user has admin access for admin page
-    if (page === 'admin' && user && user.role !== 'admin') {
-      alert('Acesso negado. Você precisa de permissões de administrador.');
-      return;
-    }
-    
-    setCurrentPage(page);
-  };
+  const location = useLocation();
 
   const handleAuthSuccess = () => {
     console.log('🔄 handleAuthSuccess called - closing modal');
     setShowAuthModal(false);
-    // If user was trying to access admin/members, redirect them there
-    if (currentPage === 'admin' || currentPage === 'members') {
-      // Page will be set after auth context updates
-    }
   };
 
   const handleNavigateToPlans = () => {
-    setCurrentPage('plans');
+    window.location.href = '/planos';
   };
 
-  const renderCurrentPage = () => {
-    switch (currentPage) {
-      case 'pack':
-        return <PackRobos 
-          onPageChange={handlePageChange}
-          onAuthClick={(mode) => {
-            setAuthMode(mode);
-            setShowAuthModal(true);
-          }}
-        />;
-      case 'plans':
-        return <PlansPage onAuthClick={(mode) => {
-          setAuthMode(mode);
-          setShowAuthModal(true);
-        }} />;
-      case 'whitelabel':
-        return <WhiteLabelPage onNavigateToCreateSolution={() => setCurrentPage('createsolution')} />;
-      case 'createsolution':
-        return <CreateSolution />;
-      case 'admin':
-        return user?.role === 'admin' ? (
-          <AdminPanel onBack={() => setCurrentPage('pack')} />
-        ) : (
-          <PackRobos />
-        );
-      case 'members':
-        return user ? <MembersArea /> : <PackRobos />;
-      case 'vps':
-        return <VPSServicesPage onBack={() => setCurrentPage('pack')} />;
-      default:
-        return <PackRobos />;
-    }
+  // Check if current page should show floating button
+  const shouldShowFloatingButton = () => {
+    const currentPath = location.pathname;
+    return ['/', '/planos', '/white-label', '/criar-solucao', '/members', '/vps'].includes(currentPath);
   };
 
   if (loading) {
@@ -94,8 +44,6 @@ function AppContent() {
   return (
     <div className="min-h-screen bg-gray-900">
       <Navigation 
-        currentPage={currentPage} 
-        onPageChange={handlePageChange}
         user={user}
         onAuthClick={(mode) => {
           setAuthMode(mode);
@@ -103,10 +51,98 @@ function AppContent() {
         }}
       />
       
-      {renderCurrentPage()}
+      <Routes>
+        {/* Pack de Robôs - Página inicial */}
+        <Route 
+          path="/" 
+          element={
+            <PackRobos 
+              onAuthClick={(mode) => {
+                setAuthMode(mode);
+                setShowAuthModal(true);
+              }}
+              onPageChange={(page) => {
+                if (page === 'whitelabel') window.location.href = '/white-label';
+                if (page === 'createsolution') window.location.href = '/criar-solucao';
+                if (page === 'plans') window.location.href = '/planos';
+                if (page === 'admin') window.location.href = '/admin';
+                if (page === 'members') window.location.href = '/members';
+                if (page === 'vps') window.location.href = '/vps';
+              }}
+            />
+          } 
+        />
+        
+        {/* Planos */}
+        <Route 
+          path="/planos" 
+          element={
+            <PlansPage 
+              onAuthClick={(mode) => {
+                setAuthMode(mode);
+                setShowAuthModal(true);
+              }} 
+            />
+          } 
+        />
+        
+        {/* White Label */}
+        <Route 
+          path="/white-label" 
+          element={
+            <WhiteLabelPage 
+              onNavigateToCreateSolution={() => window.location.href = '/criar-solucao'} 
+            />
+          } 
+        />
+        
+        {/* Criar Solução */}
+        <Route 
+          path="/criar-solucao" 
+          element={<CreateSolution />} 
+        />
+        
+        {/* Admin Panel */}
+        <Route 
+          path="/admin" 
+          element={
+            user?.role === 'admin' ? (
+              <AdminPanel onBack={() => window.location.href = '/'} />
+            ) : (
+              <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+                <div className="text-white text-xl">Acesso negado</div>
+              </div>
+            )
+          } 
+        />
+        
+        {/* Área de Membros */}
+        <Route 
+          path="/members" 
+          element={
+            user ? <MembersArea /> : (
+              <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+                <div className="text-white text-xl">Faça login para acessar</div>
+              </div>
+            )
+          } 
+        />
+        
+        {/* VPS Services */}
+        <Route 
+          path="/vps" 
+          element={<VPSServicesPage onBack={() => window.location.href = '/'} />} 
+        />
+        
+        {/* Redirect old routes */}
+        <Route path="/pack" element={<div>{window.location.href = '/'}</div>} />
+        <Route path="/plans" element={<div>{window.location.href = '/planos'}</div>} />
+        <Route path="/whitelabel" element={<div>{window.location.href = '/white-label'}</div>} />
+        <Route path="/createsolution" element={<div>{window.location.href = '/criar-solucao'}</div>} />
+      </Routes>
       
-      {/* Floating Button - Always visible */}
-      {(currentPage === 'pack' || currentPage === 'plans' || currentPage === 'whitelabel' || currentPage === 'createsolution' || currentPage === 'members' || currentPage === 'vps') && (
+      {/* Floating Button - Show on specific pages */}
+      {shouldShowFloatingButton() && (
         <FloatingButton 
           onNavigateToPlans={handleNavigateToPlans}
           onOpenRegister={() => {
