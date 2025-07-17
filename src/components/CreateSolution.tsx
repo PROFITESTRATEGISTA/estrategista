@@ -95,7 +95,7 @@ export default function CreateSolution() {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              onClick={() => window.open(`https://wa.me/+5511999999999?text=Olá! Acabei de enviar uma solicitação de projeto. Gostaria de acelerar o atendimento.`, '_blank')}
+              onClick={() => window.open(`https://wa.me/5511975333355?text=Olá! Acabei de enviar uma solicitação de projeto. Gostaria de acelerar o atendimento.`, '_blank')}
               className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-lg font-semibold transition-colors flex items-center justify-center space-x-2"
             >
               <MessageSquare className="w-5 h-5" />
