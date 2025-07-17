@@ -45,7 +45,7 @@ const Navigation = ({ user, onAuthClick }: NavigationProps) => {
   const navItems = [
     { id: '/', label: '🤖 Pack de Robôs', emoji: '🤖' },
     { id: '/planos', label: '💎 Planos', emoji: '💎' },
-    { id: '/planos#faq', label: '❓ FAQ', emoji: '❓', isAnchor: true },
+    { id: '/planos/faq', label: '❓ FAQ', emoji: '❓' },
     { id: '/white-label', label: '🤝 White Label', emoji: '🤝' },
     { id: '/criar-solucao', label: '🛠️ Criar Solução', emoji: '🛠️' }
   ];
@@ -81,41 +81,22 @@ const Navigation = ({ user, onAuthClick }: NavigationProps) => {
             <div className="flex space-x-0.5 xl:space-x-1">
               {navItems.map((item) => (
                 item.isAnchor ? (
-                  <a
-                    key={item.id}
-                    href={item.id}
-                    className={`px-1.5 xl:px-3 py-1.5 rounded-lg font-medium transition-all duration-300 text-xs whitespace-nowrap ${
-                      location.pathname === '/planos' && item.id.includes('#faq')
-                        ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
-                        : 'bg-transparent text-gray-300 hover:text-white hover:bg-gray-800'
-                    }`}
-                  >
-                    {item.id === '/planos' && (
-                      <span className="bg-red-500 text-white px-1 py-0.5 rounded-full text-xs font-bold mr-1">
-                        70% OFF
-                      </span>
-                    )}
-                    {item.label}
-                  </a>
-                ) : (
-                  <Link
-                    key={item.id}
-                    key={item.id}
-                    to={item.id}
-                    className={`px-1.5 xl:px-3 py-1.5 rounded-lg font-medium transition-all duration-300 text-xs whitespace-nowrap ${
-                      location.pathname === item.id
-                        ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
-                        : 'bg-transparent text-gray-300 hover:text-white hover:bg-gray-800'
-                    }`}
-                  >
-                    {item.id === '/planos' && (
-                      <span className="bg-red-500 text-white px-1 py-0.5 rounded-full text-xs font-bold mr-1">
-                        70% OFF
-                      </span>
-                    )}
-                    {item.label}
-                  </Link>
-                )
+                <Link
+                  key={item.id}
+                  to={item.id}
+                  className={`px-1.5 xl:px-3 py-1.5 rounded-lg font-medium transition-all duration-300 text-xs whitespace-nowrap ${
+                    location.pathname === item.id || (item.id === '/planos/faq' && location.pathname.startsWith('/planos'))
+                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
+                      : 'bg-transparent text-gray-300 hover:text-white hover:bg-gray-800'
+                  }`}
+                >
+                  {item.id === '/planos' && (
+                    <span className="bg-red-500 text-white px-1 py-0.5 rounded-full text-xs font-bold mr-1">
+                      70% OFF
+                    </span>
+                  )}
+                  {item.label}
+                </Link>
               ))}
             </div>
 
@@ -199,43 +180,23 @@ const Navigation = ({ user, onAuthClick }: NavigationProps) => {
             <div className="px-4 pt-4 pb-4 space-y-3">
               {/* Main Nav Items */}
               {navItems.map((item) => (
-                item.isAnchor ? (
-                  <a
-                    key={item.id}
-                    href={item.id}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={`block w-full text-left px-4 py-3 rounded-lg font-medium transition-colors duration-300 text-base ${
-                      location.pathname === '/planos' && item.id.includes('#faq')
-                        ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
-                        : 'text-gray-300 hover:text-white hover:bg-gray-800'
-                    }`}
-                  >
-                    {item.id === '/planos' && (
-                      <span className="bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold mr-2">
-                        70% OFF
-                      </span>
-                    )}
-                    {item.label}
-                  </a>
-                ) : (
-                  <Link
-                    key={item.id}
-                    to={item.id}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={`block w-full text-left px-4 py-3 rounded-lg font-medium transition-colors duration-300 text-base ${
-                      location.pathname === item.id
-                        ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
-                        : 'text-gray-300 hover:text-white hover:bg-gray-800'
-                    }`}
-                  >
-                    {item.id === '/planos' && (
-                      <span className="bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold mr-2">
-                        70% OFF
-                      </span>
-                    )}
-                    {item.label}
-                  </Link>
-                )
+                <Link
+                  key={item.id}
+                  to={item.id}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`block w-full text-left px-4 py-3 rounded-lg font-medium transition-colors duration-300 text-base ${
+                    location.pathname === item.id || (item.id === '/planos/faq' && location.pathname.startsWith('/planos'))
+                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
+                      : 'text-gray-300 hover:text-white hover:bg-gray-800'
+                  }`}
+                >
+                  {item.id === '/planos' && (
+                    <span className="bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold mr-2">
+                      70% OFF
+                    </span>
+                  )}
+                  {item.label}
+                </Link>
               ))}
 
               {/* Auth Items */}

@@ -3,11 +3,27 @@ import { Check, X, Crown, Zap, User, Star, Shield, Bot, TrendingUp, Clock, Targe
 
 interface PlansPageProps {
   onAuthClick?: (mode: 'login' | 'register') => void;
+  scrollToFAQ?: boolean;
 }
 
-const PlansPage = ({ onAuthClick }: PlansPageProps = {}) => {
+const PlansPage = ({ onAuthClick, scrollToFAQ = false }: PlansPageProps = {}) => {
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly');
   const [expandedFAQ, setExpandedFAQ] = useState<number | null>(null);
+
+  // Auto-scroll to FAQ section when scrollToFAQ prop is true
+  React.useEffect(() => {
+    if (scrollToFAQ) {
+      // Small delay to ensure page is rendered
+      setTimeout(() => {
+        const faqSection = document.getElementById('faq');
+        if (faqSection) {
+          faqSection.scrollIntoView({ behavior: 'smooth' });
+          // Open first FAQ by default
+          setExpandedFAQ(0);
+        }
+      }, 100);
+    }
+  }, [scrollToFAQ]);
 
   const plans = [
     {

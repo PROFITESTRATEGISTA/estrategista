@@ -70,6 +70,20 @@ function AppContent() {
           } 
         />
         
+        {/* FAQ - Redirect to plans with anchor */}
+        <Route 
+          path="/planos/faq" 
+          element={
+            <PlansPage 
+              onAuthClick={(mode) => {
+                setAuthMode(mode);
+                setShowAuthModal(true);
+              }}
+              scrollToFAQ={true}
+            />
+          } 
+        />
+        
         {/* White Label */}
         <Route 
           path="/white-label" 
