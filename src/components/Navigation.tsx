@@ -70,7 +70,7 @@ const Navigation = ({ user, onAuthClick }: NavigationProps) => {
           <div className="flex items-center space-x-2 sm:space-x-3">
             <Bot className="w-6 h-6 sm:w-8 sm:h-8 text-blue-400" />
             <span className="text-lg sm:text-xl font-bold text-white truncate">
-              Estrategista Trading Solutions
+              Estrategista Solutions
             </span>
           </div>
           

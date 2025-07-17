@@ -754,7 +754,7 @@ export default function CreateSolution() {
               <span className="block text-blue-400">Tecnologia Personalizada</span>
             </h1>
             <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto mb-6 md:mb-8 px-4">
-              A Estrategista Trading Solutions desenvolve soluções corporativas, gateways de pagamento, dashboards, sites, painéis de controle e produtos para o mercado financeiro.
+              A Estrategista Solutions desenvolve soluções corporativas, gateways de pagamento, dashboards, sites, painéis de controle e produtos para o mercado financeiro.
               Automatize sua operação com especialistas em tecnologia aplicada ao mercado financeiro.
             </p>
           </div>

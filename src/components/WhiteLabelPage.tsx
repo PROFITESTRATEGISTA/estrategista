@@ -208,12 +208,12 @@ const WhiteLabelPage = () => {
                 </h1>
                 
                 <h2 className="text-xl sm:text-2xl text-gray-700 mb-6 font-medium" id="subtitulo-white-label">
-                  Automações corporativas e soluções para o mercado financeiro com sua marca
+                  Tecnologia personalizada para empresas e profissionais do mercado financeiro
                 </h2>
                 
                 <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                  Desenvolvemos soluções personalizadas para empresas: gateways de pagamento, dashboards, 
-                  painéis de controle, automações corporativas e produtos para o mercado financeiro — tudo com sua marca.
+                  A Estrategista Solutions desenvolve tecnologia personalizada: gateways de pagamento, dashboards, 
+                  painéis de controle, automações e produtos para o mercado financeiro — tudo com sua marca.
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4">
@@ -259,7 +259,7 @@ const WhiteLabelPage = () => {
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6" id="o-que-e-white-label">O que é White Label da Estrategista Trading Solutions?</h2>
             
             <h3 className="text-xl sm:text-2xl text-gray-700 mb-8" id="tecnologia-marca-propria">
-              Tecnologia, automação e marca própria para empresas e profissionais
+              Tecnologia personalizada com sua marca para empresas e profissionais
             </h3>
             
             <div className="bg-white rounded-xl p-8 shadow-lg mb-8">
@@ -267,7 +267,7 @@ const WhiteLabelPage = () => {
                 <strong>Você nos fornece suas necessidades e requisitos de negócio.</strong>
               </p>
               <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                A Estrategista Trading Solutions cuida de toda a engenharia, interface e implementação, entregando soluções completas com sua marca, prontas para escalar seu negócio.
+                A Estrategista Solutions cuida de toda a engenharia, interface e implementação, entregando soluções completas com sua marca, prontas para escalar seu negócio.
               </p>
               <p className="text-lg text-gray-700 leading-relaxed">
                 <strong>Você foca no seu core business — nós cuidamos da tecnologia.</strong>
@@ -405,6 +405,7 @@ const WhiteLabelPage = () => {
         <div className="mobile-container">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 text-center mb-12" id="diferenciais-estrategista-trading">Diferenciais da Estrategista Trading Solutions</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 text-center mb-12" id="diferenciais-estrategista-solutions">Diferenciais da Estrategista Solutions</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {differentials.map((item, index) => (
