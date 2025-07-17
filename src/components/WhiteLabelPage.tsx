@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Building2, Users, TrendingUp, CheckCircle, Target, Zap, Shield, Bot, Copy, ExternalLink, Smartphone, Globe, BarChart as ChartBar, Briefcase, Crown, Code, Database, Palette, DollarSign, MessageSquare, Settings, Monitor, Layers, FileText, X, Send, Mail, User, Phone, ChevronDown, ChevronUp } from 'lucide-react';
 
-interface WhiteLabelPageProps {
-  onNavigateToCreateSolution?: () => void;
-}
-
-const WhiteLabelPage = ({ onNavigateToCreateSolution }: WhiteLabelPageProps = {}) => {
+const WhiteLabelPage = () => {
+  const navigate = useNavigate();
   const [showContactModal, setShowContactModal] = useState(false);
   const [showDemoModal, setShowDemoModal] = useState(false);
   const [expandedFAQ, setExpandedFAQ] = useState<number | null>(null);
@@ -176,25 +174,7 @@ const WhiteLabelPage = ({ onNavigateToCreateSolution }: WhiteLabelPageProps = {}
     e.preventDefault();
     
     // Navigate to CreateSolution page instead of WhatsApp
-    if (onNavigateToCreateSolution) {
-      onNavigateToCreateSolution();
-    } else {
-      // Fallback to WhatsApp if navigation function not provided
-      const message = `Olá! Gostaria de solicitar um projeto White Label.
-
-*Dados do contato:*
-Nome: ${contactForm.name}
-Email: ${contactForm.email}
-Telefone: ${contactForm.phone}
-Empresa: ${contactForm.company}
-Tipo de projeto: ${contactForm.projectType}
-
-*Mensagem:*
-${contactForm.message}`;
-
-      const whatsappUrl = `https://wa.me/5511999999999?text=${encodeURIComponent(message)}`;
-      window.open(whatsappUrl, '_blank');
-    }
+    navigate('/criar-solucao');
     
     setShowContactModal(false);
     setContactForm({
@@ -208,8 +188,8 @@ ${contactForm.message}`;
   };
 
   const handleDemoRequest = () => {
-    const message = "Olá! Gostaria de solicitar um acesso de demonstração do sistema White Label para testar antes de fechar o projeto.";
-    const whatsappUrl = `https://wa.me/5511999999999?text=${encodeURIComponent(message)}`;
+    const message = "Olá! Gostaria de solicitar um acesso de demonstração do sistema White Label.";
+    const whatsappUrl = `https://wa.me/5511975333355?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
     setShowDemoModal(false);
   };
@@ -238,7 +218,7 @@ ${contactForm.message}`;
 
                 <div className="flex flex-col sm:flex-row gap-4">
                   <button 
-                    onClick={() => onNavigateToCreateSolution ? onNavigateToCreateSolution() : setShowContactModal(true)}
+                    onClick={() => navigate('/criar-solucao')}
                     className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2 touch-target"
                   >
                     <Settings className="w-5 h-5" />
@@ -246,7 +226,7 @@ ${contactForm.message}`;
                   </button>
                   
                   <button 
-                    onClick={() => onNavigateToCreateSolution ? onNavigateToCreateSolution() : window.open('https://wa.me/5511999999999?text=Olá! Gostaria de falar com um consultor sobre White Label.', '_blank')}
+                    onClick={() => window.open('https://wa.me/5511975333355?text=Olá! Gostaria de falar com um consultor sobre White Label.', '_blank')}
                     className="border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center space-x-2 touch-target"
                   >
                     <MessageSquare className="w-5 h-5" />
@@ -382,7 +362,7 @@ ${contactForm.message}`;
                   </div>
                   
                   <button 
-                    onClick={() => onNavigateToCreateSolution ? onNavigateToCreateSolution() : setShowContactModal(true)}
+                    onClick={() => navigate('/criar-solucao')}
                     className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-3 px-6 rounded-lg font-semibold transition-all duration-300"
                   >
                     Solicitar Orçamento
@@ -560,7 +540,7 @@ ${contactForm.message}`;
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-2xl mx-auto">
               <button 
-                onClick={() => onNavigateToCreateSolution ? onNavigateToCreateSolution() : setShowContactModal(true)}
+                onClick={() => navigate('/criar-solucao')}
                 className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2 touch-target"
               >
                 <Settings className="w-5 h-5" />
@@ -568,7 +548,7 @@ ${contactForm.message}`;
               </button>
               
               <button 
-                onClick={() => onNavigateToCreateSolution ? onNavigateToCreateSolution() : window.open('https://wa.me/5511999999999?text=Olá! Gostaria de falar com um consultor sobre White Label.', '_blank')}
+                onClick={() => window.open('https://wa.me/5511975333355?text=Olá! Gostaria de falar com um consultor sobre White Label.', '_blank')}
                 className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2 touch-target"
               >
                 <MessageSquare className="w-5 h-5" />
@@ -694,6 +674,7 @@ ${contactForm.message}`;
 
               <button
                 type="submit"
+                onClick={() => navigate('/criar-solucao')}
                 className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-3 px-4 rounded-lg font-medium transition-all duration-300 flex items-center justify-center space-x-2"
               >
                 <Send className="w-5 h-5" />

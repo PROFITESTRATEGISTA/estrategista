@@ -15,7 +15,7 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({ onNavigateToPlans, onOp
   };
 
   const handlePlansClick = () => {
-    onNavigateToPlans();
+    window.location.href = '/planos';
     setIsExpanded(false);
   };
 
