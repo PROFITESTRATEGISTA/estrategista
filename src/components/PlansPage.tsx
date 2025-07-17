@@ -604,41 +604,117 @@ const PlansPage = ({ onAuthClick }: PlansPageProps = {}) => {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-20 bg-gray-950">
+      <section id="faq" className="py-20 bg-gray-950">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4" id="faq-pack-robos">
-              FAQ - Planos do Pack de Robôs
+              ❓ Perguntas Frequentes - Pack de Robôs
             </h2>
             <p className="text-xl text-gray-400">
               Tire suas dúvidas sobre nosso Pack de Robôs e planos
             </p>
+            
+            {/* FAQ Quick Navigation */}
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
+              <button
+                onClick={() => setExpandedFAQ(0)}
+                className="px-4 py-2 bg-blue-600/20 text-blue-400 rounded-lg hover:bg-blue-600/30 transition-colors text-sm"
+              >
+                🤔 Conhecimento Técnico
+              </button>
+              <button
+                onClick={() => setExpandedFAQ(1)}
+                className="px-4 py-2 bg-green-600/20 text-green-400 rounded-lg hover:bg-green-600/30 transition-colors text-sm"
+              >
+                💰 Capital Mínimo
+              </button>
+              <button
+                onClick={() => setExpandedFAQ(2)}
+                className="px-4 py-2 bg-purple-600/20 text-purple-400 rounded-lg hover:bg-purple-600/30 transition-colors text-sm"
+              >
+                🏢 Corretoras
+              </button>
+              <button
+                onClick={() => setExpandedFAQ(3)}
+                className="px-4 py-2 bg-orange-600/20 text-orange-400 rounded-lg hover:bg-orange-600/30 transition-colors text-sm"
+              >
+                ⚙️ Instalação
+              </button>
+            </div>
           </div>
 
           <div className="space-y-4">
             {faqs.map((faq, index) => (
-              <div key={index} className="bg-gray-900 rounded-lg border border-gray-800 overflow-hidden">
+              <div key={index} className="bg-gray-900 rounded-lg border border-gray-800 overflow-hidden hover:border-gray-700 transition-colors">
                 <button
                   onClick={() => setExpandedFAQ(expandedFAQ === index ? null : index)}
-                  className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-800 transition-colors duration-200"
+                  className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-800 transition-colors duration-200 group"
                 >
-                  <span className="font-semibold text-white">{faq.question}</span>
+                  <span className="font-semibold text-white group-hover:text-blue-400 transition-colors">{faq.question}</span>
                   {expandedFAQ === index ? (
-                    <ChevronUp className="w-5 h-5 text-gray-400" />
+                    <ChevronUp className="w-5 h-5 text-blue-400" />
                   ) : (
-                    <ChevronDown className="w-5 h-5 text-gray-400" />
+                    <ChevronDown className="w-5 h-5 text-gray-400 group-hover:text-blue-400 transition-colors" />
                   )}
                 </button>
                 
                 {expandedFAQ === index && (
                   <div className="px-6 pb-4">
-                    <div className="text-gray-300 leading-relaxed border-t border-gray-800 pt-4">
+                    <div className="text-gray-300 leading-relaxed border-t border-gray-800 pt-4 animate-fade-in">
                       {faq.answer}
+                    </div>
+                    
+                    {/* FAQ Action Buttons */}
+                    <div className="mt-4 pt-4 border-t border-gray-800 flex flex-col sm:flex-row gap-3">
+                      <button
+                        onClick={() => window.open('https://wa.me/5511999999999?text=Olá! Tenho uma dúvida sobre: ' + encodeURIComponent(faq.question), '_blank')}
+                        className="flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors text-sm"
+                      >
+                        <MessageSquare className="w-4 h-4" />
+                        <span>Falar sobre esta dúvida</span>
+                      </button>
+                      
+                      {index < 4 && (
+                        <button
+                          onClick={() => handlePlanSelect(plans[1])}
+                          className="flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors text-sm"
+                        >
+                          <Crown className="w-4 h-4" />
+                          <span>Ver Planos</span>
+                        </button>
+                      )}
                     </div>
                   </div>
                 )}
               </div>
             ))}
+          </div>
+          
+          {/* FAQ Footer CTA */}
+          <div className="mt-12 bg-gradient-to-r from-blue-900/50 to-purple-900/50 rounded-xl p-8 border border-blue-600/30 text-center">
+            <h3 className="text-2xl font-bold text-white mb-4">
+              🤝 Ainda tem dúvidas?
+            </h3>
+            <p className="text-blue-100 mb-6 text-lg">
+              Nossa equipe está pronta para esclarecer qualquer questão sobre os robôs
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button
+                onClick={() => window.open('https://wa.me/5511999999999?text=Olá! Tenho dúvidas sobre os planos do Pack de Robôs.', '_blank')}
+                className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-lg font-bold transition-colors flex items-center justify-center space-x-2"
+              >
+                <MessageSquare className="w-5 h-5" />
+                <span>💬 Falar com Especialista</span>
+              </button>
+              
+              <button
+                onClick={() => handlePlanSelect(plans[0])}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg font-bold transition-colors flex items-center justify-center space-x-2"
+              >
+                <Zap className="w-5 h-5" />
+                <span>🚀 Começar Grátis</span>
+              </button>
+            </div>
           </div>
         </div>
       </section>

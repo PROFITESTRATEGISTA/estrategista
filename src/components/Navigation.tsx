@@ -45,6 +45,7 @@ const Navigation = ({ user, onAuthClick }: NavigationProps) => {
   const navItems = [
     { id: '/', label: '🤖 Pack de Robôs', emoji: '🤖' },
     { id: '/planos', label: '💎 Planos', emoji: '💎' },
+    { id: '/planos#faq', label: '❓ FAQ', emoji: '❓' },
     { id: '/white-label', label: '🤝 White Label', emoji: '🤝' },
     { id: '/criar-solucao', label: '🛠️ Criar Solução', emoji: '🛠️' }
   ];
