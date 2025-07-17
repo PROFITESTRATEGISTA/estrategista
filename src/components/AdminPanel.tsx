@@ -100,29 +100,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ users = [], onUpdateUser
     setSelectedUsers([]);
   };
 
-  const vpsPlans = [
-    {
-      name: "VPS Básico",
-      originalPrice: "R$ 29,90",
-      discountPrice: "R$ 19,90",
-      specs: "1 vCPU, 1GB RAM, 20GB SSD",
-      description: "Ideal para robôs leves"
-    },
-    {
-      name: "VPS Intermediário", 
-      originalPrice: "R$ 59,90",
-      discountPrice: "R$ 39,90",
-      specs: "2 vCPU, 2GB RAM, 40GB SSD",
-      description: "Para múltiplos robôs"
-    },
-    {
-      name: "VPS Avançado",
-      originalPrice: "R$ 99,90", 
-      discountPrice: "R$ 69,90",
-      specs: "4 vCPU, 4GB RAM, 80GB SSD",
-      description: "Máximo desempenho"
-    }
-  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white">
@@ -153,7 +130,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ users = [], onUpdateUser
           {[
             { id: 'dashboard', label: 'Dashboard', icon: <BarChart3 className="w-4 h-4" /> },
             { id: 'users', label: 'Usuários', icon: <Users className="w-4 h-4" /> },
-            { id: 'vps', label: 'VPS', icon: <Server className="w-4 h-4" /> },
             { id: 'settings', label: 'Configurações', icon: <Settings className="w-4 h-4" /> }
           ].map(tab => (
             <button
@@ -460,77 +436,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ users = [], onUpdateUser
           </div>
         )}
 
-        {/* VPS Tab */}
-        {activeTab === 'vps' && (
-          <div className="space-y-8">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-white mb-4">Serviços VPS para Trading</h2>
-              <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-                Hospedagem especializada para robôs de trading com desconto exclusivo
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {vpsPlans.map((plan, index) => (
-                <div key={index} className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-8 border border-slate-700/50 hover:border-blue-500/50 transition-all duration-300">
-                  <div className="text-center">
-                    <h3 className="text-xl font-bold text-white mb-4">{plan.name}</h3>
-                    
-                    <div className="mb-6">
-                      <div className="text-sm text-slate-400 line-through mb-1">
-                        {plan.originalPrice}/mês
-                      </div>
-                      <div className="text-3xl font-bold text-emerald-400 mb-2">
-                        {plan.discountPrice}
-                      </div>
-                      <div className="text-sm text-emerald-400 font-medium">
-                        Desconto Exclusivo Estrategista Trading Solutions
-                      </div>
-                    </div>
-
-                    <div className="bg-slate-700/30 rounded-lg p-4 mb-6">
-                      <div className="text-sm text-slate-300 mb-2">{plan.specs}</div>
-                      <div className="text-xs text-slate-400">{plan.description}</div>
-                    </div>
-
-                    <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold transition-colors duration-300">
-                      Contratar Agora
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Additional Info */}
-            <div className="bg-blue-900/20 rounded-xl p-6 border border-blue-600/30">
-              <div className="flex items-center space-x-3 mb-4">
-                <Server className="w-6 h-6 text-blue-400" />
-                <h3 className="text-lg font-semibold text-white">Por que usar VPS para Trading?</h3>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-slate-300">
-                <div>
-                  <h4 className="font-medium text-white mb-2">Vantagens:</h4>
-                  <ul className="space-y-1">
-                    <li>• Operação 24/7 sem interrupções</li>
-                    <li>• Baixa latência para execução rápida</li>
-                    <li>• Backup automático das configurações</li>
-                    <li>• Suporte técnico especializado</li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-medium text-white mb-2">Incluído:</h4>
-                  <ul className="space-y-1">
-                    <li>• Windows Server pré-configurado</li>
-                    <li>• Profit instalado e otimizado</li>
-                    <li>• Monitoramento 24/7</li>
-                    <li>• Suporte via WhatsApp</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* Settings Tab */}
         {activeTab === 'settings' && (
