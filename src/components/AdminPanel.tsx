@@ -74,11 +74,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
   }, []);
 
   const loadProjects = () => {
-    // Load real projects from localStorage
-    const savedProjects = JSON.parse(localStorage.getItem('automation_projects') || '[]');
-    
-    // Add mock data if no real projects exist
-    const mockProjects: AutomationProject[] = savedProjects.length > 0 ? [] : [
+    // Mock data for automation projects
+    const mockProjects: AutomationProject[] = [
       {
         id: '1',
         name: 'João Silva',
@@ -155,10 +152,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
         updatedAt: '2025-01-13T18:30:00Z'
       }
     ];
-    
-    // Combine real and mock data
-    const allProjects = [...savedProjects, ...mockProjects];
-    setProjects(allProjects);
+    setProjects(mockProjects);
   };
 
   // Filter users based on search and filters
@@ -751,7 +745,301 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
               🛡️ Reativar Pedro Admin
             </button>
         </div>
+        )}
+
+        {/* Projects Management */}
+        {currentTab === 'projects' && (
+          <div className="space-y-6">
+            {/* Project Filters */}
+            <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700/50">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
+                <div className="flex items-center space-x-4">
+                  <div className="relative">
+                    <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
+                    <input
+                      type="text"
+                      placeholder="Buscar projetos..."
+                      value={projectSearch}
+                      onChange={(e) => setProjectSearch(e.target.value)}
+                      className="pl-10 pr-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  
+                  <select
+                    value={projectFilter}
+                    onChange={(e) => setProjectFilter(e.target.value)}
+                    className="px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="all">Todos os status</option>
+                    <option value="pending">Pendentes</option>
+                    <option value="in_progress">Em Andamento</option>
+                    <option value="completed">Concluídos</option>
+                    <option value="cancelled">Cancelados</option>
+                  </select>
+                </div>
+              </div>
+            {/* Projects Table */}
+            <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700/50 overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-slate-700/50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                        Cliente
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                        Projeto
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                        Plataformas
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                        Status
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                        Prioridade
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                        Valor Estimado
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                        Data
+                      </th>
+                      <th className="px-6 py-3 text-right text-xs font-medium text-slate-300 uppercase tracking-wider">
+                        Ações
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-700/50">
+                    {filteredProjects.map(project => (
+                      <tr key={project.id} className="hover:bg-slate-700/30 transition-colors">
+                        <td className="px-6 py-4">
+                          <div>
+                            <div className="font-medium text-white">{project.name}</div>
+                            <div className="text-sm text-slate-400">{project.email}</div>
+                            <div className="text-sm text-slate-400">{project.phone}</div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="text-sm text-white font-medium capitalize">
+                            {project.projectType === 'robot' && '🤖 Sistema de Automação'}
+                            {project.projectType === 'copy' && '💳 Gateway de Pagamentos'}
+                            {project.projectType === 'app' && '📊 Dashboard/Painel'}
+                            {project.projectType === 'other' && '🔧 Automações Corporativas'}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex flex-wrap gap-1">
+                            {project.platform.slice(0, 3).map((platform, idx) => (
+                              <span key={idx} className="px-2 py-1 bg-slate-700 text-slate-300 rounded text-xs">
+                                {platform.toUpperCase()}
+                              </span>
+                            ))}
+                            {project.platform.length > 3 && (
+                              <span className="px-2 py-1 bg-slate-600 text-slate-400 rounded text-xs">
+                                +{project.platform.length - 3}
+                              </span>
+                            )}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <select
+                            value={project.status}
+                            onChange={(e) => updateProjectStatus(project.id, e.target.value as AutomationProject['status'])}
+                            className={`px-2 py-1 rounded-full text-xs font-medium border-0 focus:ring-2 focus:ring-blue-500 ${getStatusColor(project.status)}`}
+                          >
+                            <option value="pending">Pendente</option>
+                            <option value="in_progress">Em Andamento</option>
+                            <option value="completed">Concluído</option>
+                            <option value="cancelled">Cancelado</option>
+                          </select>
+                        </td>
+                        <td className="px-6 py-4">
+                          <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(project.priority)}`}>
+                            {project.priority === 'high' && '🔴 Alta'}
+                            {project.priority === 'medium' && '🟡 Média'}
+                            {project.priority === 'low' && '🟢 Baixa'}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 text-sm text-slate-300">
+                          {project.estimatedValue || 'A definir'}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-slate-300">
+                          {formatDate(project.createdAt)}
+                        </td>
+                        <td className="px-6 py-4 text-right">
+                          <div className="flex items-center justify-end space-x-2">
+                            <button
+                              onClick={() => setSelectedProject(project)}
+                              className="p-1 hover:bg-slate-600/50 rounded transition-colors text-blue-400"
+                              title="Ver detalhes completos"
+                            >
+                              <Eye className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => window.open(`mailto:${project.email}?subject=Projeto de Automação - ${project.name}&body=Olá ${project.name},%0A%0AEntramos em contato sobre seu projeto de automação.%0A%0ADetalhes:%0A- Tipo: ${project.projectType}%0A- Plataformas: ${project.platform.join(', ')}%0A%0AAtenciosamente,%0AEquipe Estrategista Trading Solutions`, '_blank')}
+                              className="p-1 hover:bg-slate-600/50 rounded transition-colors text-green-400"
+                              title="Enviar email"
+                            >
+                              <Mail className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => window.open(`https://wa.me/${project.phone.replace(/\D/g, '')}?text=Olá ${project.name}! Entramos em contato sobre seu projeto de automação.`, '_blank')}
+                              className="p-1 hover:bg-slate-600/50 rounded transition-colors text-green-400"
+                              title="WhatsApp"
+                            >
+                              <MessageSquare className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            </div>
+            {filteredProjects.length === 0 && (
+              <div className="text-center py-12">
+                <Briefcase className="w-12 h-12 text-slate-400 mx-auto mb-4" />
+                <p className="text-slate-400">Nenhum projeto encontrado</p>
+              </div>
+            )}
+          </div>
+        )}
       </div>
+
+      {/* Project Details Modal */}
+      {selectedProject && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-slate-800 rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center p-6 border-b border-slate-700">
+              <h2 className="text-2xl font-bold text-white">
+                Detalhes do Projeto - {selectedProject.name}
+              </h2>
+              <button
+                onClick={() => setSelectedProject(null)}
+            <div className="p-6 space-y-6">
+              {/* Client Info */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-slate-700/50 rounded-lg p-4">
+                  <h3 className="text-lg font-semibold text-white mb-3">Informações do Cliente</h3>
+                  <div className="space-y-2 text-sm">
+                    <div><span className="text-slate-400">Nome:</span> <span className="text-white">{selectedProject.name}</span></div>
+                    <div><span className="text-slate-400">Email:</span> <span className="text-white">{selectedProject.email}</span></div>
+                    <div><span className="text-slate-400">Telefone:</span> <span className="text-white">{selectedProject.phone}</span></div>
+                    <div><span className="text-slate-400">Data:</span> <span className="text-white">{formatDate(selectedProject.createdAt)}</span></div>
+                  </div>
+                </div>
+                className="text-slate-400 hover:text-white transition-colors"
+                <div className="bg-slate-700/50 rounded-lg p-4">
+                  <h3 className="text-lg font-semibold text-white mb-3">Status do Projeto</h3>
+                  <div className="space-y-3">
+                    <div className="flex items-center space-x-2">
+                      <span className="text-slate-400">Status:</span>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(selectedProject.status)}`}>
+                        {selectedProject.status === 'pending' && 'Pendente'}
+                        {selectedProject.status === 'in_progress' && 'Em Andamento'}
+                        {selectedProject.status === 'completed' && 'Concluído'}
+                        {selectedProject.status === 'cancelled' && 'Cancelado'}
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <span className="text-slate-400">Prioridade:</span>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPriorityColor(selectedProject.priority)}`}>
+                        {selectedProject.priority === 'high' && '🔴 Alta'}
+                        {selectedProject.priority === 'medium' && '🟡 Média'}
+                        {selectedProject.priority === 'low' && '🟢 Baixa'}
+                      </span>
+                    </div>
+                    <div><span className="text-slate-400">Valor Estimado:</span> <span className="text-green-400 font-medium">{selectedProject.estimatedValue}</span></div>
+                  </div>
+                </div>
+              </div>
+              >
+              {/* Project Details */}
+              <div className="bg-slate-700/50 rounded-lg p-4">
+                <h3 className="text-lg font-semibold text-white mb-3">Detalhes do Projeto</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <span className="text-slate-400">Tipo:</span>
+                    <div className="text-white font-medium">
+                      {selectedProject.projectType === 'robot' && '🤖 Sistema de Automação Financeira'}
+                      {selectedProject.projectType === 'copy' && '💳 Gateway de Pagamentos'}
+                      {selectedProject.projectType === 'app' && '📊 Dashboard/Painel de Controle'}
+                      {selectedProject.projectType === 'other' && '🔧 Automações Corporativas'}
+                    </div>
+                  </div>
+                  <div>
+                    <span className="text-slate-400">Plataformas:</span>
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {selectedProject.platform.map((platform, idx) => (
+                        <span key={idx} className="px-2 py-1 bg-slate-600 text-slate-200 rounded text-xs">
+                          {platform.toUpperCase()}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+                <X className="h-6 w-6" />
+              {/* Modules Selected */}
+              <div className="bg-slate-700/50 rounded-lg p-4">
+                <h3 className="text-lg font-semibold text-white mb-3">Funcionalidades Selecionadas</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {Object.entries(selectedProject.modules).map(([category, modules]) => (
+                    modules.length > 0 && (
+                      <div key={category} className="bg-slate-600/50 rounded p-3">
+                        <h4 className="text-sm font-medium text-slate-300 mb-2 capitalize">
+                          {category.replace(/([A-Z])/g, ' $1').trim()}
+                        </h4>
+                        <div className="space-y-1">
+                          {modules.map((module, idx) => (
+                            <div key={idx} className="text-xs text-slate-400">• {module}</div>
+                          ))}
+                        </div>
+                      </div>
+                    )
+                  ))}
+                </div>
+              </div>
+              </button>
+              {/* Description */}
+              {selectedProject.description && (
+                <div className="bg-slate-700/50 rounded-lg p-4">
+                  <h3 className="text-lg font-semibold text-white mb-3">Descrição do Cliente</h3>
+                  <p className="text-slate-300 leading-relaxed">{selectedProject.description}</p>
+                </div>
+              )}
+            </div>
+              {/* Actions */}
+              <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-slate-700">
+                <button
+                  onClick={() => window.open(`mailto:${selectedProject.email}?subject=Projeto de Automação - ${selectedProject.name}&body=Olá ${selectedProject.name},%0A%0AEntramos em contato sobre seu projeto de automação.`, '_blank')}
+                  className="flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors"
+                >
+                  <Mail className="w-4 h-4" />
+                  <span>Enviar Email</span>
+                </button>
+                <button
+                  onClick={() => window.open(`https://wa.me/${selectedProject.phone.replace(/\D/g, '')}?text=Olá ${selectedProject.name}! Entramos em contato sobre seu projeto de automação.`, '_blank')}
+                  className="flex items-center justify-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors"
+                >
+                  <MessageSquare className="w-4 h-4" />
+                  <span>WhatsApp</span>
+                </button>
+                <button
+                  onClick={() => updateProjectStatus(selectedProject.id, 'in_progress')}
+                  className="flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
+                >
+                  <Settings className="w-4 h-4" />
+                  <span>Marcar como Em Andamento</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
