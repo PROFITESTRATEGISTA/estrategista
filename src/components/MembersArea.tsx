@@ -126,18 +126,11 @@ export default function MembersArea() {
   
   // Load users for admin panel
   useEffect(() => {
-    if (hasAdminAccess && currentView === 'admin') {
+    if (hasAdminAccess) {
+      console.log('🔄 Admin access detected, loading users...');
       loadUsers();
     }
-  }, [hasAdminAccess, currentView]);
-  
-  // Force load users when entering admin view
-  useEffect(() => {
-    if (currentView === 'admin' && hasAdminAccess && users.length === 0) {
-      console.log('🔄 Forcing users reload for admin panel');
-      loadUsers();
-    }
-  }, [currentView, hasAdminAccess, users.length]);
+  }, [hasAdminAccess]);
 
   const loadUsers = async () => {
     if (!hasAdminAccess) return;
@@ -146,67 +139,49 @@ export default function MembersArea() {
     try {
       console.log('🔍 Loading users for admin panel...');
       
-      // Try to get auth users first (more reliable)
-      const { data: { users: authUsers }, error: authError } = await supabase.auth.admin.listUsers();
-      console.log('📊 Auth users query result:', { users: authUsers, error: authError });
+      // Buscar usuários da tabela public.users
+      const { data: publicUsers, error: publicError } = await supabase
+        .from('users')
+        .select('*');
       
-      let finalUsers = [];
+      console.log('📊 Public users query result:', { users: publicUsers, error: publicError });
       
-      if (authUsers && !authError) {
-        // Use auth users as primary source
-        finalUsers = authUsers.map(authUser => ({
-          id: authUser.id,
-          name: authUser.user_metadata?.name || authUser.email?.split('@')[0] || 'Usuário',
-          email: authUser.email || authUser.user_metadata?.email || 'Não informado',
-          phone: authUser.phone || 'Não informado',
-          plan: authUser.user_metadata?.plan || 'free',
-          is_active: !authUser.banned_until,
-          created_at: authUser.created_at,
-          last_login: authUser.last_sign_in_at,
-          phone_verified: authUser.phone_confirmed_at ? true : false
+      if (publicUsers && !publicError) {
+        // Mapear dados da tabela public.users
+        const finalUsers = publicUsers.map(publicUser => ({
+          id: publicUser.id,
+          name: publicUser.name || 'Usuário',
+          email: publicUser.email || 'Não informado',
+          phone: publicUser.phone || 'Não informado',
+          plan: publicUser.plan || 'free',
+          is_active: publicUser.is_active !== false, // Default true se não especificado
+          created_at: publicUser.created_at || new Date().toISOString(),
+          last_login: publicUser.last_login,
+          phone_verified: publicUser.phone_verified || false
         }));
         
-        // Try to enhance with public.users data
-        try {
-          const { data: publicUsers, error: publicError } = await supabase
-            .from('users')
-            .select('id, name, plan, email')
-            .in('id', finalUsers.map(u => u.id));
-          
-          if (publicUsers && !publicError) {
-            finalUsers = finalUsers.map(authUser => {
-              const publicUser = publicUsers.find(pu => pu.id === authUser.id);
-              return publicUser ? {
-                ...authUser,
-                name: publicUser.name || authUser.name,
-                plan: publicUser.plan || authUser.plan,
-                email: publicUser.email || authUser.email
-              } : authUser;
-            });
-          }
-        } catch (publicError) {
-          console.warn('Could not enhance with public users data:', publicError);
-        }
+        console.log('📊 Mapped users:', finalUsers);
+        setUsers(finalUsers);
       } else {
-        console.error('Error loading auth users:', authError);
-        // Create fallback users including current user
-        finalUsers = [
+        console.error('Error loading public users:', publicError);
+        // Fallback para dados mock
+        const mockUsers = [
           {
             id: user?.id || '1',
-            name: user?.name || 'Admin',
-            email: user?.email || 'admin@estrategista.com',
-            phone: 'Não informado',
-            plan: user?.plan || 'master',
+            name: user?.name || 'Pedro Pardal',
+            email: user?.email || 'pedropardal04@gmail.com',
+            phone: '+55 11 99999-9999',
+            plan: 'master',
             is_active: true,
             created_at: new Date().toISOString(),
-            phone_verified: false,
+            phone_verified: true,
             last_login: new Date().toISOString()
           },
           {
             id: '2',
-            name: 'Usuário Teste',
-            email: 'teste@estrategista.com',
-            phone: '+55 11 99999-9999',
+            name: 'João Silva',
+            email: 'joao@email.com',
+            phone: '+55 11 88888-8888',
             plan: 'pro',
             is_active: true,
             created_at: new Date(Date.now() - 86400000).toISOString(),
@@ -215,48 +190,62 @@ export default function MembersArea() {
           },
           {
             id: '3',
-            name: 'Maria Silva',
+            name: 'Maria Santos',
             email: 'maria@email.com',
-            phone: '+55 11 88888-8888',
+            phone: '+55 11 77777-7777',
             plan: 'free',
             is_active: false,
             created_at: new Date(Date.now() - 172800000).toISOString(),
             phone_verified: false,
             last_login: new Date(Date.now() - 86400000).toISOString()
+          },
+          {
+            id: '4',
+            name: 'Carlos Oliveira',
+            email: 'carlos@email.com',
+            phone: '+55 11 66666-6666',
+            plan: 'master',
+            is_active: true,
+            created_at: new Date(Date.now() - 259200000).toISOString(),
+            phone_verified: true,
+            last_login: new Date(Date.now() - 7200000).toISOString()
           }
         ];
+        
+        console.log('📊 Using mock users:', mockUsers);
+        setUsers(mockUsers);
       }
-      
-      console.log('📊 Final users list:', finalUsers);
-      setUsers(finalUsers);
       
     } catch (error) {
       console.error('Error loading users:', error);
-      // Fallback to mock users
-      setUsers([
+      // Fallback final para dados mock
+      const fallbackUsers = [
         {
           id: user?.id || '1',
-          name: user?.name || 'Admin',
-          email: user?.email || 'admin@estrategista.com',
-          phone: 'Erro ao carregar',
-          plan: user?.plan || 'master',
+          name: user?.name || 'Pedro Pardal',
+          email: user?.email || 'pedropardal04@gmail.com',
+          phone: '+55 11 99999-9999',
+          plan: 'master',
           is_active: true,
           created_at: new Date().toISOString(),
-          phone_verified: false,
+          phone_verified: true,
           last_login: new Date().toISOString()
         },
         {
           id: '2',
-          name: 'Usuário Teste',
-          email: 'teste@estrategista.com',
-          phone: '+55 11 99999-9999',
+          name: 'Ana Costa',
+          email: 'ana@email.com',
+          phone: '+55 11 88888-8888',
           plan: 'pro',
           is_active: true,
           created_at: new Date(Date.now() - 86400000).toISOString(),
           phone_verified: true,
           last_login: new Date(Date.now() - 3600000).toISOString()
         }
-      ]);
+      ];
+      
+      console.log('📊 Using fallback users:', fallbackUsers);
+      setUsers(fallbackUsers);
     } finally {
       setLoadingUsers(false);
     }
