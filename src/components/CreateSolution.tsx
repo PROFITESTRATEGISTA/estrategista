@@ -62,6 +62,7 @@ export default function CreateSolution() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [showThankYouPage, setShowThankYouPage] = useState(false);
 
   // Toggle category expansion
   const toggleCategory = (category: string) => {
@@ -122,6 +123,59 @@ export default function CreateSolution() {
     setError('');
     setSuccess('');
     
+  // Thank you page component
+  const renderThankYouPage = () => (
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-blue-900 flex items-center justify-center">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="bg-gray-900/80 rounded-xl p-8 md:p-12 border border-gray-800/30 shadow-lg">
+          <div className="w-20 h-20 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+            <Check className="w-10 h-10 text-white" />
+          </div>
+          
+          <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            Obrigado pela sua solicitação!
+          </h1>
+          
+          <p className="text-xl text-gray-300 mb-8 leading-relaxed">
+            Recebemos sua solicitação de projeto personalizado. Nossa equipe técnica analisará 
+            seus requisitos e entrará em contato em até <strong className="text-blue-400">24 horas</strong> 
+            para apresentar a proposta detalhada.
+          </p>
+          
+          <div className="bg-blue-900/30 rounded-lg p-6 mb-8 border border-blue-600/30">
+            <h3 className="text-lg font-semibold text-blue-400 mb-3">Próximos passos:</h3>
+            <div className="text-left space-y-2 text-gray-300">
+              <p>✅ Análise técnica dos requisitos (2-4 horas)</p>
+              <p>✅ Elaboração da proposta comercial (12-24 horas)</p>
+              <p>✅ Contato via WhatsApp com orçamento detalhado</p>
+              <p>✅ Reunião para alinhamento do projeto (se necessário)</p>
+            </div>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              onClick={() => window.open(`https://wa.me/+5511999999999?text=Olá! Acabei de enviar uma solicitação de projeto. Gostaria de acelerar o atendimento.`, '_blank')}
+              className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-lg font-semibold transition-colors flex items-center justify-center space-x-2"
+            >
+              <MessageSquare className="w-5 h-5" />
+              <span>Falar no WhatsApp</span>
+            </button>
+            
+            <button
+              onClick={() => window.location.href = '/'}
+              className="bg-gray-700 hover:bg-gray-600 text-white px-8 py-4 rounded-lg font-semibold transition-colors"
+            >
+              Voltar ao Início
+            </button>
+          </div>
+          
+          <div className="mt-8 text-sm text-gray-400">
+            <p>Dúvidas? Entre em contato: <strong>contato@estrategistatradingsolutions.com.br</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
     if (!formData.name || !formData.email || !formData.phone) {
       setError('Por favor, preencha todos os campos obrigatórios');
       return;
@@ -161,7 +215,7 @@ export default function CreateSolution() {
       }
       
       // Show success message
-      setSuccess('Solicitação enviada com sucesso! Nossa equipe entrará em contato em breve.');
+      setShowThankYouPage(true);
       
     } catch (error) {
       console.error('Erro ao enviar formulário:', error);
@@ -592,9 +646,35 @@ export default function CreateSolution() {
                 type="tel"
                 required
                 value={formData.phone}
-                onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+                onChange={(e) => {
+                  // Format phone number as user types: +55 (DD) 9XXXX-XXXX
+                  let value = e.target.value.replace(/\D/g, '');
+                  
+                  // Remove +55 if user types it
+                  if (value.startsWith('55') && value.length > 11) {
+                    value = value.substring(2);
+                  }
+                  
+                  let formatted = '';
+                  if (value.length > 0) {
+                    formatted = '+55 ';
+                    if (value.length >= 2) {
+                      formatted += `(${value.slice(0, 2)}) `;
+                      if (value.length >= 7) {
+                        formatted += `${value.slice(2, 7)}-${value.slice(7, 11)}`;
+                      } else if (value.length > 2) {
+                        formatted += value.slice(2);
+                      }
+                    } else {
+                      formatted += value;
+                    }
+                  }
+                  
+                  setFormData(prev => ({ ...prev, phone: formatted }));
+                }}
                 className="w-full pl-10 px-4 py-3 rounded-lg border border-gray-700 bg-gray-800/50 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm md:text-base"
-                placeholder="(11) 99999-9999"
+                placeholder="+55 (11) 99999-9999"
+                maxLength={19}
               />
             </div>
           </div>
@@ -655,6 +735,11 @@ export default function CreateSolution() {
       </form>
     </div>
   );
+
+  // If showing thank you page, render it
+  if (showThankYouPage) {
+    return renderThankYouPage();
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-blue-900">

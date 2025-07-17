@@ -691,7 +691,14 @@ export const SolutionRequestsPanel: React.FC<SolutionRequestsPanelProps> = ({ on
                 </div>
                 
                 <button
-                  onClick={() => window.open(`https://wa.me/${selectedRequest.phone?.replace(/\D/g, '')}?text=Olá ${selectedRequest.name}! Recebemos sua solicitação de projeto. Vamos conversar sobre os detalhes?`, '_blank')}
+                  onClick={() => {
+                    // Extract only numbers from phone
+                    const phoneNumbers = selectedRequest.phone?.replace(/\D/g, '') || '';
+                    // Ensure it starts with 55 (Brazil country code)
+                    const formattedPhone = phoneNumbers.startsWith('55') ? phoneNumbers : `55${phoneNumbers}`;
+                    const whatsappUrl = `https://wa.me/+${formattedPhone}?text=Olá ${selectedRequest.name}! Recebemos sua solicitação de projeto da Estrategista Trading Solutions. Vamos conversar sobre os detalhes?`;
+                    window.open(whatsappUrl, '_blank');
+                  }}
                   className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center space-x-2"
                 >
                   <MessageSquare className="w-4 h-4" />
