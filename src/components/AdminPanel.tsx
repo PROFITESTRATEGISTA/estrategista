@@ -32,11 +32,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
   const [editingPlan, setEditingPlan] = useState<string | null>(null);
   const [tempPlan, setTempPlan] = useState<string>('');
 
-  // If viewing solution requests, render that component
-  if (currentView === 'solutions') {
-    return <SolutionRequestsPanel onBack={() => setCurrentView('users')} />;
-  }
-
   // Debug logging
   useEffect(() => {
     console.log('🔍 AdminPanel received users:', users);
@@ -145,6 +140,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
     setEditingPlan(null);
     setTempPlan('');
   };
+
+  // If viewing solution requests, render that component
+  if (currentView === 'solutions') {
+    return <SolutionRequestsPanel onBack={() => setCurrentView('users')} />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white">
