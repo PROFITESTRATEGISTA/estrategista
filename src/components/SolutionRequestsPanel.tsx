@@ -537,11 +537,33 @@ export const SolutionRequestsPanel: React.FC<SolutionRequestsPanelProps> = ({ on
                 <div className="space-y-3">
                   <div>
                     <label className="text-slate-400 text-sm">Tipo de Projeto</label>
-                    <p className="text-white capitalize">{selectedRequest.project_type}</p>
+                    <p className="text-white capitalize">
+                      {selectedRequest.project_type === 'robot' ? 'Robô de Trading' :
+                       selectedRequest.project_type === 'app' ? 'Dashboard/Aplicativo' :
+                       selectedRequest.project_type === 'copy' ? 'Copy Trade' :
+                       selectedRequest.project_type === 'other' ? 'Personalizado' : selectedRequest.project_type}
+                    </p>
                   </div>
                   <div>
                     <label className="text-slate-400 text-sm">Plataformas</label>
-                    <p className="text-white">{selectedRequest.platform.join(', ')}</p>
+                    <p className="text-white">
+                      {selectedRequest.platform.map(p => {
+                        const platformNames = {
+                          'profit': 'Profit',
+                          'mt5': 'MetaTrader 5',
+                          'blackarrow': 'BlackArrow',
+                          'web': 'Web/API',
+                          'website': 'Site',
+                          'community': 'Comunidade',
+                          'app': 'Aplicativo',
+                          'marketplace': 'Marketplace',
+                          'management': 'Sistema de Gestão',
+                          'automation': 'Automações',
+                          'consulting': 'Consultoria'
+                        };
+                        return platformNames[p] || p;
+                      }).join(', ')}
+                    </p>
                   </div>
                   {selectedRequest.description && (
                     <div>
@@ -559,13 +581,86 @@ export const SolutionRequestsPanel: React.FC<SolutionRequestsPanelProps> = ({ on
                   {Object.entries(selectedRequest.modules).map(([category, modules]) => (
                     modules.length > 0 && (
                       <div key={category}>
-                        <label className="text-slate-400 text-sm capitalize">{category}</label>
+                        <label className="text-slate-400 text-sm capitalize">
+                          {category === 'riskManagement' ? 'Gestão de Risco' :
+                           category === 'entryExit' ? 'Entrada/Saída' :
+                           category === 'filters' ? 'Filtros' :
+                           category === 'advancedLogic' ? 'Lógica Avançada' :
+                           category === 'externalControl' ? 'Controle Externo' :
+                           category === 'copyPortfolio' ? 'Copy/Portfólio' :
+                           category === 'webApp' ? 'Web/App' :
+                           category === 'whiteLabel' ? 'White Label' :
+                           category === 'indicators' ? 'Indicadores' : category}
+                        </label>
                         <div className="flex flex-wrap gap-1 mt-1">
-                          {modules.map((module, index) => (
-                            <span key={index} className="px-2 py-1 bg-blue-600/20 text-blue-300 rounded text-xs">
-                              {module}
-                            </span>
-                          ))}
+                          {modules.map((module, index) => {
+                            const moduleNames = {
+                              'fixedStop': 'Stop Fixo',
+                              'timeStop': 'Stop por Tempo',
+                              'dailyStop': 'Stop Diário',
+                              'trailingStop': 'Trailing Stop',
+                              'breakeven': 'Breakeven',
+                              'stopTargetPoints': 'Stop/Alvo por Pontos',
+                              'stopTargetRiskReturn': 'Stop/Alvo Risco-Retorno',
+                              'financialStop': 'Stop Financeiro',
+                              'technicalStop': 'Stop Técnico',
+                              'stopEntry': 'Entrada Stop',
+                              'limitEntry': 'Entrada Limite',
+                              'marketEntry': 'Entrada a Mercado',
+                              'candleEntry': 'Entrada por Candle',
+                              'externalSetup': 'Setup Externo',
+                              'timeFilter': 'Filtro de Horário',
+                              'partialExit': 'Saída Parcial',
+                              'operationalFilters': 'Filtros Operacionais',
+                              'volumeFilter': 'Filtro de Volume',
+                              'volatilityFilter': 'Filtro de Volatilidade',
+                              'trendFilter': 'Filtro de Tendência',
+                              'marketConditionFilter': 'Filtro de Condição de Mercado',
+                              'pyramid': 'Pirâmide',
+                              'multipleStopZones': 'Múltiplas Zonas de Stop',
+                              'externalIndicators': 'Indicadores Externos',
+                              'defenses': 'Defesas (Martingale)',
+                              'correlation': 'Correlação',
+                              'others': 'Outros',
+                              'controllerIndicator': 'Indicador Controlador',
+                              'externalParameters': 'Parâmetros Externos',
+                              'copyTradeCompatible': 'Compatível com Copy Trade',
+                              'internalReplication': 'Replicação Interna',
+                              'mirrorPortfolio': 'Carteira Espelho',
+                              'loginApp': 'App com Login',
+                              'managementPanel': 'Painel de Gestão',
+                              'ranking': 'Ranking',
+                              'reports': 'Relatórios',
+                              'pixPayments': 'Pagamentos PIX',
+                              'recurringPayments': 'Pagamentos Recorrentes',
+                              'salesSystem': 'Sistema de Vendas',
+                              'affiliateProgram': 'Programa de Afiliados',
+                              'customerSupport': 'Suporte ao Cliente',
+                              'notificationSystem': 'Sistema de Notificações',
+                              'mobileApp': 'Aplicativo Mobile',
+                              'apiIntegration': 'Integração com APIs',
+                              'brandedVersion': 'Versão com Marca',
+                              'codeProtection': 'Proteção de Código',
+                              'licensedResale': 'Revenda Licenciada',
+                              'movingAverages': 'Médias Móveis',
+                              'rsi': 'RSI',
+                              'macd': 'MACD',
+                              'bollinger': 'Bandas de Bollinger',
+                              'stochastic': 'Estocástico',
+                              'fibonacci': 'Fibonacci',
+                              'support': 'Suporte e Resistência',
+                              'volume': 'Indicadores de Volume',
+                              'candlestick': 'Padrões de Candlestick',
+                              'pivot': 'Pontos de Pivô',
+                              'ichimoku': 'Ichimoku',
+                              'williams': 'Williams %R'
+                            };
+                            return (
+                              <span key={index} className="px-2 py-1 bg-blue-600/20 text-blue-300 rounded text-xs">
+                                {moduleNames[module] || module}
+                              </span>
+                            );
+                          })}
                         </div>
                       </div>
                     )
@@ -578,10 +673,20 @@ export const SolutionRequestsPanel: React.FC<SolutionRequestsPanelProps> = ({ on
                 <div className="flex space-x-4">
                   <span className={`inline-flex items-center space-x-1 px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(selectedRequest.status)}`}>
                     {getStatusIcon(selectedRequest.status)}
-                    <span className="capitalize">{selectedRequest.status}</span>
+                    <span className="capitalize">
+                      {selectedRequest.status === 'pending' ? 'Pendente' :
+                       selectedRequest.status === 'in_progress' ? 'Em Andamento' :
+                       selectedRequest.status === 'completed' ? 'Concluída' :
+                       selectedRequest.status === 'cancelled' ? 'Cancelada' : selectedRequest.status}
+                    </span>
                   </span>
                   <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${getPriorityColor(selectedRequest.priority)}`}>
-                    <span className="capitalize">{selectedRequest.priority}</span>
+                    <span className="capitalize">
+                      {selectedRequest.priority === 'low' ? 'Baixa' :
+                       selectedRequest.priority === 'medium' ? 'Média' :
+                       selectedRequest.priority === 'high' ? 'Alta' :
+                       selectedRequest.priority === 'urgent' ? 'Urgente' : selectedRequest.priority}
+                    </span>
                   </span>
                 </div>
                 
