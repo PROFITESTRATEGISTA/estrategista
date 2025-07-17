@@ -131,26 +131,11 @@ export default function CreateSolution() {
     try {
       console.log('Enviando dados do formulário "Crie sua Solução"...');
       
-      // Save to localStorage for admin panel
-      const projectData = {
-        id: Date.now().toString(),
-        ...formData,
-        status: 'pending',
-        priority: 'medium',
-        estimatedValue: 'A definir',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      };
-      
-      const existingProjects = JSON.parse(localStorage.getItem('automation_projects') || '[]');
-      existingProjects.push(projectData);
-      localStorage.setItem('automation_projects', JSON.stringify(existingProjects));
-      
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
       
       // Show success message
-      setSuccess('Solicitação enviada com sucesso! Nossa equipe entrará em contato em breve. Seu projeto foi registrado no sistema.');
+      setSuccess('Solicitação enviada com sucesso! Nossa equipe entrará em contato em breve.');
       
     } catch (error) {
       console.error('Erro ao enviar formulário:', error);
