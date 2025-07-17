@@ -80,7 +80,6 @@ const Navigation = ({ user, onAuthClick }: NavigationProps) => {
             {/* Main Nav Items */}
             <div className="flex space-x-0.5 xl:space-x-1">
               {navItems.map((item) => (
-                item.isAnchor ? (
                 <Link
                   key={item.id}
                   to={item.id}
