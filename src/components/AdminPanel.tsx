@@ -20,7 +20,6 @@ interface AdminPanelProps {
 }
 
 export const AdminPanel: React.FC<AdminPanelProps> = ({ users = [], onUpdateUser, onDeleteUser }) => {
-  const [activeTab, setActiveTab] = useState('dashboard');
   const [searchTerm, setSearchTerm] = useState('');
   const [filterPlan, setFilterPlan] = useState<string>('all');
   const [showInactive, setShowInactive] = useState(false);
@@ -109,7 +108,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ users = [], onUpdateUser
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-4">
               <Shield className="w-8 h-8 text-blue-400" />
-              <h1 className="text-xl font-bold">Admin Panel - Estrategista Trading Solutions</h1>
+              <h1 className="text-xl font-bold">Gerenciamento de Usuários - Estrategista Trading Solutions</h1>
             </div>
             
             <div className="flex items-center space-x-4">
@@ -125,110 +124,51 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ users = [], onUpdateUser
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Navigation Tabs */}
-        <div className="flex space-x-1 bg-slate-800/50 p-1 rounded-lg mb-8">
-          {[
-            { id: 'dashboard', label: 'Dashboard', icon: <BarChart3 className="w-4 h-4" /> },
-            { id: 'users', label: 'Usuários', icon: <Users className="w-4 h-4" /> },
-            { id: 'settings', label: 'Configurações', icon: <Settings className="w-4 h-4" /> }
-          ].map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-md transition-all duration-200 ${
-                activeTab === tab.id
-                  ? 'bg-blue-600 text-white shadow-lg'
-                  : 'text-slate-300 hover:text-white hover:bg-slate-700/50'
-              }`}
-            >
-              {tab.icon}
-              <span>{tab.label}</span>
-            </button>
-          ))}
-        </div>
-
-        {/* Dashboard Tab */}
-        {activeTab === 'dashboard' && (
-          <div className="space-y-8">
-            {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700/50">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-slate-400 text-sm">Total de Usuários</p>
-                    <p className="text-2xl font-bold text-white">{stats.totalUsers}</p>
-                  </div>
-                  <Users className="w-8 h-8 text-blue-400" />
-                </div>
+        {/* Quick Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700/50">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-slate-400 text-sm">Total de Usuários</p>
+                <p className="text-2xl font-bold text-white">{stats.totalUsers}</p>
               </div>
-
-              <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700/50">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-slate-400 text-sm">Usuários Ativos</p>
-                    <p className="text-2xl font-bold text-emerald-400">{stats.activeUsers}</p>
-                  </div>
-                  <Activity className="w-8 h-8 text-emerald-400" />
-                </div>
-              </div>
-
-              <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700/50">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-slate-400 text-sm">Usuários PRO</p>
-                    <p className="text-2xl font-bold text-blue-400">{stats.proUsers}</p>
-                  </div>
-                  <Star className="w-8 h-8 text-blue-400" />
-                </div>
-              </div>
-
-              <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700/50">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-slate-400 text-sm">Usuários MASTER</p>
-                    <p className="text-2xl font-bold text-purple-400">{stats.masterUsers}</p>
-                  </div>
-                  <Crown className="w-8 h-8 text-purple-400" />
-                </div>
-              </div>
-            </div>
-
-            {/* Recent Activity */}
-            <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700/50">
-              <h3 className="text-lg font-semibold mb-4 flex items-center space-x-2">
-                <Clock className="w-5 h-5 text-blue-400" />
-                <span>Atividade Recente</span>
-              </h3>
-              <div className="space-y-3">
-                {users.slice(0, 5).map(user => (
-                  <div key={user.id} className="flex items-center justify-between p-3 bg-slate-700/30 rounded-lg">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                        <User className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <p className="font-medium">{user.name}</p>
-                        <p className="text-sm text-slate-400">{user.email}</p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPlanColor(user.plan)}`}>
-                        {user.plan.toUpperCase()}
-                      </span>
-                      <p className="text-xs text-slate-400 mt-1">
-                        {formatDate(user.created_at)}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <Users className="w-8 h-8 text-blue-400" />
             </div>
           </div>
-        )}
 
-        {/* Users Tab */}
-        {activeTab === 'users' && (
-          <div className="space-y-6">
+          <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700/50">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-slate-400 text-sm">Usuários Ativos</p>
+                <p className="text-2xl font-bold text-emerald-400">{stats.activeUsers}</p>
+              </div>
+              <Activity className="w-8 h-8 text-emerald-400" />
+            </div>
+          </div>
+
+          <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700/50">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-slate-400 text-sm">Usuários PRO</p>
+                <p className="text-2xl font-bold text-blue-400">{stats.proUsers}</p>
+              </div>
+              <Star className="w-8 h-8 text-blue-400" />
+            </div>
+          </div>
+
+          <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700/50">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-slate-400 text-sm">Usuários MASTER</p>
+                <p className="text-2xl font-bold text-purple-400">{stats.masterUsers}</p>
+              </div>
+              <Crown className="w-8 h-8 text-purple-400" />
+            </div>
+          </div>
+        </div>
+
+        {/* Users Management */}
+        <div className="space-y-6">
             {/* Filters and Search */}
             <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700/50">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
@@ -433,77 +373,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ users = [], onUpdateUser
                 <p className="text-slate-400">Nenhum usuário encontrado</p>
               </div>
             )}
-          </div>
-        )}
-
-
-        {/* Settings Tab */}
-        {activeTab === 'settings' && (
-          <div className="space-y-8">
-            <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700/50">
-              <h3 className="text-lg font-semibold mb-4 flex items-center space-x-2">
-                <Settings className="w-5 h-5 text-blue-400" />
-                <span>Configurações do Sistema</span>
-              </h3>
-              
-              <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 bg-slate-700/30 rounded-lg">
-                  <div>
-                    <h4 className="font-medium text-white">Notificações por Email</h4>
-                    <p className="text-sm text-slate-400">Receber alertas sobre novos usuários</p>
-                  </div>
-                  <button className="relative inline-flex h-6 w-11 items-center rounded-full bg-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                    <span className="inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-6" />
-                  </button>
-                </div>
-
-                <div className="flex items-center justify-between p-4 bg-slate-700/30 rounded-lg">
-                  <div>
-                    <h4 className="font-medium text-white">Backup Automático</h4>
-                    <p className="text-sm text-slate-400">Backup diário dos dados</p>
-                  </div>
-                  <button className="relative inline-flex h-6 w-11 items-center rounded-full bg-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                    <span className="inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-6" />
-                  </button>
-                </div>
-
-                <div className="flex items-center justify-between p-4 bg-slate-700/30 rounded-lg">
-                  <div>
-                    <h4 className="font-medium text-white">Modo Manutenção</h4>
-                    <p className="text-sm text-slate-400">Desabilitar acesso temporariamente</p>
-                  </div>
-                  <button className="relative inline-flex h-6 w-11 items-center rounded-full bg-slate-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                    <span className="inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-1" />
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700/50">
-              <h3 className="text-lg font-semibold mb-4 flex items-center space-x-2">
-                <Database className="w-5 h-5 text-blue-400" />
-                <span>Estatísticas do Sistema</span>
-              </h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="text-center p-4 bg-slate-700/30 rounded-lg">
-                  <div className="text-2xl font-bold text-blue-400 mb-1">{stats.totalUsers}</div>
-                  <div className="text-sm text-slate-400">Total de Usuários</div>
-                </div>
-                <div className="text-center p-4 bg-slate-700/30 rounded-lg">
-                  <div className="text-2xl font-bold text-emerald-400 mb-1">{stats.recentSignups}</div>
-                  <div className="text-sm text-slate-400">Novos esta semana</div>
-                </div>
-                <div className="text-center p-4 bg-slate-700/30 rounded-lg">
-                  <div className="text-2xl font-bold text-purple-400 mb-1">
-                    {Math.round((stats.activeUsers / stats.totalUsers) * 100) || 0}%
-                  </div>
-                  <div className="text-sm text-slate-400">Taxa de Ativação</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+        </div>
       </div>
     </div>
   );
