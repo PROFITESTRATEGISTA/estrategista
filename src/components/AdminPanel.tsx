@@ -346,10 +346,21 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                         <td className="px-6 py-4">
                           <div className="flex items-center space-x-3">
                             <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                              <User className="w-4 h-4" />
+                              {user.email === 'pedropardal04@gmail.com' ? (
+                                <Shield className="w-4 h-4 text-yellow-400" />
+                              ) : (
+                                <User className="w-4 h-4" />
+                              )}
                             </div>
                             <div>
-                              <div className="font-medium text-white">{user.name}</div>
+                              <div className="font-medium text-white">
+                                {user.name}
+                                {user.email === 'pedropardal04@gmail.com' && (
+                                  <span className="ml-2 text-xs bg-red-600 text-white px-2 py-1 rounded-full">
+                                    ADMIN MASTER
+                                  </span>
+                                )}
+                              </div>
                               <div className="text-sm text-slate-400">{user.email}</div>
                             </div>
                           </div>
@@ -476,6 +487,38 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                 <p className="text-slate-400">Nenhum usuário encontrado</p>
               </div>
             )}
+            <button
+              onClick={() => {
+                // Reativar Pedro Pardal se não estiver na lista
+                const pedroExists = users.some(u => u.email === 'pedropardal04@gmail.com');
+                if (!pedroExists) {
+                  const adminUser = {
+                    id: 'admin-pedro-pardal',
+                    name: 'Pedro Pardal',
+                    email: 'pedropardal04@gmail.com',
+                    phone: '+55 11 99999-9999',
+                    plan: 'master' as const,
+                    is_active: true,
+                    created_at: '2024-01-01T00:00:00.000Z',
+                    phone_verified: true,
+                    last_login: new Date().toISOString()
+                  };
+                  setUsers(prev => [adminUser, ...prev]);
+                  alert('✅ Pedro Pardal adicionado como admin!');
+                } else {
+                  // Se existe, garantir que está ativo
+                  const pedro = users.find(u => u.email === 'pedropardal04@gmail.com');
+                  if (pedro && !pedro.is_active) {
+                    onUpdateUser(pedro.id, { is_active: true, plan: 'master' });
+                  } else {
+                    alert('✅ Pedro Pardal já está ativo na lista!');
+                  }
+                }
+              }}
+              className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition-colors text-sm font-medium"
+            >
+              🛡️ Reativar Pedro Admin
+            </button>
         </div>
       </div>
     </div>
