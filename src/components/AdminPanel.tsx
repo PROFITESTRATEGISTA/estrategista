@@ -20,6 +20,32 @@ interface AdminPanelProps {
   onDeleteUser: (userId: string) => void;
 }
 
+interface AutomationProject {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  projectType: string;
+  platform: string[];
+  modules: {
+    riskManagement: string[];
+    entryExit: string[];
+    filters: string[];
+    advancedLogic: string[];
+    externalControl: string[];
+    copyPortfolio: string[];
+    webApp: string[];
+    whiteLabel: string[];
+    indicators: string[];
+  };
+  description: string;
+  status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
+  priority: 'low' | 'medium' | 'high';
+  estimatedValue?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUpdateUser, onDeleteUser }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterPlan, setFilterPlan] = useState<string>('all');
@@ -29,6 +55,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
   const [isLoading, setIsLoading] = useState(true);
   const [editingPlan, setEditingPlan] = useState<string | null>(null);
   const [tempPlan, setTempPlan] = useState<string>('');
+  const [currentTab, setCurrentTab] = useState<'users' | 'projects'>('users');
+  const [projects, setProjects] = useState<AutomationProject[]>([]);
+  const [selectedProject, setSelectedProject] = useState<AutomationProject | null>(null);
+  const [projectFilter, setProjectFilter] = useState<string>('all');
+  const [projectSearch, setProjectSearch] = useState('');
 
   // Debug logging
   useEffect(() => {
@@ -36,6 +67,99 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
     console.log('📊 Users count:', users.length);
     setIsLoading(false);
   }, [users]);
+
+  // Load automation projects
+  useEffect(() => {
+    loadProjects();
+  }, []);
+
+  const loadProjects = () => {
+    // Load real projects from localStorage
+    const savedProjects = JSON.parse(localStorage.getItem('automation_projects') || '[]');
+    
+    // Add mock data if no real projects exist
+    const mockProjects: AutomationProject[] = savedProjects.length > 0 ? [] : [
+      {
+        id: '1',
+        name: 'João Silva',
+        email: 'joao@empresa.com',
+        phone: '(11) 99999-9999',
+        projectType: 'robot',
+        platform: ['profit', 'mt5'],
+        modules: {
+          riskManagement: ['fixedStop', 'trailingStop', 'breakeven'],
+          entryExit: ['stopEntry', 'marketEntry'],
+          filters: ['timeFilter', 'volumeFilter'],
+          advancedLogic: ['pyramid'],
+          externalControl: [],
+          copyPortfolio: ['copyTradeCompatible'],
+          webApp: [],
+          whiteLabel: ['brandedVersion'],
+          indicators: ['movingAverages', 'rsi']
+        },
+        description: 'Preciso de um robô para scalping no WIN com trailing stop avançado e gestão de risco automática.',
+        status: 'pending',
+        priority: 'high',
+        estimatedValue: 'R$ 8.000 - R$ 12.000',
+        createdAt: '2025-01-15T10:30:00Z',
+        updatedAt: '2025-01-15T10:30:00Z'
+      },
+      {
+        id: '2',
+        name: 'Maria Santos',
+        email: 'maria@trading.com',
+        phone: '(21) 88888-8888',
+        projectType: 'app',
+        platform: ['web', 'app'],
+        modules: {
+          riskManagement: ['dailyStop', 'financialStop'],
+          entryExit: ['limitEntry'],
+          filters: ['timeFilter'],
+          advancedLogic: [],
+          externalControl: [],
+          copyPortfolio: ['mirrorPortfolio'],
+          webApp: ['loginApp', 'managementPanel', 'pixPayments', 'salesSystem'],
+          whiteLabel: ['brandedVersion', 'licensedResale'],
+          indicators: ['bollinger', 'macd']
+        },
+        description: 'Quero criar uma plataforma de copy trade com minha marca, incluindo sistema de pagamentos PIX e gestão de usuários.',
+        status: 'in_progress',
+        priority: 'medium',
+        estimatedValue: 'R$ 15.000 - R$ 25.000',
+        createdAt: '2025-01-12T14:20:00Z',
+        updatedAt: '2025-01-14T16:45:00Z'
+      },
+      {
+        id: '3',
+        name: 'Carlos Oliveira',
+        email: 'carlos@corretora.com',
+        phone: '(11) 77777-7777',
+        projectType: 'copy',
+        platform: ['profit', 'blackarrow'],
+        modules: {
+          riskManagement: ['trailingStop', 'breakeven', 'stopTargetRiskReturn'],
+          entryExit: ['candleEntry', 'externalSetup'],
+          filters: ['volatilityFilter', 'trendFilter'],
+          advancedLogic: ['correlation', 'defenses'],
+          externalControl: ['controllerIndicator'],
+          copyPortfolio: ['copyTradeCompatible', 'internalReplication'],
+          webApp: ['ranking', 'reports'],
+          whiteLabel: ['codeProtection'],
+          indicators: ['fibonacci', 'ichimoku', 'pivot']
+        },
+        description: 'Sistema corporativo para nossa corretora com copy trade, ranking de traders e relatórios avançados.',
+        status: 'completed',
+        priority: 'high',
+        estimatedValue: 'R$ 30.000 - R$ 50.000',
+        createdAt: '2025-01-08T09:15:00Z',
+        updatedAt: '2025-01-13T18:30:00Z'
+      }
+    ];
+    
+    // Combine real and mock data
+    const allProjects = [...savedProjects, ...mockProjects];
+    setProjects(allProjects);
+  };
 
   // Filter users based on search and filters
   const filteredUsers = users.filter(user => {
@@ -48,6 +172,15 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
   });
 
   console.log('🔍 Filtered users:', filteredUsers);
+
+  // Filter projects
+  const filteredProjects = projects.filter(project => {
+    const matchesSearch = project.name.toLowerCase().includes(projectSearch.toLowerCase()) ||
+                         project.email.toLowerCase().includes(projectSearch.toLowerCase()) ||
+                         project.description.toLowerCase().includes(projectSearch.toLowerCase());
+    const matchesFilter = projectFilter === 'all' || project.status === projectFilter;
+    return matchesSearch && matchesFilter;
+  });
 
   // Statistics
   const stats = {
@@ -62,6 +195,14 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
       weekAgo.setDate(weekAgo.getDate() - 7);
       return signupDate > weekAgo;
     }).length
+  };
+
+  const projectStats = {
+    total: projects.length,
+    pending: projects.filter(p => p.status === 'pending').length,
+    inProgress: projects.filter(p => p.status === 'in_progress').length,
+    completed: projects.filter(p => p.status === 'completed').length,
+    highPriority: projects.filter(p => p.priority === 'high').length
   };
 
   const getPlanColor = (plan: string) => {
@@ -137,6 +278,33 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
   const handlePlanCancel = () => {
     setEditingPlan(null);
     setTempPlan('');
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'pending': return 'bg-yellow-100 text-yellow-800';
+      case 'in_progress': return 'bg-blue-100 text-blue-800';
+      case 'completed': return 'bg-green-100 text-green-800';
+      case 'cancelled': return 'bg-red-100 text-red-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'high': return 'bg-red-100 text-red-800';
+      case 'medium': return 'bg-yellow-100 text-yellow-800';
+      case 'low': return 'bg-green-100 text-green-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const updateProjectStatus = (projectId: string, status: AutomationProject['status']) => {
+    setProjects(prev => prev.map(p => 
+      p.id === projectId 
+        ? { ...p, status, updatedAt: new Date().toISOString() }
+        : p
+    ));
   };
 
   return (
