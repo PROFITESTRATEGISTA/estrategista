@@ -65,31 +65,31 @@ const Navigation = ({ user, onAuthClick }: NavigationProps) => {
   return (
     <nav className="bg-gray-950 border-b border-gray-800 sticky top-0 z-50 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-20">
+        <div className="flex items-center justify-between h-16 sm:h-20 gap-2">
           {/* Logo */}
-          <div className="flex items-center space-x-2 sm:space-x-3">
+          <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0 min-w-0">
             <Bot className="w-6 h-6 sm:w-8 sm:h-8 text-blue-400" />
-            <span className="text-lg sm:text-xl font-bold text-white truncate">
+            <span className="text-base sm:text-lg font-bold text-white truncate">
               Estrategista Solutions
             </span>
           </div>
           
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-4">
+          <div className="hidden lg:flex items-center space-x-2 xl:space-x-4 flex-1 justify-center">
             {/* Main Nav Items */}
-            <div className="flex space-x-2">
+            <div className="flex space-x-1 xl:space-x-2">
               {navItems.map((item) => (
                 <Link
                   key={item.id}
                   to={item.id}
-                  className={`px-4 py-2 rounded-lg font-semibold transition-all duration-300 text-sm ${
+                  className={`px-2 xl:px-4 py-2 rounded-lg font-medium transition-all duration-300 text-xs xl:text-sm whitespace-nowrap ${
                     location.pathname === item.id
                       ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
                       : 'bg-transparent text-gray-300 hover:text-white hover:bg-gray-800'
                   }`}
                 >
                   {item.id === '/planos' && (
-                    <span className="bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold mr-2">
+                    <span className="bg-red-500 text-white px-1 xl:px-2 py-1 rounded-full text-xs font-bold mr-1 xl:mr-2">
                       70% OFF
                     </span>
                   )}
@@ -99,12 +99,12 @@ const Navigation = ({ user, onAuthClick }: NavigationProps) => {
             </div>
 
             {/* Auth Items */}
-            <div className="border-l border-gray-700 pl-4 flex items-center space-x-2">
+            <div className="border-l border-gray-700 pl-2 xl:pl-4 flex items-center space-x-1 xl:space-x-2 flex-shrink-0">
               {authItems.map((item) => (
                 <Link
                   key={item.id}
                   to={item.id}
-                  className={`px-4 py-2 rounded-lg font-semibold transition-all duration-300 text-sm ${
+                  className={`px-2 xl:px-4 py-2 rounded-lg font-medium transition-all duration-300 text-xs xl:text-sm whitespace-nowrap ${
                     location.pathname === item.id
                       ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
                       : 'bg-transparent text-gray-300 hover:text-white hover:bg-gray-800'
@@ -119,12 +119,12 @@ const Navigation = ({ user, onAuthClick }: NavigationProps) => {
                 <div className="relative">
                   <button
                     onClick={() => setShowUserMenu(!showUserMenu)}
-                    className="flex items-center space-x-2 bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition-colors duration-300"
+                    className="flex items-center space-x-1 xl:space-x-2 bg-gray-800 hover:bg-gray-700 text-white px-2 xl:px-4 py-2 rounded-lg transition-colors duration-300"
                   >
                     <User className="w-4 h-4" />
-                    <span className="text-sm">{user.name}</span>
+                    <span className="text-xs xl:text-sm hidden sm:inline">{user.name}</span>
                     {user.plan && (
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getPlanBadgeColor(user.plan)}`}>
+                      <span className={`px-1 xl:px-2 py-1 rounded-full text-xs font-medium ${getPlanBadgeColor(user.plan)}`}>
                         {user.plan.toUpperCase()}
                       </span>
                     )}
@@ -140,16 +140,16 @@ const Navigation = ({ user, onAuthClick }: NavigationProps) => {
                   )}
                 </div>
               ) : (
-                <div className="flex space-x-2">
+                <div className="flex space-x-1 xl:space-x-2">
                   <button
                     onClick={() => onAuthClick('login')}
-                    className="bg-transparent text-gray-300 hover:text-white hover:bg-gray-800 px-4 py-2 rounded-lg font-semibold transition-colors duration-300 text-sm"
+                    className="bg-transparent text-gray-300 hover:text-white hover:bg-gray-800 px-2 xl:px-4 py-2 rounded-lg font-medium transition-colors duration-300 text-xs xl:text-sm"
                   >
                     Entrar
                   </button>
                   <button
                     onClick={() => onAuthClick('register')}
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors duration-300 text-sm"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-2 xl:px-4 py-2 rounded-lg font-medium transition-colors duration-300 text-xs xl:text-sm"
                   >
                     Cadastrar
                   </button>
