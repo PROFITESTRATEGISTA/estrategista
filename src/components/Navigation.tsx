@@ -55,7 +55,6 @@ const Navigation = ({ currentPage, onPageChange, user, onAuthClick }: Navigation
 
   const authItems = user ? [
     { id: 'members', label: '👤 Área de Membros', emoji: '👤' },
-    ...(user.role === 'admin' ? [{ id: 'admin', label: '🛡️ Admin Panel', emoji: '🛡️' }] : [])
   ] : [];
 
   const getPlanBadgeColor = (plan?: string) => {
