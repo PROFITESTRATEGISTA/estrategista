@@ -14,17 +14,24 @@ interface User {
 }
 
 interface AdminPanelProps {
+  onBack?: () => void;
   users: User[];
   onUpdateUser: (userId: string, updates: Partial<User>) => void;
   onDeleteUser: (userId: string) => void;
 }
 
-export const AdminPanel: React.FC<AdminPanelProps> = ({ users = [], onUpdateUser, onDeleteUser }) => {
+export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUpdateUser, onDeleteUser }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterPlan, setFilterPlan] = useState<string>('all');
   const [showInactive, setShowInactive] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [showUserDetails, setShowUserDetails] = useState<string | null>(null);
+
+  // Debug logging
+  useEffect(() => {
+    console.log('🔍 AdminPanel received users:', users);
+    console.log('📊 Users count:', users.length);
+  }, [users]);
 
   // Filter users based on search and filters
   const filteredUsers = users.filter(user => {
@@ -35,6 +42,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ users = [], onUpdateUser
     
     return matchesSearch && matchesPlan && matchesActive;
   });
+
+  console.log('🔍 Filtered users:', filteredUsers);
 
   // Statistics
   const stats = {
@@ -112,6 +121,14 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ users = [], onUpdateUser
             </div>
             
             <div className="flex items-center space-x-4">
+              {onBack && (
+                <button
+                  onClick={onBack}
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors text-sm font-medium"
+                >
+                  Voltar ao Dashboard
+                </button>
+              )}
               <button className="p-2 hover:bg-slate-700/50 rounded-lg transition-colors">
                 <Bell className="w-5 h-5" />
               </button>

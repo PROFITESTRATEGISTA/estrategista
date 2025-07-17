@@ -126,7 +126,7 @@ export default function MembersArea() {
   
   // Load users for admin panel
   useEffect(() => {
-    if (hasAdminAccess && currentView === 'admin') {
+    if (hasAdminAccess) {
       loadUsers();
     }
   }, [hasAdminAccess, currentView]);
@@ -136,23 +136,27 @@ export default function MembersArea() {
     
     setLoadingUsers(true);
     try {
+      console.log('🔍 Loading users for admin panel...');
       const { data, error } = await supabase
         .from('users')
         .select('*')
         .order('created_at', { ascending: false });
       
+      console.log('📊 Supabase users query result:', { data, error });
+      
       if (error) {
         console.error('Error loading users:', error);
-        // Fallback to mock data for demo
-        setUsers([
+        // Create mock data with current user included
+        const mockUsers = [
           {
-            id: '1',
-            name: 'Pedro Pardal',
-            email: 'pedropardal04@gmail.com',
+            id: user?.id || '1',
+            name: user?.name || 'Pedro Pardal',
+            email: user?.email || 'pedropardal04@gmail.com',
             plan: 'master',
             is_active: true,
             created_at: new Date().toISOString(),
-            phone_verified: true
+            phone_verified: true,
+            phone: user?.phone || '+5511999999999'
           },
           {
             id: '2',
@@ -161,15 +165,55 @@ export default function MembersArea() {
             plan: 'pro',
             is_active: true,
             created_at: new Date().toISOString(),
-            phone_verified: false
+            phone_verified: false,
+            phone: '+5511888888888'
+          },
+          {
+            id: '3',
+            name: 'Maria Silva',
+            email: 'maria@exemplo.com',
+            plan: 'free',
+            is_active: true,
+            created_at: new Date(Date.now() - 86400000).toISOString(), // 1 day ago
+            phone_verified: true,
+            phone: '+5511777777777'
           }
-        ]);
+        ];
+        console.log('📊 Using mock users:', mockUsers);
+        setUsers(mockUsers);
       } else {
+        // Ensure current user is included in the list
+        const usersWithCurrent = data || [];
+        if (user && !usersWithCurrent.find(u => u.id === user.id)) {
+          usersWithCurrent.unshift({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            plan: user.plan || 'master',
+            is_active: true,
+            created_at: user.createdAt || new Date().toISOString(),
+            phone_verified: true,
+            phone: user.phone || '+5511999999999'
+          });
+        }
+        console.log('📊 Using Supabase users:', usersWithCurrent);
         setUsers(data || []);
       }
     } catch (error) {
       console.error('Error loading users:', error);
-      setUsers([]);
+      // Fallback to at least show current user
+      setUsers([
+        {
+          id: user?.id || '1',
+          name: user?.name || 'Admin',
+          email: user?.email || 'admin@estrategista.com',
+          plan: user?.plan || 'master',
+          is_active: true,
+          created_at: new Date().toISOString(),
+          phone_verified: true,
+          phone: '+5511999999999'
+        }
+      ]);
     } finally {
       setLoadingUsers(false);
     }
@@ -293,6 +337,7 @@ export default function MembersArea() {
       {/* Admin Panel */}
       {currentView === 'admin' && hasAdminAccess && (
         <AdminPanel 
+          onBack={() => setCurrentView('dashboard')}
           users={users}
           onUpdateUser={handleUpdateUser}
           onDeleteUser={handleDeleteUser}
