@@ -919,13 +919,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
               </h2>
               <button
                 onClick={() => setSelectedProject(null)}
-                className="text-gray-400 hover:text-gray-600 transition-colors"
-              >
-                <X className="h-6 w-6" />
-              </button>
-            </div>
-
-            <div className="p-6 space-y-6">
             <div className="p-6 space-y-6">
               {/* Client Info */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
