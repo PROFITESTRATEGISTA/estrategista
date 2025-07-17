@@ -26,11 +26,13 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
   const [showInactive, setShowInactive] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [showUserDetails, setShowUserDetails] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Debug logging
   useEffect(() => {
     console.log('🔍 AdminPanel received users:', users);
     console.log('📊 Users count:', users.length);
+    setIsLoading(false);
   }, [users]);
 
   // Filter users based on search and filters
@@ -253,6 +255,12 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
 
             {/* Users Table */}
             <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700/50 overflow-hidden">
+              {isLoading ? (
+                <div className="flex items-center justify-center py-12">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mr-3"></div>
+                  <span className="text-slate-300">Carregando usuários...</span>
+                </div>
+              ) : (
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead className="bg-slate-700/50">
@@ -401,9 +409,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                   </tbody>
                 </table>
               </div>
+              )}
             </div>
 
-            {filteredUsers.length === 0 && (
+            {!isLoading && filteredUsers.length === 0 && (
               <div className="text-center py-12">
                 <Users className="w-12 h-12 text-slate-400 mx-auto mb-4" />
                 <p className="text-slate-400">Nenhum usuário encontrado</p>
