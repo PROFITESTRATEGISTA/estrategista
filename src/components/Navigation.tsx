@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
 import { Bot, Menu, X, User, LogOut, Shield } from 'lucide-react';
 
 interface User {
@@ -11,22 +10,22 @@ interface User {
 }
 
 interface NavigationProps {
+  currentPage: 'pack' | 'whitelabel' | 'createsolution' | 'admin' | 'members';
+  onPageChange: (page: 'pack' | 'whitelabel' | 'createsolution' | 'admin' | 'members') => void;
   user: User | null;
   onAuthClick: (mode: 'login' | 'register') => void;
 }
 
-const Navigation = ({ user, onAuthClick }: NavigationProps) => {
+const Navigation = ({ currentPage, onPageChange, user, onAuthClick }: NavigationProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  const handlePageChange = (path: string) => {
-    navigate(path);
+  const handlePageChange = (page: 'pack' | 'whitelabel' | 'createsolution' | 'admin' | 'members') => {
+    onPageChange(page);
     setIsMobileMenuOpen(false);
   };
 
@@ -48,14 +47,14 @@ const Navigation = ({ user, onAuthClick }: NavigationProps) => {
   };
 
   const navItems = [
-    { path: '/', label: '🤖 Pack de Robôs', emoji: '🤖' },
-    { path: '/planos', label: '💎 Planos', emoji: '💎' },
-    { path: '/white-label', label: '🤝 White Label', emoji: '🤝' },
-    { path: '/criar-solucao', label: '🛠️ Criar Solução', emoji: '🛠️' }
+    { id: 'pack', label: '🤖 Pack de Robôs', emoji: '🤖' },
+    { id: 'plans', label: '💎 Planos', emoji: '💎' },
+    { id: 'whitelabel', label: '🤝 White Label', emoji: '🤝' },
+    { id: 'createsolution', label: '🛠️ Criar Solução', emoji: '🛠️' }
   ];
 
   const authItems = user ? [
-    { path: '/members', label: '👤 Área de Membros', emoji: '👤' },
+    { id: 'members', label: '👤 Área de Membros', emoji: '👤' },
   ] : [];
 
   const getPlanBadgeColor = (plan?: string) => {
@@ -85,15 +84,15 @@ const Navigation = ({ user, onAuthClick }: NavigationProps) => {
             <div className="flex space-x-2">
               {navItems.map((item) => (
                 <button
-                  key={item.path}
-                  onClick={() => handlePageChange(item.path)}
+                  key={item.id}
+                  onClick={() => onPageChange(item.id as any)}
                   className={`px-4 py-2 rounded-lg font-semibold transition-all duration-300 text-sm ${
-                    location.pathname === item.path
+                    currentPage === item.id
                       ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
                       : 'bg-transparent text-gray-300 hover:text-white hover:bg-gray-800'
                   }`}
                 >
-                  {item.path === '/planos' && (
+                  {item.id === 'plans' && (
                     <span className="bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold mr-2">
                       70% OFF
                     </span>
@@ -107,10 +106,10 @@ const Navigation = ({ user, onAuthClick }: NavigationProps) => {
             <div className="border-l border-gray-700 pl-4 flex items-center space-x-2">
               {authItems.map((item) => (
                 <button
-                  key={item.path}
-                  onClick={() => handlePageChange(item.path)}
+                  key={item.id}
+                  onClick={() => onPageChange(item.id as any)}
                   className={`px-4 py-2 rounded-lg font-semibold transition-all duration-300 text-sm ${
-                    location.pathname === item.path
+                    currentPage === item.id
                       ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
                       : 'bg-transparent text-gray-300 hover:text-white hover:bg-gray-800'
                   }`}
@@ -184,10 +183,10 @@ const Navigation = ({ user, onAuthClick }: NavigationProps) => {
               {/* Main Nav Items */}
               {navItems.map((item) => (
                 <button
-                  key={item.path}
-                  onClick={() => handlePageChange(item.path)}
+                  key={item.id}
+                  onClick={() => handlePageChange(item.id as any)}
                   className={`w-full text-left px-3 py-2 rounded-md font-medium transition-colors duration-300 ${
-                    location.pathname === item.path
+                    currentPage === item.id
                       ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
                       : 'text-gray-300 hover:text-white hover:bg-gray-800'
                   }`}
@@ -201,10 +200,10 @@ const Navigation = ({ user, onAuthClick }: NavigationProps) => {
                 <div className="border-t border-gray-700 pt-2 mt-2">
                   {authItems.map((item) => (
                     <button
-                      key={item.path}
-                      onClick={() => handlePageChange(item.path)}
+                      key={item.id}
+                      onClick={() => handlePageChange(item.id as any)}
                       className={`w-full text-left px-3 py-2 rounded-md font-medium transition-colors duration-300 ${
-                        location.pathname === item.path
+                        currentPage === item.id
                           ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
                           : 'text-gray-300 hover:text-white hover:bg-gray-800'
                       }`}
