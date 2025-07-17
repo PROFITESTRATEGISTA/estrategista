@@ -67,15 +67,11 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({ onNavigateToPlans, onOp
           
           <button
             onClick={() => window.open('https://www.nelogica.com.br/copy-invest/copy-invest-profit-estrategista-portf%C3%B3lio-de-ia', '_blank')}
-            onClick={() => {
-              // Navigate to create solution page
-              window.location.href = '/createsolution';
-              setIsExpanded(false);
-            }}
+            onClick={() => window.open('https://wa.me/5511975333355?text=Olá! Gostaria de criar uma solução personalizada.', '_blank')}
             className="flex items-center px-4 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all whitespace-nowrap"
           >
             <MessageCircle className="h-5 w-5 mr-2" />
-            <span className="font-medium">Criar Solução</span>
+            <span className="font-medium">Falar no WhatsApp</span>
           </button>
         </div>
       )}
