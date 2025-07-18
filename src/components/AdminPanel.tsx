@@ -848,7 +848,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                     id: 'admin-pedro-pardal',
                     name: 'Pedro Pardal',
                     email: 'pedropardal04@gmail.com',
-                    phone: '+55 11 99999-9999',
+                    phone: '+55 11 97533-3355',
                     plan: 'master' as const,
                     is_active: true,
                     created_at: '2024-01-01T00:00:00.000Z',
