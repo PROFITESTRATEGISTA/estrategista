@@ -15,12 +15,6 @@ interface User {
   phone_verified: boolean;
   contract_start?: string;
   contract_end?: string;
-  contract?: {
-    id?: string;
-    start_date?: string;
-    end_date?: string;
-    status?: 'active' | 'expired' | 'cancelled' | 'suspended';
-  };
 }
 
 interface AdminPanelProps {
@@ -55,11 +49,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
   const [lastLoginFilter, setLastLoginFilter] = useState<string>('all');
   const [dateRangeFilter, setDateRangeFilter] = useState<string>('all');
   const [billingPeriodFilter, setBillingPeriodFilter] = useState<string>('all');
-  const [editingContractStart, setEditingContractStart] = useState<string | null>(null);
-  const [editingContractEnd, setEditingContractEnd] = useState<string | null>(null);
-  const [tempContractStart, setTempContractStart] = useState<string>('');
-  const [tempContractEnd, setTempContractEnd] = useState<string>('');
-  const [loadingContracts, setLoadingContracts] = useState<Record<string, boolean>>({});
+  const [editingContract, setEditingContract] = useState<{
+    userId: string;
+    field: 'start' | 'end';
+    value: string | null;
+  } | null>(null);
 
   // Debug logging
   useEffect(() => {
@@ -189,112 +183,38 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
     }
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
-
-  // Update contract in Supabase
-  const updateContract = async (userId: string, contractData: { start_date?: string; end_date?: string }) => {
-    setLoadingContracts(prev => ({ ...prev, [userId]: true }));
+  const formatDate = (dateString: string | null | undefined): string => {
+    if (!dateString) return 'Não definido';
     
     try {
-      console.log('💾 Updating contract for user:', userId, contractData);
+      // Handle different date formats
+      let date: Date;
       
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      console.log('✅ Contract updated successfully');
-      return true;
-    } catch (error) {
-      console.error('Error in updateContract:', error);
-      return false;
-    } finally {
-      setLoadingContracts(prev => ({ ...prev, [userId]: false }));
-    }
-  };
-
-  // Calculate days remaining
-  const calculateDaysRemaining = (endDate: string | undefined): string => {
-    if (!endDate) return 'N/A';
-    
-    try {
-      const end = new Date(endDate);
-      const today = new Date();
-      
-      // Normalize times to avoid timezone issues
-      today.setHours(0, 0, 0, 0);
-      end.setHours(0, 0, 0, 0);
-      
-      const diffTime = end.getTime() - today.getTime();
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      
-      if (diffDays === 0) return 'Expira hoje';
-      if (diffDays === 1) return 'Expira amanhã';
-      if (diffDays < 0) return `Expirado há ${Math.abs(diffDays)} dias`;
-      return `${diffDays} dias`;
-    } catch (error) {
-      console.error('Error calculating days:', error);
-      return 'Erro';
-    }
-  };
-
-  // Handle contract date save
-  const handleSaveContractDate = async (userId: string, field: 'start' | 'end', date: string) => {
-    if (!date) {
-      alert('Por favor, selecione uma data válida');
-      return;
-    }
-    
-    const contractData = field === 'start' 
-      ? { start_date: date }
-      : { end_date: date };
-    
-    const success = await updateContract(userId, contractData);
-    
-    if (success) {
-      // Update local state
-      const updates: Partial<User> = {};
-      if (field === 'start') {
-        updates.contract = { ...users.find(u => u.id === userId)?.contract, start_date: date };
+      if (dateString.includes('T')) {
+        // ISO format with time
+        date = new Date(dateString);
+      } else if (dateString.includes('-')) {
+        // YYYY-MM-DD format
+        date = new Date(dateString + 'T00:00:00');
       } else {
-        updates.contract = { ...users.find(u => u.id === userId)?.contract, end_date: date };
+        // Other formats
+        date = new Date(dateString);
       }
       
-      onUpdateUser(userId, updates);
-      
-      // Clear editing state
-      if (field === 'start') {
-        setEditingContractStart(null);
-        setTempContractStart('');
-      } else {
-        setEditingContractEnd(null);
-        setTempContractEnd('');
+      // Check if date is valid
+      if (isNaN(date.getTime())) {
+        console.warn('Invalid date:', dateString);
+        return 'Data inválida';
       }
       
-      alert('Data do contrato salva com sucesso!');
-    } else {
-      alert('Erro ao salvar data do contrato. Tente novamente.');
+      return date.toLocaleDateString('pt-BR');
+    } catch (error) {
+      console.error('Error formatting date:', error, dateString);
+      return 'Erro na data';
     }
   };
 
-  // Handle contract date cancel
-  const handleCancelContractDate = (field: 'start' | 'end') => {
-    if (field === 'start') {
-      setEditingContractStart(null);
-      setTempContractStart('');
-    } else {
-      setEditingContractEnd(null);
-      setTempContractEnd('');
-    }
-  };
-
-  const calculateDaysRemainingOld = (contractEnd?: string): number | null => {
+  const calculateDaysRemaining = (contractEnd?: string): number | null => {
     if (!contractEnd) return null;
     
     const endDate = new Date(contractEnd);
@@ -390,6 +310,48 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
     onUpdateUser(userId, updates);
     setEditingUser(null);
     setEditUserForm({});
+  };
+
+  const handleEditContract = (userId: string, field: 'start' | 'end') => {
+    const user = users.find(u => u.id === userId);
+    const currentValue = field === 'start' ? user?.contract_start || null : user?.contract_end || null;
+    
+    setEditingContract({
+      userId,
+      field,
+      value: currentValue
+    });
+  };
+
+  const handleSaveContract = async () => {
+    if (!editingContract) return;
+    
+    // Don't save if value is null or empty
+    if (!editingContract.value || editingContract.value.trim() === '') {
+      setEditingContract(null);
+      return;
+    }
+    
+    setIsUpdatingContract(true);
+    
+    try {
+      const updateField = editingContract.field === 'start' ? 'contract_start' : 'contract_end';
+      await onUpdateUser(editingContract.userId, {
+        [updateField]: editingContract.value
+      });
+      
+      console.log('✅ Contrato atualizado com sucesso');
+      setEditingContract(null);
+    } catch (error) {
+      console.error('❌ Erro ao atualizar contrato:', error);
+    } finally {
+      setIsUpdatingContract(false);
+    }
+  };
+
+  const handleCancelContract = () => {
+    console.log('🚫 Cancelando edição de contrato');
+    setEditingContract(null);
   };
 
   // If viewing solution requests, render that component
@@ -1012,133 +974,96 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                         
                         {/* Contract Start */}
                         <td className="px-6 py-4 text-sm">
-                          {editingContractStart === user.id ? (
+                          {editingContract?.userId === user.id && editingContract?.field === 'start' ? (
                             <div className="flex items-center space-x-2">
                               <input
                                 type="date"
-                                value={tempContractStart}
-                                onChange={(e) => setTempContractStart(e.target.value)}
-                                className="px-2 py-1 bg-slate-700 border border-slate-600 rounded text-white text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 w-32"
+                                value={editingContract.value || ''}
+                                onChange={(e) => setEditingContract(prev => prev ? {
+                                  ...prev,
+                                  value: e.target.value || null
+                                } : null)}
+                                className="px-2 py-1 border border-gray-600 rounded bg-gray-700 text-white text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
                               />
                               <button
-                                onClick={() => handleSaveContractDate(user.id, 'start', tempContractStart)}
-                                disabled={loadingContracts[user.id]}
-                                className="p-1 hover:bg-green-600/50 rounded transition-colors text-green-400 disabled:opacity-50"
-                                title="Salvar data"
+                                onClick={handleSaveContract}
+                                className="p-1 hover:bg-green-600/50 rounded transition-colors text-green-400"
+                                title="Salvar data de início"
                               >
-                                <CheckCircle className="w-4 h-4" />
+                                <CheckCircle className="w-3 h-3" />
                               </button>
                               <button
-                                onClick={() => handleCancelContractDate('start')}
+                                onClick={handleCancelContract}
                                 className="p-1 hover:bg-red-600/50 rounded transition-colors text-red-400"
                                 title="Cancelar"
                               >
-                                <X className="w-4 h-4" />
+                                <X className="w-3 h-3" />
                               </button>
                             </div>
                           ) : (
-                            <div className="flex items-center space-x-1">
-                              {user.contract?.start_date ? (
-                                <>
-                                  <span className="text-gray-300 text-xs">
-                                    {new Date(user.contract.start_date + 'T00:00:00').toLocaleDateString('pt-BR')}
-                                  </span>
-                                  <button
-                                    onClick={() => {
-                                      setEditingContractStart(user.id);
-                                      setTempContractStart(user.contract.start_date || '');
-                                    }}
-                                    className="p-1 hover:bg-slate-600/50 rounded transition-colors text-gray-400"
-                                    title="Editar data de início"
-                                  >
-                                    <Edit className="w-3 h-3" />
-                                  </button>
-                                </>
-                              ) : (
-                                <button
-                                  onClick={() => {
-                                    setEditingContractStart(user.id);
-                                    setTempContractStart('');
-                                  }}
-                                  className="text-yellow-400 hover:text-yellow-300 underline text-xs"
-                                >
-                                  Definir data
-                                </button>
-                              )}
+                            <div className="flex items-center space-x-2">
+                              <span className="text-slate-300">
+                                {formatDate(user.contract_start)}
+                              </span>
+                              <button
+                                onClick={() => handleEditContract(user.id, 'start')}
+                                className="p-1 hover:bg-slate-600/50 rounded transition-colors text-slate-400"
+                                title="Editar data de início"
+                              >
+                                <Edit className="w-3 h-3" />
+                              </button>
                             </div>
                           )}
                         </td>
                         
                         {/* Contract End */}
                         <td className="px-6 py-4 text-sm">
-                          {editingContractEnd === user.id ? (
+                          {editingContract?.userId === user.id && editingContract?.field === 'end' ? (
                             <div className="flex items-center space-x-2">
                               <input
                                 type="date"
-                                value={tempContractEnd}
-                                onChange={(e) => setTempContractEnd(e.target.value)}
-                                className="px-2 py-1 bg-slate-700 border border-slate-600 rounded text-white text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 w-32"
+                                value={editingContract.value || ''}
+                                onChange={(e) => setEditingContract(prev => prev ? {
+                                  ...prev,
+                                  value: e.target.value || null
+                                } : null)}
+                                className="px-2 py-1 border border-gray-600 rounded bg-gray-700 text-white text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
                               />
                               <button
-                                onClick={() => handleSaveContractDate(user.id, 'end', tempContractEnd)}
-                                disabled={loadingContracts[user.id]}
-                                className="p-1 hover:bg-green-600/50 rounded transition-colors text-green-400 disabled:opacity-50"
-                                title="Salvar data"
+                                onClick={handleSaveContract}
+                                className="p-1 hover:bg-green-600/50 rounded transition-colors text-green-400"
+                                title="Salvar data de fim"
                               >
-                                <CheckCircle className="w-4 h-4" />
+                                <CheckCircle className="w-3 h-3" />
                               </button>
                               <button
-                                onClick={() => handleCancelContractDate('end')}
+                                onClick={handleCancelContract}
                                 className="p-1 hover:bg-red-600/50 rounded transition-colors text-red-400"
                                 title="Cancelar"
                               >
-                                <X className="w-4 h-4" />
+                                <X className="w-3 h-3" />
                               </button>
                             </div>
                           ) : (
-                            <div className="flex items-center space-x-1">
-                              {user.contract?.end_date ? (
-                                <>
-                                  <span className="text-gray-300 text-xs">
-                                    {new Date(user.contract.end_date + 'T00:00:00').toLocaleDateString('pt-BR')}
-                                  </span>
-                                  <button
-                                    onClick={() => {
-                                      setEditingContractEnd(user.id);
-                                      setTempContractEnd(user.contract.end_date || '');
-                                    }}
-                                    className="p-1 hover:bg-slate-600/50 rounded transition-colors text-gray-400"
-                                    title="Editar data de fim"
-                                  >
-                                    <Edit className="w-3 h-3" />
-                                  </button>
-                                </>
-                              ) : (
-                                <button
-                                  onClick={() => {
-                                    setEditingContractEnd(user.id);
-                                    setTempContractEnd('');
-                                  }}
-                                  className="text-yellow-400 hover:text-yellow-300 underline text-xs"
-                                >
-                                  Definir data
-                                </button>
-                              )}
+                            <div className="flex items-center space-x-2">
+                              <span className="text-slate-300">
+                                {formatDate(user.contract_end)}
+                              </span>
+                              <button
+                                onClick={() => handleEditContract(user.id, 'end')}
+                                className="p-1 hover:bg-slate-600/50 rounded transition-colors text-slate-400"
+                                title="Editar data de fim"
+                              >
+                                <Edit className="w-3 h-3" />
+                              </button>
                             </div>
                           )}
                         </td>
                         
                         {/* Days Remaining */}
-                        <td className="px-6 py-4 text-sm">
-                          <span className={`text-xs font-medium ${
-                            calculateDaysRemaining(user.contract?.end_date).includes('Expirado') ? 'text-red-400' :
-                            calculateDaysRemaining(user.contract?.end_date).includes('dias') && 
-                            parseInt(calculateDaysRemaining(user.contract?.end_date)) <= 7 ? 'text-orange-400' :
-                            calculateDaysRemaining(user.contract?.end_date).includes('dias') && 
-                            parseInt(calculateDaysRemaining(user.contract?.end_date)) <= 30 ? 'text-yellow-400' :
-                            calculateDaysRemaining(user.contract?.end_date) !== 'N/A' ? 'text-green-400' : 'text-gray-400'
-                          }`}>
-                            {calculateDaysRemaining(user.contract?.end_date)}
+                        <td className="px-6 py-4">
+                          <span className={`text-sm font-medium ${getDaysRemainingColor(calculateDaysRemaining(user.contract_end))}`}>
+                            {getDaysRemainingText(calculateDaysRemaining(user.contract_end))}
                           </span>
                         </td>
                         
@@ -1249,6 +1174,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                     contract_start: '2024-01-01',
                     contract_end: '2024-12-31'
                   };
+                  setUsers(prev => [adminUser, ...prev]);
                   alert('✅ Pedro Pardal adicionado como admin!');
                 } else {
                   // Se existe, garantir que está ativo
