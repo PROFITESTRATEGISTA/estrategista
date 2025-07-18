@@ -118,7 +118,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             localStorage.setItem('profit_current_user', JSON.stringify(user));
             
             // Update last login
-            updateLastLogin(data.user.id);
+            updateLastLogin(session.user.id);
             setLoading(false);
             return;
           } catch (dbError) {
