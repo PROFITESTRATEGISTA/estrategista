@@ -518,6 +518,22 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                         </td>
                         <td className="px-6 py-4 text-right">
                           <div className="flex items-center justify-end space-x-2">
+                            {user.phone && user.phone !== 'Não informado' && (
+                              <button
+                                onClick={() => {
+                                  // Extract only numbers from phone
+                                  const phoneNumbers = user.phone?.replace(/\D/g, '') || '';
+                                  // Ensure it starts with 55 (Brazil country code)
+                                  const formattedPhone = phoneNumbers.startsWith('55') ? phoneNumbers : `55${phoneNumbers}`;
+                                  const whatsappUrl = `https://wa.me/+${formattedPhone}?text=Olá ${user.name}! Sou da equipe Estrategista Solutions. Como posso ajudá-lo?`;
+                                  window.open(whatsappUrl, '_blank');
+                                }}
+                                className="p-1 hover:bg-green-600/50 rounded transition-colors text-green-400"
+                                title="Enviar WhatsApp"
+                              >
+                                <MessageSquare className="w-4 h-4" />
+                              </button>
+                            )}
                             {!user.is_active && (
                               <button
                                 onClick={() => onUpdateUser(user.id, { is_active: true })}
