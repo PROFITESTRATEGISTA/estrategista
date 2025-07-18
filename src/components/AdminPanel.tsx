@@ -899,34 +899,52 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                         </td>
                         
                         {/* Contract Start */}
-                        <td className="px-6 py-4">
+                        <td className="px-6 py-4 text-sm">
                           {editingUser === user.id ? (
                             <input
                               type="date"
-                              value={editForm.contract_start || ''}
-                              onChange={(e) => setEditForm(prev => ({ ...prev, contract_start: e.target.value }))}
-                              className="px-2 py-1 bg-slate-700 border border-slate-600 rounded text-white text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              value={editUserForm.contract_start || ''}
+                              onChange={(e) => setEditUserForm(prev => ({ ...prev, contract_start: e.target.value }))}
+                              className="px-2 py-1 bg-slate-700 border border-slate-600 rounded text-white text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 w-32"
                             />
                           ) : (
-                            <span className="text-slate-300 text-sm">
-                              {user.contract_start ? formatDate(user.contract_start) : 'Não definido'}
-                            </span>
+                            <button
+                              onClick={() => {
+                                setEditingUser(user.id);
+                                setEditUserForm(user);
+                              }}
+                              className="text-gray-300 hover:text-blue-400 transition-colors text-left"
+                              title="Clique para definir data de início"
+                            >
+                              {user.contract_start ? formatDate(user.contract_start) : (
+                                <span className="text-yellow-400 underline">Definir data</span>
+                              )}
+                            </button>
                           )}
                         </td>
                         
                         {/* Contract End */}
-                        <td className="px-6 py-4">
+                        <td className="px-6 py-4 text-sm">
                           {editingUser === user.id ? (
                             <input
                               type="date"
-                              value={editForm.contract_end || ''}
-                              onChange={(e) => setEditForm(prev => ({ ...prev, contract_end: e.target.value }))}
-                              className="px-2 py-1 bg-slate-700 border border-slate-600 rounded text-white text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              value={editUserForm.contract_end || ''}
+                              onChange={(e) => setEditUserForm(prev => ({ ...prev, contract_end: e.target.value }))}
+                              className="px-2 py-1 bg-slate-700 border border-slate-600 rounded text-white text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 w-32"
                             />
                           ) : (
-                            <span className="text-slate-300 text-sm">
-                              {user.contract_end ? formatDate(user.contract_end) : 'Não definido'}
-                            </span>
+                            <button
+                              onClick={() => {
+                                setEditingUser(user.id);
+                                setEditUserForm(user);
+                              }}
+                              className="text-gray-300 hover:text-blue-400 transition-colors text-left"
+                              title="Clique para definir data de fim"
+                            >
+                              {user.contract_end ? formatDate(user.contract_end) : (
+                                <span className="text-yellow-400 underline">Definir data</span>
+                              )}
+                            </button>
                           )}
                         </td>
                         
