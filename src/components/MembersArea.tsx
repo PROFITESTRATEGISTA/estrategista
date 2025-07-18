@@ -28,6 +28,40 @@ export default function MembersArea() {
   const [users, setUsers] = useState<User[]>([]);
   const [loadingUsers, setLoadingUsers] = useState(false);
   
+  // Update last login when component mounts (user accessed members area)
+  useEffect(() => {
+    const updateLastLoginAccess = async () => {
+      if (!user?.id) return;
+      
+      try {
+        const now = new Date().toISOString();
+        
+        // Update in Supabase
+        const { error } = await supabase
+          .from('users')
+          .update({ last_login: now })
+          .eq('id', user.id);
+        
+        if (error) {
+          console.warn('Failed to update last_login on members area access:', error);
+        }
+        
+        // Update local storage
+        const savedUser = localStorage.getItem('profit_current_user');
+        if (savedUser) {
+          const userData = JSON.parse(savedUser);
+          userData.lastLogin = now;
+          localStorage.setItem('profit_current_user', JSON.stringify(userData));
+          updateUser({ lastLogin: now });
+        }
+      } catch (error) {
+        console.error('Error updating last login on members access:', error);
+      }
+    };
+    
+    updateLastLoginAccess();
+  }, [user?.id, updateUser]);
+  
   // Enhanced admin check for Pedro Pardal
   const isPedroAdmin = user?.email === 'pedropardal04@gmail.com';
   const hasAdminAccess = isPedroAdmin || user?.role === 'admin';

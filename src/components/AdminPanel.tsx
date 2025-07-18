@@ -183,7 +183,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
             break;
           case 'delete':
             onDeleteUser(userId);
-            break;
+          last_login: new Date(Date.now() - Math.random() * 7200000).toISOString() // Random time in last 2 hours
         }
       }
     });
