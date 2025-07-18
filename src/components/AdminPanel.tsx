@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Users, TrendingUp, DollarSign, Activity, Server, Shield, Zap, Settings, Monitor, Database, Globe, CreditCard, Building2, Award, Clock, CheckCircle, AlertTriangle, Eye, EyeOff, Download, Search, Filter, MoreVertical, Edit, Trash2, UserPlus, Mail, Phone, Calendar, MapPin, Star, Crown, Gift, Target, BarChart3, PieChart, LineChart, ArrowUp, ArrowDown, Percent, RefreshCw, Bell, MessageSquare, FileText, ExternalLink, Copy, Share2, Lock, Unlock, Plus, Minus, X, Check, AlertCircle, Info, HelpCircle, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Home, Package, Briefcase, Headphones, LogOut, User, Menu, Save } from 'lucide-react';
+import { Users, TrendingUp, DollarSign, Activity, Server, Shield, Zap, Settings, Monitor, Database, Globe, CreditCard, Building2, Award, Clock, CheckCircle, AlertTriangle, Eye, EyeOff, Download, Search, Filter, MoreVertical, Edit, Trash2, UserPlus, Mail, Phone, Calendar, MapPin, Star, Crown, Gift, Target, BarChart3, PieChart, LineChart, ArrowUp, ArrowDown, Percent, RefreshCw, Bell, MessageSquare, FileText, ExternalLink, Copy, Share2, Lock, Unlock, Plus, Minus, X, Check, AlertCircle, Info, HelpCircle, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Home, Package, Briefcase, Headphones, LogOut, User, Menu, Save, SortAsc, SortDesc, ArrowUpDown } from 'lucide-react';
 import { SolutionRequestsPanel } from './SolutionRequestsPanel';
 
 interface User {
@@ -21,6 +21,9 @@ interface AdminPanelProps {
   onDeleteUser: (userId: string) => void;
 }
 
+type SortField = 'name' | 'email' | 'plan' | 'created_at' | 'last_login' | 'phone';
+type SortDirection = 'asc' | 'desc';
+
 export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUpdateUser, onDeleteUser }) => {
   const [currentView, setCurrentView] = useState<'users' | 'solutions'>('users');
   const [searchTerm, setSearchTerm] = useState('');
@@ -31,6 +34,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
   const [isLoading, setIsLoading] = useState(true);
   const [editingPlan, setEditingPlan] = useState<string | null>(null);
   const [tempPlan, setTempPlan] = useState<string>('');
+  const [sortField, setSortField] = useState<SortField>('created_at');
+  const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
+  const [showFilters, setShowFilters] = useState(false);
 
   // Debug logging
   useEffect(() => {
@@ -40,13 +46,32 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
   }, [users]);
 
   // Filter users based on search and filters
-  const filteredUsers = users.filter(user => {
+  let filteredUsers = users.filter(user => {
     const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          user.email.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesPlan = filterPlan === 'all' || user.plan === filterPlan;
     const matchesActive = showInactive || user.is_active;
     
     return matchesSearch && matchesPlan && matchesActive;
+  });
+
+  // Sort users
+  filteredUsers = [...filteredUsers].sort((a, b) => {
+    let aValue: any = a[sortField];
+    let bValue: any = b[sortField];
+    
+    // Handle different data types
+    if (sortField === 'created_at' || sortField === 'last_login') {
+      aValue = new Date(aValue || 0).getTime();
+      bValue = new Date(bValue || 0).getTime();
+    } else if (typeof aValue === 'string') {
+      aValue = aValue.toLowerCase();
+      bValue = (bValue || '').toLowerCase();
+    }
+    
+    if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
+    if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
+    return 0;
   });
 
   console.log('🔍 Filtered users:', filteredUsers);
@@ -64,6 +89,24 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
       weekAgo.setDate(weekAgo.getDate() - 7);
       return signupDate > weekAgo;
     }).length
+  };
+
+  const handleSort = (field: SortField) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortDirection('asc');
+    }
+  };
+
+  const getSortIcon = (field: SortField) => {
+    if (sortField !== field) {
+      return <ArrowUpDown className="w-4 h-4 text-gray-500 opacity-0 group-hover:opacity-100" />;
+    }
+    return sortDirection === 'asc' ? 
+      <SortAsc className="w-4 h-4 text-blue-400" /> : 
+      <SortDesc className="w-4 h-4 text-blue-400" />;
   };
 
   const getPlanColor = (plan: string) => {
@@ -239,7 +282,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
             {/* Filters and Search */}
             <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 border border-slate-700/50">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
-                <div className="flex items-center space-x-4">
+                <div className="flex flex-wrap items-center gap-4">
                   <div className="relative">
                     <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
                     <input
@@ -272,6 +315,16 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                     <span>Mostrar inativos</span>
                   </label>
                   
+                  <button
+                    onClick={() => setShowFilters(!showFilters)}
+                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors text-sm font-medium ${
+                      showFilters ? 'bg-blue-600 text-white' : 'bg-slate-700/50 text-slate-300 hover:bg-slate-700'
+                    }`}
+                  >
+                    <Filter className="w-4 h-4" />
+                    <span>Filtros Avançados</span>
+                  </button>
+                  
                   {users.filter(u => !u.is_active).length > 0 && (
                     <button
                       onClick={() => {
@@ -288,6 +341,66 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                     </button>
                   )}
                 </div>
+
+                {/* Advanced Filters */}
+                {showFilters && (
+                  <div className="mt-4 p-4 bg-slate-700/30 rounded-lg border border-slate-600/50">
+                    <div className="flex flex-wrap items-center gap-4">
+                      <div className="flex items-center space-x-2">
+                        <span className="text-sm text-slate-300">Ordenar por:</span>
+                        <select
+                          value={sortField}
+                          onChange={(e) => setSortField(e.target.value as SortField)}
+                          className="px-3 py-1 bg-slate-700/50 border border-slate-600 rounded text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                          <option value="name">Nome</option>
+                          <option value="email">Email</option>
+                          <option value="plan">Plano</option>
+                          <option value="created_at">Data de Cadastro</option>
+                          <option value="last_login">Último Login</option>
+                          <option value="phone">Telefone</option>
+                        </select>
+                      </div>
+                      
+                      <div className="flex items-center space-x-2">
+                        <span className="text-sm text-slate-300">Direção:</span>
+                        <button
+                          onClick={() => setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')}
+                          className={`flex items-center space-x-1 px-3 py-1 rounded text-sm font-medium transition-colors ${
+                            sortDirection === 'asc' 
+                              ? 'bg-blue-600 text-white' 
+                              : 'bg-slate-700/50 text-slate-300 hover:bg-slate-700'
+                          }`}
+                        >
+                          {sortDirection === 'asc' ? (
+                            <>
+                              <SortAsc className="w-4 h-4" />
+                              <span>Crescente</span>
+                            </>
+                          ) : (
+                            <>
+                              <SortDesc className="w-4 h-4" />
+                              <span>Decrescente</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+                      
+                      <button
+                        onClick={() => {
+                          setSortField('created_at');
+                          setSortDirection('desc');
+                          setFilterPlan('all');
+                          setShowInactive(false);
+                          setSearchTerm('');
+                        }}
+                        className="px-3 py-1 bg-gray-600 hover:bg-gray-700 text-white rounded text-sm transition-colors"
+                      >
+                        Limpar Filtros
+                      </button>
+                    </div>
+                  </div>
+                )}
 
                 {selectedUsers.length > 0 && (
                   <div className="flex items-center space-x-2">
@@ -360,23 +473,43 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                           className="rounded border-slate-600 bg-slate-700/50 text-blue-600 focus:ring-blue-500"
                         />
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
-                        Usuário
+                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider group cursor-pointer hover:bg-slate-600/30 transition-colors"
+                          onClick={() => handleSort('name')}>
+                        <div className="flex items-center space-x-2">
+                          <span>Usuário</span>
+                          {getSortIcon('name')}
+                        </div>
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
-                        Telefone
+                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider group cursor-pointer hover:bg-slate-600/30 transition-colors"
+                          onClick={() => handleSort('phone')}>
+                        <div className="flex items-center space-x-2">
+                          <span>Telefone</span>
+                          {getSortIcon('phone')}
+                        </div>
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
-                        Plano
+                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider group cursor-pointer hover:bg-slate-600/30 transition-colors"
+                          onClick={() => handleSort('plan')}>
+                        <div className="flex items-center space-x-2">
+                          <span>Plano</span>
+                          {getSortIcon('plan')}
+                        </div>
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
                         Status
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
-                        Cadastro
+                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider group cursor-pointer hover:bg-slate-600/30 transition-colors"
+                          onClick={() => handleSort('created_at')}>
+                        <div className="flex items-center space-x-2">
+                          <span>Cadastro</span>
+                          {getSortIcon('created_at')}
+                        </div>
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
-                        Último Login
+                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider group cursor-pointer hover:bg-slate-600/30 transition-colors"
+                          onClick={() => handleSort('last_login')}>
+                        <div className="flex items-center space-x-2">
+                          <span>Último Login</span>
+                          {getSortIcon('last_login')}
+                        </div>
                       </th>
                       <th className="px-6 py-3 text-right text-xs font-medium text-slate-300 uppercase tracking-wider">
                         Ações
