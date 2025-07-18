@@ -368,7 +368,7 @@ export function TutorialSystem({ onBack }: TutorialSystemProps) {
           Nossa equipe técnica está disponível para ajudá-lo via WhatsApp
         </p>
         <button
-          onClick={() => window.open('https://wa.me/message/A4462RJPMX34K1', '_blank')}
+          onClick={() => window.open('https://wa.me/5511975333355?text=Olá! Preciso de ajuda personalizada com os tutoriais.', '_blank')}
           className="bg-white text-green-600 px-8 py-4 rounded-lg font-semibold hover:bg-green-50 transition-colors"
         >
           Falar com Suporte

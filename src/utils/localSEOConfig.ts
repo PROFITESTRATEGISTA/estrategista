@@ -3,7 +3,7 @@ export const businessInfo = {
   name: "Estrategista Solutions",
   description: "Especialistas em desenvolvimento de Pack de Robôs para trading automatizado, soluções white label e automação financeira para traders e investidores brasileiros.",
   url: "https://estrategistatradingsolutions.com.br",
-  telephone: "+55 (11) 99999-9999",
+  telephone: "+55 (11) 97533-3355",
   email: "contato@estrategistatradingsolutions.com.br",
   address: {
     streetAddress: "Rua dos Traders, 123",

@@ -417,7 +417,7 @@ export function RobotMarketplace({ userPlan, onBack }: RobotMarketplaceProps) {
               Faça upgrade para PRO e ganhe acesso aos robôs Hunter exclusivos (Pivot Hunter + Trap Hunter)
             </p>
             <button 
-              onClick={() => window.open('https://wa.me/5511999999999?text=Olá! Gostaria de fazer upgrade do MASTER para PRO para ter acesso aos 6 robôs.', '_blank')}
+              onClick={() => window.open('https://wa.me/5511975333355?text=Olá! Gostaria de fazer upgrade do MASTER para PRO para ter acesso aos 6 robôs.', '_blank')}
               className="bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold hover:bg-blue-50 transition-colors"
             >
               Fazer Upgrade para PRO
