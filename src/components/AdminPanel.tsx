@@ -37,6 +37,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
   const [sortField, setSortField] = useState<SortField>('created_at');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const [showFilters, setShowFilters] = useState(false);
+  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [phoneVerifiedFilter, setPhoneVerifiedFilter] = useState<string>('all');
+  const [lastLoginFilter, setLastLoginFilter] = useState<string>('all');
+  const [dateRangeFilter, setDateRangeFilter] = useState<string>('all');
 
   // Debug logging
   useEffect(() => {
@@ -51,8 +55,28 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                          user.email.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesPlan = filterPlan === 'all' || user.plan === filterPlan;
     const matchesActive = showInactive || user.is_active;
+    const matchesStatus = statusFilter === 'all' || 
+                         (statusFilter === 'active' && user.is_active) ||
+                         (statusFilter === 'inactive' && !user.is_active);
+    const matchesPhoneVerified = phoneVerifiedFilter === 'all' ||
+                                (phoneVerifiedFilter === 'verified' && user.phone_verified) ||
+                                (phoneVerifiedFilter === 'unverified' && !user.phone_verified);
+    const matchesLastLogin = lastLoginFilter === 'all' ||
+                            (lastLoginFilter === 'recent' && user.last_login && 
+                             new Date(user.last_login) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)) ||
+                            (lastLoginFilter === 'old' && (!user.last_login || 
+                             new Date(user.last_login) <= new Date(Date.now() - 7 * 24 * 60 * 60 * 1000))) ||
+                            (lastLoginFilter === 'never' && !user.last_login);
+    const matchesDateRange = dateRangeFilter === 'all' ||
+                            (dateRangeFilter === 'today' && 
+                             new Date(user.created_at) > new Date(Date.now() - 24 * 60 * 60 * 1000)) ||
+                            (dateRangeFilter === 'week' && 
+                             new Date(user.created_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)) ||
+                            (dateRangeFilter === 'month' && 
+                             new Date(user.created_at) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000));
     
-    return matchesSearch && matchesPlan && matchesActive;
+    return matchesSearch && matchesPlan && matchesActive && matchesStatus && 
+           matchesPhoneVerified && matchesLastLogin && matchesDateRange;
   });
 
   // Sort users
@@ -345,13 +369,14 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                 {/* Advanced Filters */}
                 {showFilters && (
                   <div className="mt-4 p-4 bg-slate-700/30 rounded-lg border border-slate-600/50">
-                    <div className="flex flex-wrap items-center gap-4">
-                      <div className="flex items-center space-x-2">
-                        <span className="text-sm text-slate-300">Ordenar por:</span>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                      {/* Ordenação */}
+                      <div className="space-y-2">
+                        <label className="text-xs text-slate-300 font-medium">Ordenar por:</label>
                         <select
                           value={sortField}
                           onChange={(e) => setSortField(e.target.value as SortField)}
-                          className="px-3 py-1 bg-slate-700/50 border border-slate-600 rounded text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600 rounded text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                         >
                           <option value="name">Nome</option>
                           <option value="email">Email</option>
@@ -362,11 +387,12 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                         </select>
                       </div>
                       
-                      <div className="flex items-center space-x-2">
-                        <span className="text-sm text-slate-300">Direção:</span>
+                      {/* Direção */}
+                      <div className="space-y-2">
+                        <label className="text-xs text-slate-300 font-medium">Direção:</label>
                         <button
                           onClick={() => setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')}
-                          className={`flex items-center space-x-1 px-3 py-1 rounded text-sm font-medium transition-colors ${
+                          className={`w-full flex items-center justify-center space-x-2 px-3 py-2 rounded text-sm font-medium transition-colors ${
                             sortDirection === 'asc' 
                               ? 'bg-blue-600 text-white' 
                               : 'bg-slate-700/50 text-slate-300 hover:bg-slate-700'
@@ -386,18 +412,118 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                         </button>
                       </div>
                       
-                      <button
-                        onClick={() => {
-                          setSortField('created_at');
-                          setSortDirection('desc');
-                          setFilterPlan('all');
-                          setShowInactive(false);
-                          setSearchTerm('');
-                        }}
-                        className="px-3 py-1 bg-gray-600 hover:bg-gray-700 text-white rounded text-sm transition-colors"
-                      >
-                        Limpar Filtros
-                      </button>
+                      {/* Status */}
+                      <div className="space-y-2">
+                        <label className="text-xs text-slate-300 font-medium">Status:</label>
+                        <select
+                          value={statusFilter}
+                          onChange={(e) => setStatusFilter(e.target.value)}
+                          className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600 rounded text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                          <option value="all">Todos</option>
+                          <option value="active">Ativos</option>
+                          <option value="inactive">Inativos</option>
+                        </select>
+                      </div>
+                      
+                      {/* Telefone Verificado */}
+                      <div className="space-y-2">
+                        <label className="text-xs text-slate-300 font-medium">Telefone:</label>
+                        <select
+                          value={phoneVerifiedFilter}
+                          onChange={(e) => setPhoneVerifiedFilter(e.target.value)}
+                          className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600 rounded text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                          <option value="all">Todos</option>
+                          <option value="verified">Verificados</option>
+                          <option value="unverified">Não verificados</option>
+                        </select>
+                      </div>
+                      
+                      {/* Último Login */}
+                      <div className="space-y-2">
+                        <label className="text-xs text-slate-300 font-medium">Último Login:</label>
+                        <select
+                          value={lastLoginFilter}
+                          onChange={(e) => setLastLoginFilter(e.target.value)}
+                          className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600 rounded text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                          <option value="all">Todos</option>
+                          <option value="recent">Últimos 7 dias</option>
+                          <option value="old">Mais de 7 dias</option>
+                          <option value="never">Nunca</option>
+                        </select>
+                      </div>
+                      
+                      {/* Data de Cadastro */}
+                      <div className="space-y-2">
+                        <label className="text-xs text-slate-300 font-medium">Cadastro:</label>
+                        <select
+                          value={dateRangeFilter}
+                          onChange={(e) => setDateRangeFilter(e.target.value)}
+                          className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600 rounded text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                          <option value="all">Todos</option>
+                          <option value="today">Hoje</option>
+                          <option value="week">Últimos 7 dias</option>
+                          <option value="month">Últimos 30 dias</option>
+                        </select>
+                      </div>
+                      
+                      {/* Botão Limpar */}
+                      <div className="space-y-2">
+                        <label className="text-xs text-slate-300 font-medium">Ações:</label>
+                        <button
+                          onClick={() => {
+                            setSortField('created_at');
+                            setSortDirection('desc');
+                            setFilterPlan('all');
+                            setStatusFilter('all');
+                            setPhoneVerifiedFilter('all');
+                            setLastLoginFilter('all');
+                            setDateRangeFilter('all');
+                            setShowInactive(false);
+                            setSearchTerm('');
+                          }}
+                          className="w-full px-3 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded text-sm transition-colors"
+                        >
+                          Limpar Filtros
+                        </button>
+                      </div>
+                    </div>
+                    
+                    {/* Filtros Ativos */}
+                    <div className="mt-4 pt-4 border-t border-slate-600/50">
+                      <div className="flex items-center space-x-2">
+                        <span className="text-xs text-slate-400">Filtros ativos:</span>
+                        {filterPlan !== 'all' && (
+                          <span className="px-2 py-1 bg-blue-600/20 text-blue-300 rounded text-xs">
+                            Plano: {filterPlan.toUpperCase()}
+                          </span>
+                        )}
+                        {statusFilter !== 'all' && (
+                          <span className="px-2 py-1 bg-green-600/20 text-green-300 rounded text-xs">
+                            Status: {statusFilter === 'active' ? 'Ativos' : 'Inativos'}
+                          </span>
+                        )}
+                        {phoneVerifiedFilter !== 'all' && (
+                          <span className="px-2 py-1 bg-purple-600/20 text-purple-300 rounded text-xs">
+                            Tel: {phoneVerifiedFilter === 'verified' ? 'Verificados' : 'Não verificados'}
+                          </span>
+                        )}
+                        {lastLoginFilter !== 'all' && (
+                          <span className="px-2 py-1 bg-orange-600/20 text-orange-300 rounded text-xs">
+                            Login: {lastLoginFilter === 'recent' ? 'Recente' : 
+                                   lastLoginFilter === 'old' ? 'Antigo' : 'Nunca'}
+                          </span>
+                        )}
+                        {dateRangeFilter !== 'all' && (
+                          <span className="px-2 py-1 bg-yellow-600/20 text-yellow-300 rounded text-xs">
+                            Cadastro: {dateRangeFilter === 'today' ? 'Hoje' :
+                                     dateRangeFilter === 'week' ? '7 dias' : '30 dias'}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
                 )}
