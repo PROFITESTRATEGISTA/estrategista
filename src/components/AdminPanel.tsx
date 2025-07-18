@@ -8,6 +8,7 @@ interface User {
   email: string;
   phone?: string;
   plan: 'free' | 'pro' | 'master';
+  billing_period?: 'monthly' | 'semestral' | 'annual';
   is_active: boolean;
   created_at: string;
   last_login?: string;
@@ -21,7 +22,7 @@ interface AdminPanelProps {
   onDeleteUser: (userId: string) => void;
 }
 
-type SortField = 'name' | 'email' | 'plan' | 'created_at' | 'last_login' | 'phone';
+type SortField = 'name' | 'email' | 'plan' | 'billing_period' | 'created_at' | 'last_login' | 'phone';
 type SortDirection = 'asc' | 'desc';
 
 export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUpdateUser, onDeleteUser }) => {
@@ -34,6 +35,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
   const [isLoading, setIsLoading] = useState(true);
   const [editingPlan, setEditingPlan] = useState<string | null>(null);
   const [tempPlan, setTempPlan] = useState<string>('');
+  const [editingPeriod, setEditingPeriod] = useState<string | null>(null);
+  const [tempPeriod, setTempPeriod] = useState<string>('');
   const [sortField, setSortField] = useState<SortField>('created_at');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const [showFilters, setShowFilters] = useState(false);
@@ -41,6 +44,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
   const [phoneVerifiedFilter, setPhoneVerifiedFilter] = useState<string>('all');
   const [lastLoginFilter, setLastLoginFilter] = useState<string>('all');
   const [dateRangeFilter, setDateRangeFilter] = useState<string>('all');
+  const [billingPeriodFilter, setBillingPeriodFilter] = useState<string>('all');
 
   // Debug logging
   useEffect(() => {
@@ -74,9 +78,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                              new Date(user.created_at) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)) ||
                             (dateRangeFilter === 'month' && 
                              new Date(user.created_at) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000));
+    const matchesBillingPeriod = billingPeriodFilter === 'all' || user.billing_period === billingPeriodFilter;
     
     return matchesSearch && matchesPlan && matchesActive && matchesStatus && 
-           matchesPhoneVerified && matchesLastLogin && matchesDateRange;
+           matchesPhoneVerified && matchesLastLogin && matchesDateRange && matchesBillingPeriod;
   });
 
   // Sort users
@@ -151,6 +156,24 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
     }
   };
 
+  const getBillingPeriodColor = (period: string) => {
+    switch (period) {
+      case 'monthly': return 'bg-blue-100 text-blue-800';
+      case 'semestral': return 'bg-green-100 text-green-800';
+      case 'annual': return 'bg-purple-100 text-purple-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const getBillingPeriodText = (period: string) => {
+    switch (period) {
+      case 'monthly': return 'Mensal';
+      case 'semestral': return 'Semestral';
+      case 'annual': return 'Anual';
+      default: return 'Não definido';
+    }
+  };
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('pt-BR', {
       day: '2-digit',
@@ -206,6 +229,24 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
   const handlePlanCancel = () => {
     setEditingPlan(null);
     setTempPlan('');
+  };
+
+  const handlePeriodEdit = (userId: string, currentPeriod: string) => {
+    setEditingPeriod(userId);
+    setTempPeriod(currentPeriod || 'monthly');
+  };
+
+  const handlePeriodSave = (userId: string) => {
+    if (tempPeriod !== '') {
+      onUpdateUser(userId, { billing_period: tempPeriod as 'monthly' | 'semestral' | 'annual' });
+    }
+    setEditingPeriod(null);
+    setTempPeriod('');
+  };
+
+  const handlePeriodCancel = () => {
+    setEditingPeriod(null);
+    setTempPeriod('');
   };
 
   // If viewing solution requests, render that component
@@ -470,6 +511,21 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                         </select>
                       </div>
                       
+                      {/* Período de Cobrança */}
+                      <div className="space-y-2">
+                        <label className="text-xs text-slate-300 font-medium">Período:</label>
+                        <select
+                          value={billingPeriodFilter}
+                          onChange={(e) => setBillingPeriodFilter(e.target.value)}
+                          className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600 rounded text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        >
+                          <option value="all">Todos</option>
+                          <option value="monthly">Mensal</option>
+                          <option value="semestral">Semestral</option>
+                          <option value="annual">Anual</option>
+                        </select>
+                      </div>
+                      
                       {/* Botão Limpar */}
                       <div className="space-y-2">
                         <label className="text-xs text-slate-300 font-medium">Ações:</label>
@@ -482,6 +538,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                             setPhoneVerifiedFilter('all');
                             setLastLoginFilter('all');
                             setDateRangeFilter('all');
+                            setBillingPeriodFilter('all');
                             setShowInactive(false);
                             setSearchTerm('');
                           }}
@@ -521,6 +578,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                           <span className="px-2 py-1 bg-yellow-600/20 text-yellow-300 rounded text-xs">
                             Cadastro: {dateRangeFilter === 'today' ? 'Hoje' :
                                      dateRangeFilter === 'week' ? '7 dias' : '30 dias'}
+                          </span>
+                        )}
+                        {billingPeriodFilter !== 'all' && (
+                          <span className="px-2 py-1 bg-indigo-600/20 text-indigo-300 rounded text-xs">
+                            Período: {getBillingPeriodText(billingPeriodFilter)}
                           </span>
                         )}
                       </div>
@@ -618,6 +680,13 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                         <div className="flex items-center space-x-2">
                           <span>Plano</span>
                           {getSortIcon('plan')}
+                        </div>
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider group cursor-pointer hover:bg-slate-600/30 transition-colors"
+                          onClick={() => handleSort('billing_period')}>
+                        <div className="flex items-center space-x-2">
+                          <span>Período</span>
+                          {getSortIcon('billing_period')}
                         </div>
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
@@ -746,6 +815,44 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                             >
                               {getPlanIcon(user.plan)}
                               <span>{user.plan.toUpperCase()}</span>
+                              <Edit className="w-3 h-3 ml-1" />
+                            </button>
+                          )}
+                        </td>
+                        <td className="px-6 py-4">
+                          {editingPeriod === user.id ? (
+                            <div className="flex items-center space-x-2">
+                              <select
+                                value={tempPeriod}
+                                onChange={(e) => setTempPeriod(e.target.value)}
+                                className="px-2 py-1 bg-slate-700 border border-slate-600 rounded text-white text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              >
+                                <option value="monthly">Mensal</option>
+                                <option value="semestral">Semestral</option>
+                                <option value="annual">Anual</option>
+                              </select>
+                              <button
+                                onClick={() => handlePeriodSave(user.id)}
+                                className="p-1 hover:bg-green-600/50 rounded transition-colors text-green-400"
+                                title="Salvar"
+                              >
+                                <Save className="w-3 h-3" />
+                              </button>
+                              <button
+                                onClick={handlePeriodCancel}
+                                className="p-1 hover:bg-red-600/50 rounded transition-colors text-red-400"
+                                title="Cancelar"
+                              >
+                                <X className="w-3 h-3" />
+                              </button>
+                            </div>
+                          ) : (
+                            <button
+                              onClick={() => handlePeriodEdit(user.id, user.billing_period || 'monthly')}
+                              className={`inline-flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium hover:opacity-80 transition-opacity ${getBillingPeriodColor(user.billing_period || 'monthly')}`}
+                              title="Clique para editar período"
+                            >
+                              <span>{getBillingPeriodText(user.billing_period || 'monthly')}</span>
                               <Edit className="w-3 h-3 ml-1" />
                             </button>
                           )}
