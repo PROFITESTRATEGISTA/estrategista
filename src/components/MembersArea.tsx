@@ -316,14 +316,26 @@ export default function MembersArea() {
     
     try {
       if (supabase) {
-        const { error } = await supabase
-          .from('users')
-          .update(updates)
-          .eq('id', userId);
+        // Filter out fields that don't exist in the Supabase users table
+        const validFields = ['name', 'email', 'phone', 'plan', 'is_active', 'last_login', 'phone_verified'];
+        const filteredUpdates = Object.keys(updates)
+          .filter(key => validFields.includes(key))
+          .reduce((obj, key) => {
+            obj[key] = updates[key];
+            return obj;
+          }, {} as any);
         
-        if (error) {
-          console.error('Error updating user:', error);
-          console.log('⚠️ Erro no Supabase, atualizando localmente');
+        // Only update if there are valid fields to update
+        if (Object.keys(filteredUpdates).length > 0) {
+          const { error } = await supabase
+            .from('users')
+            .update(filteredUpdates)
+            .eq('id', userId);
+          
+          if (error) {
+            console.error('Error updating user:', error);
+            console.log('⚠️ Erro no Supabase, atualizando localmente');
+          }
         }
       } else {
         console.log('⚠️ Supabase não disponível, atualizando localmente');
