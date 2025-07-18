@@ -237,7 +237,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
             break;
           case 'delete':
             onDeleteUser(userId);
-          last_login: new Date(Date.now() - Math.random() * 7200000).toISOString() // Random time in last 2 hours
+            break;
         }
       }
     });
@@ -295,29 +295,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
               <Shield className="w-8 h-8 text-blue-400" />
               <h1 className="text-xl font-bold">Gerenciamento de Usuários - Estrategista Solutions</h1>
             </div>
-            
-            <select
-              value={periodFilter}
-              onChange={(e) => setPeriodFilter(e.target.value)}
-              className="px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="all">Todos os períodos</option>
-              <option value="monthly">Mensal</option>
-              <option value="semiannual">Semestral</option>
-              <option value="annual">Anual</option>
-            </select>
-            
-            <select
-              value={contractStatusFilter}
-              onChange={(e) => setContractStatusFilter(e.target.value)}
-              className="px-4 py-2 bg-slate-700/50 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="all">Todos os contratos</option>
-              <option value="active">Contratos ativos</option>
-              <option value="expiring">Expirando em breve</option>
-              <option value="expired">Contratos expirados</option>
-              <option value="no_contract">Sem contrato</option>
-            </select>
             
             <div className="flex items-center space-x-4">
               <button
@@ -1072,8 +1049,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                 // Reativar Pedro Pardal se não estiver na lista
                 const pedroExists = users.some(u => u.email === 'pedropardal04@gmail.com');
                 if (!pedroExists) {
-                setPeriodFilter('all');
-                setContractStatusFilter('all');
                   const adminUser = {
                     id: 'admin-pedro-pardal',
                     name: 'Pedro Pardal',
