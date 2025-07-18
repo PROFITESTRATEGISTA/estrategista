@@ -116,6 +116,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             setUser(user);
             setSupabaseUser(session.user);
             localStorage.setItem('profit_current_user', JSON.stringify(user));
+            
+            // Update last login
+            updateLastLogin(data.user.id);
             setLoading(false);
             return;
           } catch (dbError) {
@@ -215,6 +218,36 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     return () => subscription.unsubscribe();
   }, []);
 
+  // Function to update last login timestamp
+  const updateLastLogin = async (userId: string) => {
+    try {
+      const now = new Date().toISOString();
+      
+      // Update in Supabase
+      const { error } = await supabase
+        .from('users')
+        .update({ last_login: now })
+        .eq('id', userId);
+      
+      if (error) {
+        console.warn('Failed to update last_login in Supabase:', error);
+      } else {
+        console.log('✅ Last login updated successfully for user:', userId);
+      }
+      
+      // Update local storage
+      const savedUser = localStorage.getItem('profit_current_user');
+      if (savedUser) {
+        const userData = JSON.parse(savedUser);
+        userData.lastLogin = now;
+        localStorage.setItem('profit_current_user', JSON.stringify(userData));
+        setUser(prev => prev ? { ...prev, lastLogin: now } : null);
+      }
+    } catch (error) {
+      console.error('Error updating last login:', error);
+    }
+  };
+
   const checkUserAuthMethods = async (email: string): Promise<{ exists: boolean; hasPassword: boolean; hasPhone: boolean }> => {
     try {
       console.log('🔍 checkUserAuthMethods called for:', email);
@@ -305,6 +338,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
             console.log('👤 Final user object created:', user);
             setUser(user);
+            
+            // Update last login for new registration
+            updateLastLogin(data.user.id);
             setLoading(false);
             return true;
           } catch (dbError) {
@@ -321,6 +357,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             };
             setUser(fallbackUser);
             setLoading(false);
+            
+            // Update last login for fallback user too
+            updateLastLogin(data.user.id);
             return true;
           }
         } else if (error) {
@@ -395,6 +434,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setUser(userData);
         localStorage.setItem('profit_current_user', JSON.stringify(userData));
         setLoading(false);
+        
+        // Update last login in localStorage users
+        const users = JSON.parse(localStorage.getItem('profit_users') || '[]');
+        const updatedUsers = users.map((u: LocalStorageUser) => 
+          u.id === foundUser.id ? { ...u, lastLogin: new Date().toISOString() } : u
+        );
+        localStorage.setItem('profit_users', JSON.stringify(updatedUsers));
+        
         setLastAuthError(null);
         return true;
       }
@@ -466,6 +513,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           setUser(userData);
           setSupabaseUser(data.user);
           localStorage.setItem('profit_current_user', JSON.stringify(userData));
+          
+          // Update last login for new user
+          updateLastLogin(data.user.id);
+          
+          // Update last login in database
+          updateLastLogin(session.user.id);
           setLoading(false);
           return true;
         } else if (error) {
