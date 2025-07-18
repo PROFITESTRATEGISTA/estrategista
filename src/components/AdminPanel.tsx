@@ -280,6 +280,27 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
     setTempPeriod('');
   };
 
+  const handleSaveContractDate = async (userId: string, field: 'contract_start' | 'contract_end', value: string) => {
+    try {
+      console.log(`💾 Salvando ${field} para usuário ${userId}:`, value);
+      
+      const updates = { [field]: value };
+      await onUpdateUser(userId, updates);
+      
+      // Clear editing state
+      if (field === 'contract_start') {
+        setEditingContractStart(null);
+      } else {
+        setEditingContractEnd(null);
+      }
+      
+      console.log(`✅ ${field} salvo com sucesso`);
+    } catch (error) {
+      console.error(`Error saving ${field}:`, error);
+      alert(`Erro ao salvar ${field === 'contract_start' ? 'data de início' : 'data de fim'}`);
+    }
+  };
+
   const handleUpdateUser = (userId: string, updates: Partial<User>) => {
     onUpdateUser(userId, updates);
     setEditingUser(null);
