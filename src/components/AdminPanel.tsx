@@ -280,6 +280,12 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
     setTempPeriod('');
   };
 
+  const handleUpdateUser = (userId: string, updates: Partial<User>) => {
+    onUpdateUser(userId, updates);
+    setEditingUser(null);
+    setEditUserForm({});
+  };
+
   // If viewing solution requests, render that component
   if (currentView === 'solutions') {
     return <SolutionRequestsPanel onBack={() => setCurrentView('users')} />;
@@ -900,51 +906,125 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                         
                         {/* Contract Start */}
                         <td className="px-6 py-4 text-sm">
-                          {editingUser === user.id ? (
-                            <input
-                              type="date"
-                              value={editUserForm.contract_start || ''}
-                              onChange={(e) => setEditUserForm(prev => ({ ...prev, contract_start: e.target.value }))}
-                              className="px-2 py-1 bg-slate-700 border border-slate-600 rounded text-white text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 w-32"
-                            />
+                          {editingUser === user.id && editUserForm.contract_start !== undefined ? (
+                            <div className="flex items-center space-x-2">
+                              <input
+                                type="date"
+                                value={editUserForm.contract_start || ''}
+                                onChange={(e) => setEditUserForm(prev => ({ ...prev, contract_start: e.target.value }))}
+                                className="px-2 py-1 bg-slate-700 border border-slate-600 rounded text-white text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              />
+                              <button
+                                onClick={() => handleUpdateUser(user.id, { contract_start: editUserForm.contract_start })}
+                                className="p-1 hover:bg-green-600/50 rounded transition-colors text-green-400"
+                                title="Salvar data de início"
+                              >
+                                <CheckCircle className="w-3 h-3" />
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setEditingUser(null);
+                                  setEditUserForm({});
+                                }}
+                                className="p-1 hover:bg-red-600/50 rounded transition-colors text-red-400"
+                                title="Cancelar"
+                              >
+                                <X className="w-3 h-3" />
+                              </button>
+                            </div>
                           ) : (
-                            <button
-                              onClick={() => {
-                                setEditingUser(user.id);
-                                setEditUserForm(user);
-                              }}
-                              className="text-gray-300 hover:text-blue-400 transition-colors text-left"
-                              title="Clique para definir data de início"
-                            >
-                              {user.contract_start ? formatDate(user.contract_start) : (
-                                <span className="text-yellow-400 underline">Definir data</span>
+                            <div className="flex items-center space-x-2">
+                              {user.contract_start ? (
+                                <span className="text-slate-300">
+                                  {new Date(user.contract_start).toLocaleDateString('pt-BR')}
+                                </span>
+                              ) : (
+                                <button
+                                  onClick={() => {
+                                    setEditingUser(user.id);
+                                    setEditUserForm({ ...user, contract_start: user.contract_start || '' });
+                                  }}
+                                  className="text-yellow-400 hover:text-yellow-300 underline text-xs"
+                                  title="Clique para definir data de início"
+                                >
+                                  Definir data
+                                </button>
                               )}
-                            </button>
+                              {user.contract_start && (
+                                <button
+                                  onClick={() => {
+                                    setEditingUser(user.id);
+                                    setEditUserForm({ ...user, contract_start: user.contract_start || '' });
+                                  }}
+                                  className="p-1 hover:bg-slate-600/50 rounded transition-colors text-slate-400"
+                                  title="Editar data de início"
+                                >
+                                  <Edit className="w-3 h-3" />
+                                </button>
+                              )}
+                            </div>
                           )}
                         </td>
                         
                         {/* Contract End */}
                         <td className="px-6 py-4 text-sm">
-                          {editingUser === user.id ? (
-                            <input
-                              type="date"
-                              value={editUserForm.contract_end || ''}
-                              onChange={(e) => setEditUserForm(prev => ({ ...prev, contract_end: e.target.value }))}
-                              className="px-2 py-1 bg-slate-700 border border-slate-600 rounded text-white text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 w-32"
-                            />
+                          {editingUser === user.id && editUserForm.contract_end !== undefined ? (
+                            <div className="flex items-center space-x-2">
+                              <input
+                                type="date"
+                                value={editUserForm.contract_end || ''}
+                                onChange={(e) => setEditUserForm(prev => ({ ...prev, contract_end: e.target.value }))}
+                                className="px-2 py-1 bg-slate-700 border border-slate-600 rounded text-white text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              />
+                              <button
+                                onClick={() => handleUpdateUser(user.id, { contract_end: editUserForm.contract_end })}
+                                className="p-1 hover:bg-green-600/50 rounded transition-colors text-green-400"
+                                title="Salvar data de fim"
+                              >
+                                <CheckCircle className="w-3 h-3" />
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setEditingUser(null);
+                                  setEditUserForm({});
+                                }}
+                                className="p-1 hover:bg-red-600/50 rounded transition-colors text-red-400"
+                                title="Cancelar"
+                              >
+                                <X className="w-3 h-3" />
+                              </button>
+                            </div>
                           ) : (
-                            <button
-                              onClick={() => {
-                                setEditingUser(user.id);
-                                setEditUserForm(user);
-                              }}
-                              className="text-gray-300 hover:text-blue-400 transition-colors text-left"
-                              title="Clique para definir data de fim"
-                            >
-                              {user.contract_end ? formatDate(user.contract_end) : (
-                                <span className="text-yellow-400 underline">Definir data</span>
+                            <div className="flex items-center space-x-2">
+                              {user.contract_end ? (
+                                <span className="text-slate-300">
+                                  {new Date(user.contract_end).toLocaleDateString('pt-BR')}
+                                </span>
+                              ) : (
+                                <button
+                                  onClick={() => {
+                                    setEditingUser(user.id);
+                                    setEditUserForm({ ...user, contract_end: user.contract_end || '' });
+                                  }}
+                                  className="text-yellow-400 hover:text-yellow-300 underline text-xs"
+                                  title="Clique para definir data de fim"
+                                >
+                                  Definir data
+                                </button>
                               )}
-                            </button>
+                              {user.contract_end && (
+                                <button
+                                  onClick={() => {
+                                    setEditingUser(user.id);
+                                    setEditUserForm({ ...user, contract_end: user.contract_end || '' });
+                                  }}
+                                  className="p-1 hover:bg-slate-600/50 rounded transition-colors text-slate-400"
+                                  title="Editar data de fim"
+                                >
+                                  <Edit className="w-3 h-3" />
+                                </button>
+                              )}
+                            </div>
                           )}
                         </td>
                         
