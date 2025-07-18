@@ -220,10 +220,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
       const user = users.find(u => u.id === userId);
       if (user) {
         switch (action) {
-          case 'reactivate':
-            onUpdateUser(userId, { is_active: true, plan: user.plan || 'free' });
-            break;
           case 'activate':
+            onUpdateUser(userId, { is_active: true });
+            break;
+          case 'reactivate':
             onUpdateUser(userId, { is_active: true });
             break;
           case 'deactivate':
@@ -278,27 +278,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
   const handlePeriodCancel = () => {
     setEditingPeriod(null);
     setTempPeriod('');
-  };
-
-  const handleSaveContractDate = async (userId: string, field: 'contract_start' | 'contract_end', value: string) => {
-    try {
-      console.log(`💾 Salvando ${field} para usuário ${userId}:`, value);
-      
-      const updates = { [field]: value };
-      await onUpdateUser(userId, updates);
-      
-      // Clear editing state
-      if (field === 'contract_start') {
-        setEditingContractStart(null);
-      } else {
-        setEditingContractEnd(null);
-      }
-      
-      console.log(`✅ ${field} salvo com sucesso`);
-    } catch (error) {
-      console.error(`Error saving ${field}:`, error);
-      alert(`Erro ao salvar ${field === 'contract_start' ? 'data de início' : 'data de fim'}`);
-    }
   };
 
   const handleUpdateUser = (userId: string, updates: Partial<User>) => {
