@@ -317,7 +317,7 @@ export default function MembersArea() {
     try {
       if (supabase) {
         // Filter out fields that don't exist in the Supabase users table
-        const validFields = ['name', 'email', 'phone', 'plan', 'is_active', 'last_login', 'phone_verified'];
+        const validFields = ['name', 'email', 'phone', 'plan', 'is_active', 'last_login', 'phone_verified', 'contract_start', 'contract_end'];
         const filteredUpdates = Object.keys(updates)
           .filter(key => validFields.includes(key))
           .reduce((obj, key) => {

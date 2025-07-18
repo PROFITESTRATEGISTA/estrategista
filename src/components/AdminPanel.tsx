@@ -219,12 +219,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
     selectedUsers.forEach(userId => {
       const user = users.find(u => u.id === userId);
       if (user) {
-        switch (action) {
+      // Parse date in YYYY-MM-DD format to avoid timezone issues
+      const [year, month, day] = contractEnd.split('-').map(Number);
+      const endDate = new Date(year, month - 1, day); // month is 0-indexed
           case 'reactivate':
-            onUpdateUser(userId, { is_active: true, plan: user.plan || 'free' });
-            break;
-          case 'activate':
-            onUpdateUser(userId, { is_active: true });
+      today.setHours(0, 0, 0, 0); // Normalize to start of day
             break;
           case 'deactivate':
             onUpdateUser(userId, { is_active: false });
