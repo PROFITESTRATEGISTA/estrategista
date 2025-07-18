@@ -13,6 +13,8 @@ interface User {
   created_at: string;
   last_login?: string;
   phone_verified: boolean;
+  contract_start?: string;
+  contract_end?: string;
 }
 
 interface AdminPanelProps {
@@ -182,6 +184,33 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
       hour: '2-digit',
       minute: '2-digit'
     });
+  };
+
+  const calculateDaysRemaining = (contractEnd?: string): number | null => {
+    if (!contractEnd) return null;
+    
+    const endDate = new Date(contractEnd);
+    const today = new Date();
+    const diffTime = endDate.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    return diffDays;
+  };
+
+  const getDaysRemainingColor = (days: number | null): string => {
+    if (days === null) return 'text-gray-400';
+    if (days < 0) return 'text-red-400'; // Expirado
+    if (days <= 7) return 'text-orange-400'; // Expira em 7 dias
+    if (days <= 30) return 'text-yellow-400'; // Expira em 30 dias
+    return 'text-green-400'; // Mais de 30 dias
+  };
+
+  const getDaysRemainingText = (days: number | null): string => {
+    if (days === null) return 'N/A';
+    if (days < 0) return `Expirado há ${Math.abs(days)} dias`;
+    if (days === 0) return 'Expira hoje';
+    if (days === 1) return 'Expira amanhã';
+    return `${days} dias`;
   };
 
   const handleBulkAction = (action: string) => {
@@ -690,6 +719,15 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                         </div>
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                        Início Contrato
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                        Fim Contrato
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
+                        Dias Restantes
+                      </th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider">
                         Status
                       </th>
                       <th className="px-6 py-3 text-left text-xs font-medium text-slate-300 uppercase tracking-wider group cursor-pointer hover:bg-slate-600/30 transition-colors"
@@ -857,6 +895,46 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                             </button>
                           )}
                         </td>
+                        
+                        {/* Contract Start */}
+                        <td className="px-6 py-4">
+                          {editingUser === user.id ? (
+                            <input
+                              type="date"
+                              value={editForm.contract_start || ''}
+                              onChange={(e) => setEditForm(prev => ({ ...prev, contract_start: e.target.value }))}
+                              className="px-2 py-1 bg-slate-700 border border-slate-600 rounded text-white text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                          ) : (
+                            <span className="text-slate-300 text-sm">
+                              {user.contract_start ? formatDate(user.contract_start) : 'Não definido'}
+                            </span>
+                          )}
+                        </td>
+                        
+                        {/* Contract End */}
+                        <td className="px-6 py-4">
+                          {editingUser === user.id ? (
+                            <input
+                              type="date"
+                              value={editForm.contract_end || ''}
+                              onChange={(e) => setEditForm(prev => ({ ...prev, contract_end: e.target.value }))}
+                              className="px-2 py-1 bg-slate-700 border border-slate-600 rounded text-white text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                          ) : (
+                            <span className="text-slate-300 text-sm">
+                              {user.contract_end ? formatDate(user.contract_end) : 'Não definido'}
+                            </span>
+                          )}
+                        </td>
+                        
+                        {/* Days Remaining */}
+                        <td className="px-6 py-4">
+                          <span className={`text-sm font-medium ${getDaysRemainingColor(calculateDaysRemaining(user.contract_end))}`}>
+                            {getDaysRemainingText(calculateDaysRemaining(user.contract_end))}
+                          </span>
+                        </td>
+                        
                         <td className="px-6 py-4">
                           <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
                             user.is_active 
@@ -960,7 +1038,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onBack, users = [], onUp
                     is_active: true,
                     created_at: '2024-01-01T00:00:00.000Z',
                     phone_verified: true,
-                    last_login: new Date().toISOString()
+                    last_login: new Date().toISOString(),
+                    contract_start: '2024-01-01',
+                    contract_end: '2024-12-31'
                   };
                   setUsers(prev => [adminUser, ...prev]);
                   alert('✅ Pedro Pardal adicionado como admin!');
