@@ -36,14 +36,16 @@ export default function MembersArea() {
       try {
         const now = new Date().toISOString();
         
-        // Update in Supabase
-        const { error } = await supabase
-          .from('users')
-          .update({ last_login: now })
-          .eq('id', user.id);
-        
-        if (error) {
-          console.warn('Failed to update last_login on members area access:', error);
+        // Update in Supabase if available
+        if (supabase) {
+          const { error } = await supabase
+            .from('users')
+            .update({ last_login: now })
+            .eq('id', user.id);
+          
+          if (error) {
+            console.warn('Failed to update last_login on members area access:', error);
+          }
         }
         
         // Update local storage
@@ -73,25 +75,31 @@ export default function MembersArea() {
       
       try {
         // Get current user from Supabase Auth
-        const { data: { user: authUser }, error } = await supabase.auth.getUser();
-        
-        if (authUser && !error) {
-          // SMS user has phone but email is null in auth
-          const hasPhone = !!authUser.phone;
-          const isEmailNull = authUser.email === null;
-          const hasEmailInMetadata = !!(authUser.user_metadata?.email);
+        if (supabase) {
+          const { data: { user: authUser }, error } = await supabase.auth.getUser();
           
-          setIsSmsUser(isEmailNull && hasPhone && hasEmailInMetadata);
-          
-          console.log('🔍 User auth method check:', {
-            hasPhone,
-            isEmailNull, 
-            hasEmailInMetadata,
-            isSmsUser: isEmailNull && hasPhone && hasEmailInMetadata
-          });
+          if (authUser && !error) {
+            // SMS user has phone but email is null in auth
+            const hasPhone = !!authUser.phone;
+            const isEmailNull = authUser.email === null;
+            const hasEmailInMetadata = !!(authUser.user_metadata?.email);
+            
+            setIsSmsUser(isEmailNull && hasPhone && hasEmailInMetadata);
+            
+            console.log('🔍 User auth method check:', {
+              hasPhone,
+              isEmailNull, 
+              hasEmailInMetadata,
+              isSmsUser: isEmailNull && hasPhone && hasEmailInMetadata
+            });
+          }
+        } else {
+          // Fallback: assume not SMS user if Supabase not available
+          setIsSmsUser(false);
         }
       } catch (error) {
-        console.error('Error checking user auth method:', error);
+        console.warn('Error checking user auth method, using fallback:', error);
+        setIsSmsUser(false);
       }
     };
     
@@ -112,49 +120,61 @@ export default function MembersArea() {
     // Load current plan from Supabase
     const loadCurrentPlan = async () => {
       try {
-        const { data, error } = await supabase
-          .from('users')
-          .select('plan')
-          .eq('id', user.id)
-          .single();
-        
-        if (data && !error) {
-          const dbPlan = data.plan || 'master';
-          setRealTimePlan(dbPlan);
-          // Update context if different
-          if (dbPlan !== user.plan) {
-            updateUser({ plan: dbPlan });
+        if (supabase) {
+          const { data, error } = await supabase
+            .from('users')
+            .select('plan')
+            .eq('id', user.id)
+            .single();
+          
+          if (data && !error) {
+            const dbPlan = data.plan || 'master';
+            setRealTimePlan(dbPlan);
+            // Update context if different
+            if (dbPlan !== user.plan) {
+              updateUser({ plan: dbPlan });
+            }
           }
+        } else {
+          // Fallback to user context plan if Supabase not available
+          setRealTimePlan(user.plan || 'master');
         }
       } catch (error) {
-        console.error('Error loading current plan:', error);
+        console.warn('Error loading current plan, using fallback:', error);
+        setRealTimePlan(user.plan || 'master');
       }
     };
     
     loadCurrentPlan();
     
-    const subscription = supabase
-      .channel('user-plan-changes')
-      .on('postgres_changes', 
-        { 
-          event: 'UPDATE', 
-          schema: 'public', 
-          table: 'users',
-          filter: `id=eq.${user.id}`
-        }, 
-        (payload) => {
-          const newPlan = payload.new.plan || 'master';
-          if (newPlan !== realTimePlan) {
-            setRealTimePlan(newPlan);
-            // Update user context
-            updateUser({ plan: newPlan });
+    // Only set up real-time subscription if Supabase is available
+    let subscription: any = null;
+    if (supabase) {
+      subscription = supabase
+        .channel('user-plan-changes')
+        .on('postgres_changes', 
+          { 
+            event: 'UPDATE', 
+            schema: 'public', 
+            table: 'users',
+            filter: `id=eq.${user.id}`
+          }, 
+          (payload) => {
+            const newPlan = payload.new.plan || 'master';
+            if (newPlan !== realTimePlan) {
+              setRealTimePlan(newPlan);
+              // Update user context
+              updateUser({ plan: newPlan });
+            }
           }
-        }
-      )
-      .subscribe();
+        )
+        .subscribe();
+    }
 
     return () => {
-      subscription.unsubscribe();
+      if (subscription) {
+        subscription.unsubscribe();
+      }
     };
   }, [user?.id, realTimePlan, updateUser]);
   
@@ -186,113 +206,103 @@ export default function MembersArea() {
         last_login: new Date().toISOString()
       };
 
-      // Buscar usuários da tabela public.users
-      const { data: publicUsers, error: publicError } = await supabase
-        .from('users')
-        .select('*');
-      
-      console.log('📊 Public users query result:', { users: publicUsers, error: publicError });
-      
-      if (publicUsers && !publicError) {
-        // Mapear dados da tabela public.users
-        let finalUsers = publicUsers.map(publicUser => ({
-          id: publicUser.id,
-          name: publicUser.name || 'Usuário',
-          email: publicUser.email || 'Não informado',
-          phone: publicUser.phone || 'Não informado',
-          plan: publicUser.plan || 'free',
-          is_active: publicUser.is_active !== false, // Default true se não especificado
-          created_at: publicUser.created_at || new Date().toISOString(),
-          last_login: publicUser.last_login,
-          phone_verified: publicUser.phone_verified || false
-        }));
+      // Buscar usuários da tabela public.users se Supabase disponível
+      if (supabase) {
+        const { data: publicUsers, error: publicError } = await supabase
+          .from('users')
+          .select('*');
         
-        // Garantir que Pedro Pardal está na lista
-        const pedroExists = finalUsers.some(u => u.email === 'pedropardal04@gmail.com');
-        if (!pedroExists) {
-          finalUsers.unshift(adminUser);
-        }
+        console.log('📊 Public users query result:', { users: publicUsers, error: publicError });
         
-        console.log('📊 Mapped users:', finalUsers);
-        setUsers(finalUsers);
-      } else {
-        console.error('Error loading public users:', publicError);
-        // Fallback para dados mock incluindo Pedro Pardal
-        const mockUsers = [
-          adminUser,
-          {
-            id: '2',
-            name: 'João Silva',
-            email: 'joao@email.com',
-            phone: '+55 11 88888-8888',
-            plan: 'pro',
-            is_active: true,
-            created_at: new Date(Date.now() - 86400000).toISOString(),
-            phone_verified: true,
-            last_login: new Date(Date.now() - 3600000).toISOString()
-          },
-          {
-            id: '3',
-            name: 'Maria Santos',
-            email: 'maria@email.com',
-            phone: '+55 11 77777-7777',
-            plan: 'free',
-            is_active: false,
-            created_at: new Date(Date.now() - 172800000).toISOString(),
-            phone_verified: false,
-            last_login: new Date(Date.now() - 86400000).toISOString()
-          },
-          {
-            id: '4',
-            name: 'Carlos Oliveira',
-            email: 'carlos@email.com',
-            phone: '+55 11 66666-6666',
-            plan: 'master',
-            is_active: true,
-            created_at: new Date(Date.now() - 259200000).toISOString(),
-            phone_verified: true,
-            last_login: new Date(Date.now() - 7200000).toISOString()
+        if (publicUsers && !publicError) {
+          // Mapear dados da tabela public.users
+          let finalUsers = publicUsers.map(publicUser => ({
+            id: publicUser.id,
+            name: publicUser.name || 'Usuário',
+            email: publicUser.email || 'Não informado',
+            phone: publicUser.phone || 'Não informado',
+            plan: publicUser.plan || 'free',
+            is_active: publicUser.is_active !== false, // Default true se não especificado
+            created_at: publicUser.created_at || new Date().toISOString(),
+            last_login: publicUser.last_login,
+            phone_verified: publicUser.phone_verified || false
+          }));
+          
+          // Garantir que Pedro Pardal está na lista
+          const pedroExists = finalUsers.some(u => u.email === 'pedropardal04@gmail.com');
+          if (!pedroExists) {
+            finalUsers.unshift(adminUser);
           }
-        ];
-        
-        console.log('📊 Using mock users:', mockUsers);
-        setUsers(mockUsers);
+          
+          console.log('📊 Mapped users:', finalUsers);
+          setUsers(finalUsers);
+        } else {
+          console.error('Error loading public users:', publicError);
+          // Fallback para dados mock incluindo Pedro Pardal
+          setUsers(getMockUsers(adminUser));
+        }
+      } else {
+        console.log('📊 Supabase not available, using mock users');
+        setUsers(getMockUsers(adminUser));
       }
       
     } catch (error) {
       console.error('Error loading users:', error);
-      // Fallback final para dados mock
-      const fallbackUsers = [
-        {
-          id: user?.id || '1',
-          name: user?.name || 'Pedro Pardal',
-          email: user?.email || 'pedropardal04@gmail.com',
-          phone: '+55 11 99999-9999',
-          plan: 'master',
-          is_active: true,
-          created_at: new Date().toISOString(),
-          phone_verified: true,
-          last_login: new Date().toISOString()
-        },
-        {
-          id: '2',
-          name: 'Ana Costa',
-          email: 'ana@email.com',
-          phone: '+55 11 88888-8888',
-          plan: 'pro',
-          is_active: true,
-          created_at: new Date(Date.now() - 86400000).toISOString(),
-          phone_verified: true,
-          last_login: new Date(Date.now() - 3600000).toISOString()
-        }
-      ];
-      
-      console.log('📊 Using fallback users:', fallbackUsers);
-      setUsers(fallbackUsers);
+      // Fallback final para dados mock  
+      const adminUser = {
+        id: 'admin-pedro-pardal',
+        name: 'Pedro Pardal',
+        email: 'pedropardal04@gmail.com',
+        phone: '+55 11 97533-3355',
+        plan: 'master',
+        is_active: true,
+        created_at: '2024-01-01T00:00:00.000Z',
+        phone_verified: true,
+        last_login: new Date().toISOString()
+      };
+      setUsers(getMockUsers(adminUser));
     } finally {
       setLoadingUsers(false);
     }
   };
+
+  // Helper function to generate mock users
+  const getMockUsers = (adminUser: any) => [
+    adminUser,
+    {
+      id: '2',
+      name: 'João Silva',
+      email: 'joao@email.com',
+      phone: '+55 11 88888-8888',
+      plan: 'pro',
+      is_active: true,
+      created_at: new Date(Date.now() - 86400000).toISOString(),
+      phone_verified: true,
+      last_login: new Date(Date.now() - 3600000).toISOString()
+    },
+    {
+      id: '3',
+      name: 'Maria Santos',
+      email: 'maria@email.com',
+      phone: '+55 11 77777-7777',
+      plan: 'free',
+      is_active: false,
+      created_at: new Date(Date.now() - 172800000).toISOString(),
+      phone_verified: false,
+      last_login: new Date(Date.now() - 86400000).toISOString()
+    },
+    {
+      id: '4',
+      name: 'Carlos Oliveira',
+      email: 'carlos@email.com',
+      phone: '+55 11 66666-6666',
+      plan: 'master',
+      is_active: true,
+      created_at: new Date(Date.now() - 259200000).toISOString(),
+      phone_verified: true,
+      last_login: new Date(Date.now() - 7200000).toISOString()
+    }
+  ];
 
   const handleUpdateUser = async (userId: string, updates: Partial<User>) => {
     if (!hasAdminAccess) return;
@@ -305,14 +315,18 @@ export default function MembersArea() {
     }
     
     try {
-      const { error } = await supabase
-        .from('users')
-        .update(updates)
-        .eq('id', userId);
-      
-      if (error) {
-        console.error('Error updating user:', error);
-        console.log('⚠️ Erro no Supabase, atualizando localmente');
+      if (supabase) {
+        const { error } = await supabase
+          .from('users')
+          .update(updates)
+          .eq('id', userId);
+        
+        if (error) {
+          console.error('Error updating user:', error);
+          console.log('⚠️ Erro no Supabase, atualizando localmente');
+        }
+      } else {
+        console.log('⚠️ Supabase não disponível, atualizando localmente');
       }
       
       // Update local state
@@ -339,15 +353,19 @@ export default function MembersArea() {
     }
     
     try {
-      const { error } = await supabase
-        .from('users')
-        .delete()
-        .eq('id', userId);
-      
-      if (error) {
-        console.error('Error deleting user:', error);
-        alert('Erro ao excluir usuário');
-        return;
+      if (supabase) {
+        const { error } = await supabase
+          .from('users')
+          .delete()
+          .eq('id', userId);
+        
+        if (error) {
+          console.error('Error deleting user:', error);
+          alert('Erro ao excluir usuário');
+          return;
+        }
+      } else {
+        console.log('⚠️ Supabase não disponível, removendo localmente');
       }
       
       // Update local state
