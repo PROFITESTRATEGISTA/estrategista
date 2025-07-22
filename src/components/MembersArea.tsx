@@ -6,7 +6,8 @@ import { TutorialSystem } from './TutorialSystem';
 import VPSServicesPage from './VPSServicesPage';
 import { SetPasswordModal } from './SetPasswordModal';
 import { AdminPanel } from './AdminPanel';
-import { Bot, BookOpen, Settings, LogOut, User, Crown, Zap, Monitor, Shield, Key } from 'lucide-react';
+import { DayTradeCalculator } from './DayTradeCalculator';
+import { Bot, BookOpen, Settings, LogOut, User, Crown, Zap, Monitor, Shield, Key, Calculator } from 'lucide-react';
 
 interface User {
   id: string;
@@ -21,7 +22,7 @@ interface User {
 }
 export default function MembersArea() {
   const { user, loading: authLoading, logout, updateUser } = useAuth();
-  const [currentView, setCurrentView] = useState<'dashboard' | 'robots' | 'tutorials' | 'admin' | 'vps'>('dashboard');
+  const [currentView, setCurrentView] = useState<'dashboard' | 'robots' | 'tutorials' | 'admin' | 'vps' | 'calculator'>('dashboard');
   const [realTimePlan, setRealTimePlan] = useState(user?.plan || 'master');
   const [showSetPasswordModal, setShowSetPasswordModal] = useState(false);
   const [isSmsUser, setIsSmsUser] = useState(false);
@@ -509,7 +510,7 @@ export default function MembersArea() {
               </div>
 
               {/* Main Actions */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
                 <button
                   onClick={() => setCurrentView('robots')}
                   className="bg-gradient-to-br from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 p-8 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
@@ -540,6 +541,17 @@ export default function MembersArea() {
                     <Settings className="w-12 h-12 text-white mx-auto mb-4" />
                     <h3 className="text-xl font-bold text-white mb-2">Serviços</h3>
                     <p className="text-orange-100">VPS para Trading</p>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => setCurrentView('calculator')}
+                  className="bg-gradient-to-br from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 p-8 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                >
+                  <div className="text-center">
+                    <Calculator className="w-12 h-12 text-white mx-auto mb-4" />
+                    <h3 className="text-xl font-bold text-white mb-2">Calculadora</h3>
+                    <p className="text-green-100">Day Trade Calculator</p>
                   </div>
                 </button>
               </div>
