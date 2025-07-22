@@ -772,9 +772,15 @@ const PackRobos = ({ onAuthClick }) => {
               <tbody>
                 {comparisonFeatures.map((item, index) => (
                   <tr key={index} className="border-b border-slate-100 hover:bg-white transition-colors duration-200">
-                </div>
-              </div>
-            ))}
+                    <td className="py-3 sm:py-4 px-3 sm:px-6 font-medium text-slate-800 text-sm sm:text-base">{item.feature}</td>
+                    <td className="py-3 sm:py-4 px-3 sm:px-6 text-center">{renderComparisonValue(item.starter)}</td>
+                    <td className="py-3 sm:py-4 px-3 sm:px-6 text-center">{renderComparisonValue(item.pro)}</td>
+                    <td className="py-3 sm:py-4 px-3 sm:px-6 text-center">{renderComparisonValue(item.master)}</td>
+                    <td className="py-3 sm:py-4 px-3 sm:px-6 text-center">{renderComparisonValue(item.personalizado)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
 
           <div className="mt-12 sm:mt-16 bg-gradient-to-r from-emerald-50 to-blue-50 rounded-xl sm:rounded-2xl p-6 sm:p-8 border border-emerald-200">
