@@ -160,85 +160,99 @@ const PackRobos = ({ onAuthClick }) => {
       feature: "Ativos permitidos",
       starter: "WIN",
       pro: "WIN + WDO", 
-      master: "Todos"
+      master: "Todos",
+      personalizado: "Todos + Mais"
     },
     {
       feature: "Horário de operação",
       starter: "14h–17h",
       pro: "Completo",
-      master: "Completo"
+      master: "Completo",
+      personalizado: "Personalizado"
     },
     {
       feature: "Trailing Stop",
       starter: false,
       pro: "✅ (1 tipo)",
-      master: "✅ (todos os modos)"
+      master: "✅ (todos os modos)",
+      personalizado: "✅ (avançado)"
     },
     {
       feature: "Breakeven",
       starter: false,
       pro: "✅ (simples)",
-      master: "✅ (2 tipos)"
+      master: "✅ (2 tipos)",
+      personalizado: "✅ (customizado)"
     },
     {
       feature: "Stop Diário",
       starter: true,
       pro: true,
-      master: "✅ com zonas"
+      master: "✅ com zonas",
+      personalizado: true
     },
     {
       feature: "Meta Diário",
       starter: true,
       pro: true,
-      master: true
+      master: true,
+      personalizado: true
     },
     {
       feature: "Stop Financeiro",
       starter: false,
       pro: true,
-      master: true
+      master: true,
+      personalizado: true
     },
     {
       feature: "Stop Técnico",
       starter: false,
       pro: false,
-      master: true
+      master: true,
+      personalizado: true
     },
     {
       feature: "Filtros técnicos",
       starter: false,
       pro: false,
-      master: true
+      master: true,
+      personalizado: "✅ (todos)"
     },
     {
       feature: "Suporte",
       starter: "Área de Membros",
       pro: "Área de Membros",
-      master: "Técnico direto"
+      master: "Técnico direto",
+      personalizado: "Dedicado"
     },
     {
       feature: "Atualizações",
       starter: false,
       pro: true,
-      master: "✅ com prioridade"
+      master: "✅ com prioridade",
+      personalizado: "✅ vitalícias"
     },
     {
       feature: "Licenciamento",
       starter: "1 conta",
       pro: "1 conta",
-      master: "1 conta"
+      master: "1 conta",
+      personalizado: "Ilimitado"
     },
     {
       feature: "Limite de contratos",
       starter: "2 WIN",
       pro: "5 WDO / 10 WIN",
-      master: "10 WDO / 20 WIN"
+      master: "10 WDO / 20 WIN",
+      personalizado: "Ilimitado"
     },
     {
       feature: "Revenda liberada",
       starter: false,
       pro: false,
-      master: "❌ (via White Label)"
+      master: "❌ (via White Label)",
+      personalizado: "✅ (total)"
     }
   ];
 
@@ -756,6 +770,7 @@ const PackRobos = ({ onAuthClick }) => {
                   <th className="text-center py-3 sm:py-4 px-3 sm:px-6 font-semibold text-emerald-700 bg-emerald-50 rounded-t-lg text-sm sm:text-base">Starter</th>
                   <th className="text-center py-3 sm:py-4 px-3 sm:px-6 font-semibold text-blue-700 bg-blue-50 rounded-t-lg text-sm sm:text-base">PRO</th>
                   <th className="text-center py-3 sm:py-4 px-3 sm:px-6 font-semibold text-purple-700 bg-purple-50 rounded-t-lg text-sm sm:text-base">MASTER</th>
+                  <th className="text-center py-3 sm:py-4 px-3 sm:px-6 font-semibold text-orange-700 bg-orange-50 rounded-t-lg text-sm sm:text-base">Personalizado</th>
                 </tr>
               </thead>
               <tbody>
@@ -770,6 +785,9 @@ const PackRobos = ({ onAuthClick }) => {
                     </td>
                     <td className="py-3 sm:py-4 px-3 sm:px-6 text-center bg-purple-25">
                       {renderComparisonValue(item.master)}
+                    </td>
+                    <td className="py-3 sm:py-4 px-3 sm:px-6 text-center bg-orange-25">
+                      {renderComparisonValue(item.personalizado)}
                     </td>
                   </tr>
                 ))}
