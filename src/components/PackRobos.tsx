@@ -43,9 +43,9 @@ const PackRobos = ({ onAuthClick }) => {
   ];
 
   const setups = [
-    { nome: "Scalper 1", tipo: "Scalper", observacoes: "Alvo Moderado" },
-    { nome: "Scalper 2", tipo: "Scalper", observacoes: "Alvo Curto" },
-    { nome: "Scalper 3", tipo: "Scalper", observacoes: "Alvo Longo" },
+    { nome: "Scalper 1", tipo: "Scalper", observacoes: "Operações rápidas com alvo moderado" },
+    { nome: "Scalper 2", tipo: "Scalper", observacoes: "Entradas precisas com alvo curto" },
+    { nome: "Scalper 3", tipo: "Scalper", observacoes: "Scalping com alvo estendido" },
     { nome: "Scalper 4", tipo: "Scalper", observacoes: "Fluxo" }, 
       { nome: "Scalper 5", tipo: "Scalper", observacoes: "Movimentos Ágeis" },
     { nome: "Scalper 6", tipo: "Scalper", observacoes: "Entrada curta" } 
@@ -609,7 +609,7 @@ const PackRobos = ({ onAuthClick }) => {
                   <tr className="border-b-2 border-slate-200">
                     <th className="text-left py-3 sm:py-4 px-3 sm:px-6 font-semibold text-slate-700 text-sm sm:text-base">Nome do Setup</th>
                     <th className="text-left py-3 sm:py-4 px-3 sm:px-6 font-semibold text-slate-700 text-sm sm:text-base">Tipo</th>
-                    <th className="text-left py-3 sm:py-4 px-3 sm:px-6 font-semibold text-slate-700 text-sm sm:text-base">Observações</th>
+                    <th className="text-left py-3 sm:py-4 px-3 sm:px-6 font-semibold text-slate-700 text-sm sm:text-base">Time Frame Sugerido 1 Minuto</th>
                   </tr>
                 </thead>
                 <tbody>
