@@ -152,6 +152,47 @@ export function TutorialSystem({ onBack }: TutorialSystemProps) {
           completed: false
         }
       ]
+    },
+    {
+      id: 'technical-manual',
+      title: '📖 Manual Técnico',
+      description: 'Guia completo com especificações e configurações avançadas',
+      duration: '15 min',
+      difficulty: 'intermediate',
+      type: 'interactive',
+      icon: <FileText className="w-8 h-8 text-blue-500" />,
+      steps: [
+        {
+          id: 'manual-1',
+          title: '1. Visão Geral dos Robôs',
+          content: 'Especificações básicas: Scalper 1, 2 e 3 operam em WIN/WDO com timeframes de 1M-5M. Cada robô tem parâmetros personalizáveis para diferentes perfis de risco e estratégias.',
+          completed: false
+        },
+        {
+          id: 'manual-2',
+          title: '2. Requisitos Técnicos',
+          content: 'Sistema: Windows 10/11, RAM 4GB+, Profit instalado, conexão estável 10Mbps+. Corretoras compatíveis: Clear, Rico, XP, Modal, Mirae, BTG.',
+          completed: false
+        },
+        {
+          id: 'manual-3',
+          title: '3. Configuração de Parâmetros',
+          content: 'Valor por contrato: R$ 500-2000, Stop Loss: 20-50 pontos, Take Profit: 30-100 pontos, Horário: 9h-11h e 14h-17h, Filtros: Volume mínimo 1000 contratos.',
+          completed: false
+        },
+        {
+          id: 'manual-4',
+          title: '4. Gestão de Risco',
+          content: 'Stop diário: Máximo 3% do capital, Trailing Stop: Ativação após 15 pontos de lucro, Breakeven: Proteção automática no ponto de entrada, Máximo 5 operações/dia.',
+          completed: false
+        },
+        {
+          id: 'manual-5',
+          title: '5. Monitoramento e Relatórios',
+          content: 'Acompanhe: Win Rate (meta >60%), Profit Factor (meta >1.5), Drawdown máximo (<10%), Número de operações diárias, Horários de maior assertividade.',
+          completed: false
+        }
+      ]
     }
   ];
 
@@ -263,47 +304,6 @@ export function TutorialSystem({ onBack }: TutorialSystemProps) {
         </div>
       </div>
     );
-  },
-  {
-    id: 'technical-manual',
-    title: '📖 Manual Técnico',
-    description: 'Guia completo com especificações e configurações avançadas',
-    duration: '15 min',
-    difficulty: 'intermediate',
-    type: 'interactive',
-    icon: <FileText className="w-8 h-8 text-blue-500" />,
-    steps: [
-      {
-        id: 'manual-1',
-        title: '1. Visão Geral dos Robôs',
-        content: 'Especificações básicas: Scalper 1, 2 e 3 operam em WIN/WDO com timeframes de 1M-5M. Cada robô tem parâmetros personalizáveis para diferentes perfis de risco e estratégias.',
-        completed: false
-      },
-      {
-        id: 'manual-2',
-        title: '2. Requisitos Técnicos',
-        content: 'Sistema: Windows 10/11, RAM 4GB+, Profit instalado, conexão estável 10Mbps+. Corretoras compatíveis: Clear, Rico, XP, Modal, Mirae, BTG.',
-        completed: false
-      },
-      {
-        id: 'manual-3',
-        title: '3. Configuração de Parâmetros',
-        content: 'Valor por contrato: R$ 500-2000, Stop Loss: 20-50 pontos, Take Profit: 30-100 pontos, Horário: 9h-11h e 14h-17h, Filtros: Volume mínimo 1000 contratos.',
-        completed: false
-      },
-      {
-        id: 'manual-4',
-        title: '4. Gestão de Risco',
-        content: 'Stop diário: Máximo 3% do capital, Trailing Stop: Ativação após 15 pontos de lucro, Breakeven: Proteção automática no ponto de entrada, Máximo 5 operações/dia.',
-        completed: false
-      },
-      {
-        id: 'manual-5',
-        title: '5. Monitoramento e Relatórios',
-        content: 'Acompanhe: Win Rate (meta >60%), Profit Factor (meta >1.5), Drawdown máximo (<10%), Número de operações diárias, Horários de maior assertividade.',
-        completed: false
-      }
-    ]
   }
 
   return (
