@@ -552,7 +552,6 @@ const PackRobos = ({ onAuthClick }) => {
           background-size: 50px 50px;
         }
       `}</style>
-              </p>
             </div>
           </div>
         </div>
