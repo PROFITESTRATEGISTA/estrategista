@@ -57,7 +57,8 @@ export function DayTradeCalculator({ onBack }: DayTradeCalculatorProps) {
   };
 
   return (
-    <div className="space-y-8 max-w-7xl mx-auto">
+    <div className="min-h-screen bg-gray-950 p-6">
+      <div className="space-y-8 max-w-7xl mx-auto">
       {/* Header */}
       <div className="flex items-center space-x-4">
         <button
@@ -236,6 +237,7 @@ export function DayTradeCalculator({ onBack }: DayTradeCalculatorProps) {
             <p>• <strong>Contratos:</strong> Quantidade ideal para operar</p>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );
