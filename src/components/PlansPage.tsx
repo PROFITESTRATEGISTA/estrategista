@@ -339,7 +339,7 @@ const PlansPage = ({ onAuthClick, scrollToFAQ = false }: PlansPageProps = {}) =>
       </section>
       
       {/* Detailed Plan Comparison */}
-      <section className="py-20 bg-gray-900">
+      <section id="plans-comparison" className="py-20 bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
@@ -742,7 +742,18 @@ const PlansPage = ({ onAuthClick, scrollToFAQ = false }: PlansPageProps = {}) =>
                           onClick={() => {
                             const plansSection = document.getElementById('plans-section');
                             if (plansSection) {
-                              plansSection.scrollIntoView({ behavior: 'smooth' });
+                              // Check if mobile (screen width < 768px)
+                              const isMobile = window.innerWidth < 768;
+                              if (isMobile) {
+                                // On mobile, scroll to comparison table for better UX
+                                const comparisonSection = document.getElementById('plans-comparison');
+                                if (comparisonSection) {
+                                  comparisonSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                }
+                              } else {
+                                // On desktop, scroll to plans cards
+                                plansSection.scrollIntoView({ behavior: 'smooth' });
+                              }
                             }
                           }}
                           className="flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors text-sm"
