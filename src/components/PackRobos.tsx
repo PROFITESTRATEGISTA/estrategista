@@ -772,63 +772,6 @@ const PackRobos = ({ onAuthClick }) => {
               <tbody>
                 {comparisonFeatures.map((item, index) => (
                   <tr key={index} className="border-b border-slate-100 hover:bg-white transition-colors duration-200">
-                    <td className="py-3 sm:py-4 px-3 sm:px-6 font-medium text-slate-800 text-sm sm:text-base">{item.feature}</td>
-                    <td className="py-3 sm:py-4 px-3 sm:px-6 text-center bg-emerald-25">
-                      {renderComparisonValue(item.starter)}
-                    </td>
-                    <td className="py-3 sm:py-4 px-3 sm:px-6 text-center bg-blue-25">
-                      {renderComparisonValue(item.pro)}
-                    </td>
-                    <td className="py-3 sm:py-4 px-3 sm:px-6 text-center bg-purple-25">
-                      {renderComparisonValue(item.master)}
-                    </td>
-                    <td className="py-3 sm:py-4 px-3 sm:px-6 text-center bg-orange-25">
-                      {renderComparisonValue(item.personalizado)}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section className="py-12 md:py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-800 mb-3 sm:mb-4">Depoimentos de Usuários dos Robôs de Trading</h2>
-            <p className="text-lg sm:text-xl text-slate-600">Depoimentos reais de traders que transformaram seus resultados</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-6xl mx-auto">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-slate-50 rounded-xl sm:rounded-2xl p-6 sm:p-8 hover:shadow-lg transition-all duration-300 border border-slate-100">
-                <div className="flex items-start space-x-3 sm:space-x-4">
-                  <Quote className="w-6 h-6 sm:w-8 sm:h-8 text-blue-500 flex-shrink-0 mt-1" />
-                  <div className="flex-1">
-                    <p className="text-slate-700 text-base sm:text-lg leading-relaxed mb-4 sm:mb-6 italic">
-                      "{testimonial.text}"
-                    </p>
-                    
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <div className="font-semibold text-slate-800 text-sm sm:text-base">{testimonial.name}</div>
-                        <div className="text-slate-600 text-xs sm:text-sm">{testimonial.role}</div>
-                      </div>
-                      
-                      <div className="text-right">
-                        <span className={`px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium ${getPlanColor(testimonial.plan)} mb-2 inline-block`}>
-                          {testimonial.plan}
-                        </span>
-                        <div className="flex space-x-1">
-                          {[...Array(testimonial.rating)].map((_, i) => (
-                            <Star key={i} className="w-3 h-3 sm:w-4 sm:h-4 fill-yellow-400 text-yellow-400" />
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
             ))}
