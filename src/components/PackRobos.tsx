@@ -670,258 +670,107 @@ const PackRobos = ({ onAuthClick }) => {
                   <span className="text-sm sm:text-base">Instalação automática</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <td className="py-3 sm:py-4 px-2 sm:px-4 font-medium text-slate-800 text-sm">Horário de operação</td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-emerald-50 text-xs sm:text-sm">14h-17h</td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-purple-50 text-xs sm:text-sm">Completo</td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-orange-50 text-xs sm:text-sm">Completo</td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-gradient-to-b from-orange-100 to-red-100 text-xs sm:text-sm">24/7 Customizável</td>
+                  <div className="w-2 h-2 sm:w-3 sm:h-3 bg-emerald-400 rounded-full"></div>
+                  <span className="text-sm sm:text-base">Suporte no setup</span>
+                </div>
+                <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 sm:w-3 sm:h-3 bg-emerald-400 rounded-full"></div>
                   <span className="text-sm sm:text-base">Configurações pré-definidas</span>
                 </div>
               </div>
-                  <td className="py-3 sm:py-4 px-2 sm:px-4 font-medium text-slate-800 text-sm">Trailing Stop</td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-emerald-50">
+            </div>
+          </div>
         </div>
       </section>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-purple-50">
-                    <div className="flex flex-col items-center">
-                      <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
-                      <span className="text-xs text-slate-600 mt-1">(1 tipo)</span>
-                    </div>
+
+
+      {/* Trust Section */}
       <section className="py-12 md:py-20 bg-white">
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-orange-50">
-                    <div className="flex flex-col items-center">
-                      <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
-                      <span className="text-xs text-slate-600 mt-1">(todos os modos)</span>
-                    </div>
-                  </td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-gradient-to-b from-orange-100 to-red-100">
-                    <div className="flex flex-col items-center">
-                      <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
-                      <span className="text-xs text-slate-600 mt-1">(customizável)</span>
-                    </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12 sm:mb-16">
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-800 mb-3 sm:mb-4">Garantias e Benefícios Inclusos</h2>
               <p className="text-lg sm:text-xl text-slate-600">Transparência total em todos os nossos serviços</p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-12 sm:mb-16">
-                  <td className="py-3 sm:py-4 px-2 sm:px-4 font-medium text-slate-800 text-sm">Breakeven</td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-emerald-50">
+              {guarantees.map((guarantee, index) => (
+                <div key={index} className="text-center p-4 sm:p-6 rounded-lg sm:rounded-xl bg-slate-50 hover:bg-slate-100 transition-colors duration-300">
                   <div className="flex justify-center mb-3 sm:mb-4">
                     {guarantee.icon}
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-purple-50">
-                    <div className="flex flex-col items-center">
-                      <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
-                      <span className="text-xs text-slate-600 mt-1">(simples)</span>
-                    </div>
+                  </div>
+                  <h3 className="text-base sm:text-lg font-semibold text-slate-800 mb-2">{guarantee.title}</h3>
+                  <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">{guarantee.description}</p>
                 </div>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-orange-50">
-                    <div className="flex flex-col items-center">
-                      <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
-                      <span className="text-xs text-slate-600 mt-1">(2 tipos)</span>
-                    </div>
-                  </td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-gradient-to-b from-orange-100 to-red-100">
-                    <div className="flex flex-col items-center">
-                      <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
-                      <span className="text-xs text-slate-600 mt-1">(ilimitado)</span>
-                    </div>
+              ))}
+            </div>
+
             <div className="bg-gradient-to-r from-emerald-50 to-blue-50 rounded-xl sm:rounded-2xl p-6 sm:p-8 border border-emerald-200">
               <div className="text-center">
                 <h3 className="text-xl sm:text-2xl font-bold text-slate-800 mb-4 sm:mb-6">Benefícios Inclusos em Todos os Planos de Robôs</h3>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
-                  <td className="py-3 sm:py-4 px-2 sm:px-4 font-medium text-slate-800 text-sm">Stop Diário</td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-emerald-50">
+                  <div className="bg-white rounded-lg sm:rounded-xl p-4 sm:p-6 shadow-sm">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
                       <span className="text-white font-bold text-lg sm:text-xl">💎</span>
                     </div>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-purple-50">
+                    <h4 className="font-bold text-slate-800 mb-2 text-sm sm:text-base">Profit Pro GRÁTIS</h4>
                     <p className="text-slate-600 text-xs sm:text-sm">Acesso completo à plataforma profissional via Warren</p>
                   </div>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-orange-50">
-                    <div className="flex flex-col items-center">
-                      <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
-                      <span className="text-xs text-slate-600 mt-1">com zonas</span>
-                    </div>
-                  </td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-gradient-to-b from-orange-100 to-red-100">
-                    <div className="flex flex-col items-center">
-                      <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
-                      <span className="text-xs text-slate-600 mt-1">customizável</span>
-                    </div>
+                  
+                  <div className="bg-white rounded-lg sm:rounded-xl p-4 sm:p-6 shadow-sm">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-emerald-600 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
                       <span className="text-white font-bold text-lg sm:text-xl">⚙️</span>
                     </div>
                     <h4 className="font-bold text-slate-800 mb-2 text-sm sm:text-base">Módulo Automação</h4>
-                {/* Meta Diário */}
-                <tr className="border-b border-slate-200">
-                  <td className="py-3 sm:py-4 px-2 sm:px-4 font-medium text-slate-800 text-sm">Meta Diário</td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-emerald-50">
-                    <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 mx-auto" />
-                  </td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-purple-50">
-                    <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 mx-auto" />
-                  </td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-orange-50">
-                    <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 mx-auto" />
-                  </td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-gradient-to-b from-orange-100 to-red-100">
-                    <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 mx-auto" />
-                  </td>
-                </tr>
-                
-                {/* Stop Financeiro */}
-                <tr className="border-b border-slate-200">
-                  <td className="py-3 sm:py-4 px-2 sm:px-4 font-medium text-slate-800 text-sm">Stop Financeiro</td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-emerald-50">
-                    <X className="h-4 w-4 sm:h-5 sm:w-5 text-red-500 mx-auto" />
-                  </td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-purple-50">
-                    <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 mx-auto" />
-                  </td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-orange-50">
-                    <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 mx-auto" />
-                  </td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-gradient-to-b from-orange-100 to-red-100">
-                    <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 mx-auto" />
-                  </td>
-                </tr>
-                
-                {/* Stop Técnico */}
-                <tr className="border-b border-slate-200">
-                  <td className="py-3 sm:py-4 px-2 sm:px-4 font-medium text-slate-800 text-sm">Stop Técnico</td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-emerald-50">
-                    <X className="h-4 w-4 sm:h-5 sm:w-5 text-red-500 mx-auto" />
-                  </td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-purple-50">
-                    <X className="h-4 w-4 sm:h-5 sm:w-5 text-red-500 mx-auto" />
-                  </td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-orange-50">
-                    <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 mx-auto" />
-                  </td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-gradient-to-b from-orange-100 to-red-100">
-                    <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 mx-auto" />
-                  </td>
-                </tr>
-                
-                {/* Filtros técnicos */}
-                <tr className="border-b border-slate-200">
-                  <td className="py-3 sm:py-4 px-2 sm:px-4 font-medium text-slate-800 text-sm">Filtros técnicos</td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-emerald-50">
-                    <X className="h-4 w-4 sm:h-5 sm:w-5 text-red-500 mx-auto" />
-                  </td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-purple-50">
-                    <X className="h-4 w-4 sm:h-5 sm:w-5 text-red-500 mx-auto" />
-                  </td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-orange-50">
-                    <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 mx-auto" />
-                  </td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-gradient-to-b from-orange-100 to-red-100">
-                    <div className="flex flex-col items-center">
-                      <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
-                      <span className="text-xs text-slate-600 mt-1">(todos)</span>
-                    </div>
-                  </td>
-                </tr>
-                
                     <p className="text-slate-600 text-xs sm:text-sm">Sistema de automação integrado sem custo adicional</p>
                   </div>
-                  <td className="py-3 sm:py-4 px-2 sm:px-4 font-medium text-slate-800 text-sm">Suporte</td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-emerald-50 text-xs sm:text-sm">Área de Membros</td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-purple-50 text-xs sm:text-sm">Área de Membros</td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-orange-50 text-xs sm:text-sm">Técnico direto</td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-gradient-to-b from-orange-100 to-red-100 text-xs sm:text-sm">Dedicado 24/7</td>
+                  
+                  <div className="bg-white rounded-lg sm:rounded-xl p-4 sm:p-6 shadow-sm">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                      <span className="text-white font-bold text-lg sm:text-xl">👤</span>
                     </div>
                     <h4 className="font-bold text-slate-800 mb-2 text-sm sm:text-base">Licença Pessoal</h4>
                     <p className="text-slate-600 text-xs sm:text-sm">1 licença individual vinculada ao seu CPF</p>
                   </div>
-                  <td className="py-3 sm:py-4 px-2 sm:px-4 font-medium text-slate-800 text-sm">Atualizações</td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-emerald-50">
+                </div>
+              </div>
             </div>
           </div>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-purple-50">
+        </div>
       </section>
 
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-orange-50">
-                    <div className="flex flex-col items-center">
-                      <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
-                      <span className="text-xs text-slate-600 mt-1">com prioridade</span>
-                    </div>
-                  </td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-gradient-to-b from-orange-100 to-red-100">
-                    <div className="flex flex-col items-center">
-                      <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
-                      <span className="text-xs text-slate-600 mt-1">vitalícias</span>
-                    </div>
+      {/* Comparison Section */}
+      <section className="py-12 md:py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-800 mb-3 sm:mb-4">Comparativo Técnico dos Planos de Robôs</h2>
             <p className="text-lg sm:text-xl text-slate-600">Comparação detalhada entre todos os planos</p>
           </div>
 
-                  <td className="py-3 sm:py-4 px-2 sm:px-4 font-medium text-slate-800 text-sm">Licenciamento</td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-emerald-50 text-xs sm:text-sm">1 conta</td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-purple-50 text-xs sm:text-sm">1 conta</td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-orange-50 text-xs sm:text-sm">1 conta</td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-gradient-to-b from-orange-100 to-red-100 text-xs sm:text-sm">Ilimitado</td>
+          <div className="bg-slate-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 overflow-x-auto">
+            <table className="w-full min-w-[600px]">
+              <thead>
+                <tr className="border-b-2 border-slate-200">
                   <th className="text-left py-3 sm:py-4 px-3 sm:px-6 font-semibold text-slate-700 text-sm sm:text-base">Recurso / Plano</th>
-                  <th className="text-center py-4 px-2 sm:px-3 text-slate-700 font-semibold text-xs sm:text-sm bg-orange-50 rounded-t-lg">
+                  <th className="text-center py-3 sm:py-4 px-3 sm:px-6 font-semibold text-emerald-700 bg-emerald-50 rounded-t-lg text-sm sm:text-base">Starter</th>
                   <th className="text-center py-3 sm:py-4 px-3 sm:px-6 font-semibold text-blue-700 bg-blue-50 rounded-t-lg text-sm sm:text-base">PRO</th>
-                  <th className="text-center py-4 px-2 sm:px-3 text-slate-700 font-semibold text-xs sm:text-sm bg-emerald-50 rounded-t-lg">
-                  <td className="py-3 sm:py-4 px-2 sm:px-4 font-medium text-slate-800 text-sm">Limite de contratos</td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-emerald-50 text-xs sm:text-sm">2 WIN</td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-purple-50 text-xs sm:text-sm">5 WDO / 10 WIN</td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-orange-50 text-xs sm:text-sm">10 WDO / 20 WIN</td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-gradient-to-b from-orange-100 to-red-100 text-xs sm:text-sm">Ilimitado</td>
+                  <th className="text-center py-3 sm:py-4 px-3 sm:px-6 font-semibold text-purple-700 bg-purple-50 rounded-t-lg text-sm sm:text-base">MASTER</th>
+                </tr>
               </thead>
               <tbody>
-                {/* Revenda liberada */}
-                <tr className="border-b border-slate-200">
-                  <td className="py-3 sm:py-4 px-2 sm:px-4 font-medium text-slate-800 text-sm">Revenda liberada</td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-emerald-50">
-                    <X className="h-4 w-4 sm:h-5 sm:w-5 text-red-500 mx-auto" />
-                  </td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-purple-50">
-                    <X className="h-4 w-4 sm:h-5 sm:w-5 text-red-500 mx-auto" />
-                  </td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-orange-50">
-                    <div className="flex flex-col items-center">
-                      <X className="h-4 w-4 sm:h-5 sm:w-5 text-red-500" />
-                      <span className="text-xs text-slate-600 mt-1">(via White Label)</span>
-                    </div>
-                  </td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-gradient-to-b from-orange-100 to-red-100">
-                    <div className="flex flex-col items-center">
-                      <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
-                      <span className="text-xs text-slate-600 mt-1">Marca própria</span>
-                    </div>
-                  </td>
-                </tr>
-                
-                {/* Plataformas */}
-                <tr className="border-b border-slate-200">
-                  <td className="py-3 sm:py-4 px-2 sm:px-4 font-medium text-slate-800 text-sm">Plataformas</td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-emerald-50 text-xs sm:text-sm">Profit</td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-purple-50 text-xs sm:text-sm">Profit</td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-orange-50 text-xs sm:text-sm">Profit</td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-gradient-to-b from-orange-100 to-red-100 text-xs sm:text-sm">Profit + BlackArrow + Web</td>
-                </tr>
-                
                 {comparisonFeatures.map((item, index) => (
                   <tr key={index} className="border-b border-slate-100 hover:bg-white transition-colors duration-200">
-                  <td className="py-4 sm:py-6 px-2 sm:px-4 font-bold text-slate-900 text-sm sm:text-base">Preço</td>
-                  <td className="py-4 sm:py-6 px-2 sm:px-3 text-center bg-emerald-50">
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-purple-50 text-xs sm:text-sm">WIN + WDO</td>
-                  <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-orange-50 text-xs sm:text-sm">Todos</td>
-                  <td className="py-4 sm:py-6 px-2 sm:px-3 text-center bg-purple-50">
-                    <td className="py-3 sm:py-4 px-3 sm:px-6 text-center bg-blue-25">
-                    <div className="text-xs text-purple-600">semestral</div>
+                    <td className="py-3 sm:py-4 px-3 sm:px-6 font-medium text-slate-800 text-sm sm:text-base">{item.feature}</td>
+                    <td className="py-3 sm:py-4 px-3 sm:px-6 text-center bg-emerald-25">
+                      {renderComparisonValue(item.starter)}
                     </td>
-                  <td className="py-4 sm:py-6 px-2 sm:px-3 text-center bg-orange-50">
+                    <td className="py-3 sm:py-4 px-3 sm:px-6 text-center bg-blue-25">
+                      {renderComparisonValue(item.pro)}
+                    </td>
+                    <td className="py-3 sm:py-4 px-3 sm:px-6 text-center bg-purple-25">
                       {renderComparisonValue(item.master)}
-                    <div className="text-xs text-orange-600">semestral</div>
-                  </td>
-                  <td className="py-4 sm:py-6 px-2 sm:px-3 text-center bg-gradient-to-b from-orange-100 to-red-100">
-                    <div className="font-bold text-red-700 text-lg sm:text-xl">R$ 5.000+</div>
-                    <div className="text-xs text-red-600">sob demanda</div>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -1121,12 +970,6 @@ const PackRobos = ({ onAuthClick }) => {
                 className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg font-semibold transition-colors duration-300"
               >
                 💬 Falar com Suporte
-              </button>
-              <button
-                onClick={() => window.location.href = '/criar-solucao'}
-                className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold transition-colors text-sm sm:text-base"
-              >
-                🛠️ Robô Personalizado
               </button>
             </div>
           </div>
