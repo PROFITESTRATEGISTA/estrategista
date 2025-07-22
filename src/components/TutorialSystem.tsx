@@ -291,6 +291,10 @@ export function TutorialSystem({ onBack }: TutorialSystemProps) {
     }
   };
 
+  if (showTechnicalManual) {
+    return renderTechnicalManual();
+  }
+
   if (selectedTutorial) {
     return (
       <div className="space-y-6 max-w-4xl mx-auto">
