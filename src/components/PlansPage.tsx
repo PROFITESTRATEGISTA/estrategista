@@ -352,206 +352,255 @@ const PlansPage = ({ onAuthClick, scrollToFAQ = false }: PlansPageProps = {}) =>
           
           <div className="bg-gray-800 rounded-xl overflow-hidden shadow-xl border border-gray-700">
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[800px]">
+              <table className="w-full min-w-[1000px]">
                 <thead>
                   <tr className="bg-gray-700">
                     <th className="text-left p-4 text-gray-300 font-medium">Funcionalidade</th>
                     <th className="p-4 text-gray-300 font-medium text-center">Starter</th>
                     <th className="p-4 text-gray-300 font-medium text-center bg-purple-900/30">PRO</th>
                     <th className="p-4 text-gray-300 font-medium text-center">MASTER</th>
+                    <th className="p-4 text-gray-300 font-medium text-center bg-orange-900/30">Robô Personalizado</th>
                   </tr>
                 </thead>
                 <tbody>
                   {/* Ativos */}
                   <tr className="border-t border-gray-700 bg-gray-800/50">
-                    <td colSpan={4} className="p-4 font-semibold text-blue-400">Ativos e Mercados</td>
+                    <td colSpan={5} className="p-4 font-semibold text-blue-400">Ativos e Mercados</td>
                   </tr>
                   <tr className="border-t border-gray-700">
                     <td className="p-4 text-white">Mini Índice (WIN)</td>
                     <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                     <td className="p-4 text-center bg-purple-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                     <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                    <td className="p-4 text-center bg-orange-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                   </tr>
                   <tr className="border-t border-gray-700">
                     <td className="p-4 text-white">Mini Dólar (WDO)</td>
                     <td className="p-4 text-center"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
                     <td className="p-4 text-center bg-purple-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                     <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                    <td className="p-4 text-center bg-orange-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                   </tr>
                   <tr className="border-t border-gray-700">
                     <td className="p-4 text-white">Ações</td>
                     <td className="p-4 text-center"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
                     <td className="p-4 text-center bg-purple-900/10"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
                     <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                    <td className="p-4 text-center bg-orange-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                   </tr>
                   <tr className="border-t border-gray-700">
                     <td className="p-4 text-white">Criptomoedas (BTC)</td>
                     <td className="p-4 text-center"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
                     <td className="p-4 text-center bg-purple-900/10"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
                     <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                    <td className="p-4 text-center bg-orange-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                   </tr>
                   
                   {/* Horários */}
                   <tr className="border-t border-gray-700 bg-gray-800/50">
-                    <td colSpan={4} className="p-4 font-semibold text-blue-400">Horários de Operação</td>
+                    <td colSpan={5} className="p-4 font-semibold text-blue-400">Horários de Operação</td>
                   </tr>
                   <tr className="border-t border-gray-700">
                     <td className="p-4 text-white">Manhã (9h-12h)</td>
                     <td className="p-4 text-center"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
                     <td className="p-4 text-center bg-purple-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                     <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                    <td className="p-4 text-center bg-orange-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                   </tr>
                   <tr className="border-t border-gray-700">
                     <td className="p-4 text-white">Tarde (14h-17h)</td>
                     <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                     <td className="p-4 text-center bg-purple-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                     <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                    <td className="p-4 text-center bg-orange-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                   </tr>
                   <tr className="border-t border-gray-700">
                     <td className="p-4 text-white">Noite (após 17h)</td>
                     <td className="p-4 text-center"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
                     <td className="p-4 text-center bg-purple-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                     <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                    <td className="p-4 text-center bg-orange-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                   </tr>
                   
                   {/* Gestão de Risco */}
                   <tr className="border-t border-gray-700 bg-gray-800/50">
-                    <td colSpan={4} className="p-4 font-semibold text-blue-400">Gestão de Risco</td>
+                    <td colSpan={5} className="p-4 font-semibold text-blue-400">Gestão de Risco</td>
                   </tr>
                   <tr className="border-t border-gray-700">
-                    <td className="p-4 text-white">Stop Loss Fixo</td>
+                    <td className="p-4 text-white">Stop por Pontos</td>
                     <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                     <td className="p-4 text-center bg-purple-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                     <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                    <td className="p-4 text-center bg-orange-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                  </tr>
+                  <tr className="border-t border-gray-700">
+                    <td className="p-4 text-white">Stop Financeiro</td>
+                    <td className="p-4 text-center"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
+                    <td className="p-4 text-center bg-purple-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                    <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                    <td className="p-4 text-center bg-orange-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                  </tr>
+                  <tr className="border-t border-gray-700">
+                    <td className="p-4 text-white">Stop Técnico</td>
+                    <td className="p-4 text-center"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
+                    <td className="p-4 text-center bg-purple-900/10"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
+                    <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                    <td className="p-4 text-center bg-orange-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                   </tr>
                   <tr className="border-t border-gray-700">
                     <td className="p-4 text-white">Trailing Stop</td>
                     <td className="p-4 text-center"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
                     <td className="p-4 text-center bg-purple-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                     <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                    <td className="p-4 text-center bg-orange-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                   </tr>
                   <tr className="border-t border-gray-700">
                     <td className="p-4 text-white">Trailing Stop Avançado</td>
                     <td className="p-4 text-center"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
                     <td className="p-4 text-center bg-purple-900/10"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
                     <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                    <td className="p-4 text-center bg-orange-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                   </tr>
                   <tr className="border-t border-gray-700">
                     <td className="p-4 text-white">Breakeven</td>
                     <td className="p-4 text-center"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
                     <td className="p-4 text-center bg-purple-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                     <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                    <td className="p-4 text-center bg-orange-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                   </tr>
                   <tr className="border-t border-gray-700">
                     <td className="p-4 text-white">Breakeven Avançado</td>
                     <td className="p-4 text-center"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
                     <td className="p-4 text-center bg-purple-900/10"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
                     <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                    <td className="p-4 text-center bg-orange-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                   </tr>
                   <tr className="border-t border-gray-700">
                     <td className="p-4 text-white">Stop Diário</td>
-                    <td className="p-4 text-center"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
+                    <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                     <td className="p-4 text-center bg-purple-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                     <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                    <td className="p-4 text-center bg-orange-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                  </tr>
+                  <tr className="border-t border-gray-700">
+                    <td className="p-4 text-white">Meta Diário</td>
+                    <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                    <td className="p-4 text-center bg-purple-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                    <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                    <td className="p-4 text-center bg-orange-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                   </tr>
                   <tr className="border-t border-gray-700">
                     <td className="p-4 text-white">Zonas de Risco</td>
                     <td className="p-4 text-center"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
                     <td className="p-4 text-center bg-purple-900/10"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
                     <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                    <td className="p-4 text-center bg-orange-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                  </tr>
+                  <tr className="border-t border-gray-700">
+                    <td className="p-4 text-white">Alavancagem Ilimitada</td>
+                    <td className="p-4 text-center"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
+                    <td className="p-4 text-center bg-purple-900/10"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
+                    <td className="p-4 text-center"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
+                    <td className="p-4 text-center bg-orange-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                   </tr>
                   
                   {/* Filtros */}
                   <tr className="border-t border-gray-700 bg-gray-800/50">
-                    <td colSpan={4} className="p-4 font-semibold text-blue-400">Filtros e Indicadores</td>
+                    <td colSpan={5} className="p-4 font-semibold text-blue-400">Filtros e Indicadores</td>
                   </tr>
                   <tr className="border-t border-gray-700">
                     <td className="p-4 text-white">Filtro de Horário</td>
-                    <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                    <td className="p-4 text-center"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
                     <td className="p-4 text-center bg-purple-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                     <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                    <td className="p-4 text-center bg-orange-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                   </tr>
                   <tr className="border-t border-gray-700">
                     <td className="p-4 text-white">Filtro de Volume</td>
                     <td className="p-4 text-center"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
                     <td className="p-4 text-center bg-purple-900/10"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
-                    <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                    <td className="p-4 text-center"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
+                    <td className="p-4 text-center bg-orange-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                   </tr>
                   <tr className="border-t border-gray-700">
                     <td className="p-4 text-white">Filtro de Tendência</td>
                     <td className="p-4 text-center"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
                     <td className="p-4 text-center bg-purple-900/10"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
-                    <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                    <td className="p-4 text-center"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
+                    <td className="p-4 text-center bg-orange-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                   </tr>
                   <tr className="border-t border-gray-700">
                     <td className="p-4 text-white">Filtro de Volatilidade</td>
                     <td className="p-4 text-center"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
                     <td className="p-4 text-center bg-purple-900/10"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
-                    <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                    <td className="p-4 text-center"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
+                    <td className="p-4 text-center bg-orange-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                   </tr>
                   
                   {/* Suporte */}
                   <tr className="border-t border-gray-700 bg-gray-800/50">
-                    <td colSpan={4} className="p-4 font-semibold text-blue-400">Suporte e Atualizações</td>
+                    <td colSpan={5} className="p-4 font-semibold text-blue-400">Suporte e Atualizações</td>
                   </tr>
                   <tr className="border-t border-gray-700">
-                    <td className="p-4 text-white">Suporte Básico</td>
+                    <td className="p-4 text-white">Suporte via Área de Membros</td>
                     <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                     <td className="p-4 text-center bg-purple-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                     <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
-                  </tr>
-                  <tr className="border-t border-gray-700">
-                    <td className="p-4 text-white">Suporte Comunidade</td>
-                    <td className="p-4 text-center"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
-                    <td className="p-4 text-center bg-purple-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
-                    <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                    <td className="p-4 text-center bg-orange-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                   </tr>
                   <tr className="border-t border-gray-700">
                     <td className="p-4 text-white">Suporte Técnico Direto</td>
                     <td className="p-4 text-center"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
                     <td className="p-4 text-center bg-purple-900/10"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
                     <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                    <td className="p-4 text-center bg-orange-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                   </tr>
                   <tr className="border-t border-gray-700">
                     <td className="p-4 text-white">Atualizações</td>
                     <td className="p-4 text-center"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
                     <td className="p-4 text-center bg-purple-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                     <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                    <td className="p-4 text-center bg-orange-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                   </tr>
                   <tr className="border-t border-gray-700">
                     <td className="p-4 text-white">Acesso Prioritário</td>
                     <td className="p-4 text-center"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
                     <td className="p-4 text-center bg-purple-900/10"><X className="w-5 h-5 text-red-500 mx-auto" /></td>
                     <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                    <td className="p-4 text-center bg-orange-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                   </tr>
                   
                   {/* Limites */}
                   <tr className="border-t border-gray-700 bg-gray-800/50">
-                    <td colSpan={4} className="p-4 font-semibold text-blue-400">Limites e Licenciamento</td>
+                    <td colSpan={5} className="p-4 font-semibold text-blue-400">Limites e Licenciamento</td>
                   </tr>
                   <tr className="border-t border-gray-700">
                     <td className="p-4 text-white">Número de Contas</td>
                     <td className="p-4 text-center text-gray-300">1 conta</td>
                     <td className="p-4 text-center bg-purple-900/10 text-gray-300">1 conta</td>
                     <td className="p-4 text-center text-gray-300">1 conta</td>
+                    <td className="p-4 text-center bg-orange-900/10 text-gray-300">Ilimitado</td>
                   </tr>
                   <tr className="border-t border-gray-700">
                     <td className="p-4 text-white">Limite de Contratos WIN</td>
-                    <td className="p-4 text-center text-gray-300">1 contrato</td>
+                    <td className="p-4 text-center text-gray-300">2 contratos</td>
                     <td className="p-4 text-center bg-purple-900/10 text-gray-300">10 contratos</td>
                     <td className="p-4 text-center text-gray-300">20 contratos</td>
+                    <td className="p-4 text-center bg-orange-900/10 text-gray-300">Ilimitado</td>
                   </tr>
                   <tr className="border-t border-gray-700">
                     <td className="p-4 text-white">Limite de Contratos WDO</td>
                     <td className="p-4 text-center text-gray-300">-</td>
                     <td className="p-4 text-center bg-purple-900/10 text-gray-300">5 contratos</td>
-                    <td className="p-4 text-center text-gray-300">20 contratos</td>
+                    <td className="p-4 text-center text-gray-300">10 contratos</td>
+                    <td className="p-4 text-center bg-orange-900/10 text-gray-300">Ilimitado</td>
                   </tr>
                   <tr className="border-t border-gray-700">
                     <td className="p-4 text-white">Licença Pessoal (CPF)</td>
                     <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                     <td className="p-4 text-center bg-purple-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                     <td className="p-4 text-center"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
+                    <td className="p-4 text-center bg-orange-900/10"><Check className="w-5 h-5 text-green-500 mx-auto" /></td>
                   </tr>
                 </tbody>
               </table>
@@ -564,7 +613,7 @@ const PlansPage = ({ onAuthClick, scrollToFAQ = false }: PlansPageProps = {}) =>
             </p>
           </div>
           
-          <div className="mt-12 flex flex-col sm:flex-row justify-center gap-4">
+          <div className="mt-12 flex flex-col sm:flex-row justify-center gap-4 flex-wrap">
             <button
               onClick={() => handlePlanSelect(plans[0])}
               className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-4 rounded-lg font-bold transition-colors"
@@ -588,6 +637,12 @@ const PlansPage = ({ onAuthClick, scrollToFAQ = false }: PlansPageProps = {}) =>
                 70% OFF
               </span>
               Assinar MASTER
+            </button>
+            <button
+              onClick={() => window.location.href = '/criar-solucao'}
+              className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white px-8 py-4 rounded-lg font-bold transition-colors"
+            >
+              🛠️ Robô Personalizado
             </button>
           </div>
         </div>

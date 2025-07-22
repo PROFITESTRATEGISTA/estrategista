@@ -182,9 +182,27 @@ const PackRobos = ({ onAuthClick }) => {
     },
     {
       feature: "Stop Diário",
-      starter: false,
+      starter: true,
       pro: true,
       master: "✅ com zonas"
+    },
+    {
+      feature: "Meta Diário",
+      starter: true,
+      pro: true,
+      master: true
+    },
+    {
+      feature: "Stop Financeiro",
+      starter: false,
+      pro: true,
+      master: true
+    },
+    {
+      feature: "Stop Técnico",
+      starter: false,
+      pro: false,
+      master: true
     },
     {
       feature: "Filtros técnicos",
@@ -194,8 +212,8 @@ const PackRobos = ({ onAuthClick }) => {
     },
     {
       feature: "Suporte",
-      starter: false,
-      pro: "Comunidade",
+      starter: "Área de Membros",
+      pro: "Área de Membros",
       master: "Técnico direto"
     },
     {
@@ -212,9 +230,9 @@ const PackRobos = ({ onAuthClick }) => {
     },
     {
       feature: "Limite de contratos",
-      starter: "1 contrato",
+      starter: "2 WIN",
       pro: "5 WDO / 10 WIN",
-      master: "20 contratos"
+      master: "10 WDO / 20 WIN"
     },
     {
       feature: "Revenda liberada",
