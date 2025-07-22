@@ -556,7 +556,7 @@ export default function MembersArea() {
                   </div>
                   <div className="text-center p-4 bg-gray-800 rounded-lg">
                     <div className="text-2xl font-bold text-blue-400 mb-1">
-                      {realTimePlan === 'pro' ? '6' : 
+                      {realTimePlan === 'pro' ? '3' : 
                        realTimePlan === 'master' ? '4' : 
                        realTimePlan === 'free' ? '1' : '4'}
                     </div>

@@ -24,33 +24,9 @@ interface RobotMarketplaceProps {
 const robotsByPlan = {
   pro: [
     {
-      id: 'pivot-hunter',
-      name: 'Pivot Hunter',
-      description: 'Estratégia avançada baseada em pontos de pivô com confirmação de volume',
-      category: 'hunter',
-      plans: ['pro'],
-      status: 'active' as const,
-      performance: '+18.5%',
-      timeframe: '5M-15M',
-      riskLevel: 'medium' as const,
-      features: ['Stop dinâmico', 'Gestão de risco', 'Multi-timeframe']
-    },
-    {
-      id: 'trap-hunter',
-      name: 'Trap Hunter',
-      description: 'Identificação de armadilhas do mercado para entradas precisas',
-      category: 'hunter',
-      plans: ['pro'],
-      status: 'active' as const,
-      performance: '+22.3%',
-      timeframe: '1M-5M',
-      riskLevel: 'high' as const,
-      features: ['Detecção de armadilhas', 'Entrada rápida', 'Stop agressivo']
-    },
-    {
       id: 'take-go-scalper',
       name: 'Take GO Scalper',
-      description: 'Scalper rápido para operações de alta frequência',
+      description: 'Scalper rápido para operações de alta frequência no timeframe de 1 minuto',
       category: 'scalper',
       plans: ['master', 'pro'],
       status: 'active' as const,
@@ -62,7 +38,7 @@ const robotsByPlan = {
     {
       id: 'take-33-scalper',
       name: 'Take 33 Scalper',
-      description: 'Scalper com foco em 33 pontos de ganho consistente',
+      description: 'Scalper com foco em 33 pontos de ganho consistente no timeframe de 1 minuto',
       category: 'scalper',
       plans: ['master', 'pro'],
       status: 'active' as const,
@@ -74,26 +50,14 @@ const robotsByPlan = {
     {
       id: 'gr-global',
       name: 'GR Global',
-      description: 'Robô para mercados globais e criptomoedas',
-      category: 'global',
+      description: 'Scalper para mercados globais otimizado para timeframe de 1 minuto',
+      category: 'scalper',
       plans: ['master', 'pro'],
       status: 'active' as const,
       performance: '+20.8%',
-      timeframe: '5M-1H',
+      timeframe: '1M-5M',
       riskLevel: 'medium' as const,
-      features: ['Global', 'Crypto', 'Multi-mercado']
-    },
-    {
-      id: 'warren-combo',
-      name: 'Warren Combo',
-      description: 'Estratégia básica para iniciantes - Links e tutoriais',
-      category: 'free',
-      plans: ['free', 'master', 'pro'],
-      status: 'active' as const,
-      performance: 'Tutorial',
-      timeframe: 'Educativo',
-      riskLevel: 'low' as const,
-      features: ['Tutorial completo', 'Setup básico', 'VPS com desconto']
+      features: ['Scalping global', 'Multi-mercado', 'Timeframe otimizado']
     }
   ],
   master: [
