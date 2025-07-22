@@ -40,9 +40,9 @@ const PackRobos = ({ onAuthClick }) => {
   ];
 
   const setups = [
-    { nome: "Scalper 1", tipo: "Scalper", observacoes: "Operações rápidas com alvo moderado" },
-    { nome: "Scalper 2", tipo: "Scalper", observacoes: "Entradas precisas com alvo curto" },
-    { nome: "Scalper 3", tipo: "Scalper", observacoes: "Scalping com alvo estendido" }
+    { nome: "Scalper 1", tipo: "Scalper", observacoes: "1min - Operações rápidas com alvo moderado" },
+    { nome: "Scalper 2", tipo: "Scalper", observacoes: "1min - Entradas precisas com alvo curto" },
+    { nome: "Scalper 3", tipo: "Scalper", observacoes: "1min - Scalping com alvo estendido" }
   ];
 
   const getTypeColor = (tipo: string) => {
@@ -642,7 +642,7 @@ const PackRobos = ({ onAuthClick }) => {
                   <tr className="border-b-2 border-slate-200">
                     <th className="text-left py-3 sm:py-4 px-3 sm:px-6 font-semibold text-slate-700 text-sm sm:text-base">Nome do Setup</th>
                     <th className="text-left py-3 sm:py-4 px-3 sm:px-6 font-semibold text-slate-700 text-sm sm:text-base">Tipo</th>
-                    <th className="text-left py-3 sm:py-4 px-3 sm:px-6 font-semibold text-slate-700 text-sm sm:text-base">Time Frame Sugerido 1 Minuto</th>
+                    <th className="text-left py-3 sm:py-4 px-3 sm:px-6 font-semibold text-slate-700 text-sm sm:text-base">Time Frame</th>
                   </tr>
                 </thead>
                 <tbody>
