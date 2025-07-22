@@ -370,81 +370,87 @@ const PackRobos = ({ onAuthClick }) => {
       {/* Hero Section */}
       <section className="relative overflow-hidden py-12 md:py-20">
         {/* Background Pattern */}
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-transparent to-emerald-600/10"></div>
-        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/[0.02] to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-purple-600/10 to-emerald-600/20"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/20 via-transparent to-transparent"></div>
+        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
             {/* Header Badge */}
-            <div className="flex justify-center mb-6 sm:mb-8">
-              <div className="inline-flex items-center space-x-2 bg-blue-600/20 border border-blue-400/30 rounded-full px-4 py-2 sm:px-6 sm:py-3 backdrop-blur-sm">
+            <div className="flex justify-center mb-8 sm:mb-12">
+              <div className="inline-flex items-center space-x-3 bg-gradient-to-r from-blue-600/30 to-purple-600/30 border border-blue-400/50 rounded-full px-6 py-3 sm:px-8 sm:py-4 backdrop-blur-md shadow-lg">
                 <Bot className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
-                <span className="text-blue-300 font-medium text-sm sm:text-base">Pack de Robôs - Estrategista Solutions</span>
+                <span className="text-blue-200 font-semibold text-sm sm:text-base tracking-wide">Pack de Robôs - Estrategista Solutions</span>
               </div>
             </div>
 
             {/* Main Title */}
-            <div className="text-center mb-8 sm:mb-12">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 sm:mb-8 leading-[0.9]">
-                <span className="block text-white mb-2 sm:mb-3">Robôs que</span>
-                <span className="block bg-gradient-to-r from-emerald-400 via-blue-400 to-emerald-400 bg-clip-text text-transparent mb-2 sm:mb-3">
+            <div className="text-center mb-12 sm:mb-16">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-8 sm:mb-12 leading-[0.85] tracking-tight">
+                <span className="block text-white mb-3 sm:mb-4 drop-shadow-lg">Robôs que</span>
+                <span className="block bg-gradient-to-r from-emerald-400 via-blue-400 to-purple-400 bg-clip-text text-transparent mb-3 sm:mb-4 animate-pulse">
                   OPERAM
                 </span>
-                <span className="block text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
+                <span className="block text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl drop-shadow-lg">
                   para você
                 </span>
               </h1>
               
-              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-slate-300 max-w-4xl mx-auto leading-relaxed font-light">
-                Pack com 6 estratégias validadas por traders profissionais.<br />
-                <span className="text-emerald-400 font-medium">Comece grátis</span> com o Starter ou 
-                <span className="text-blue-400 font-medium"> libere todo o potencial</span> com os planos PRO e MASTER.
-              </p>
+              <div className="max-w-5xl mx-auto">
+                <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-slate-200 mb-6 leading-relaxed font-light">
+                  Pack com <span className="text-emerald-400 font-bold">3 estratégias scalper</span> validadas por traders profissionais.
+                </p>
+                <p className="text-base sm:text-lg md:text-xl text-slate-300 leading-relaxed">
+                  <span className="text-emerald-400 font-semibold">Comece grátis</span> com o Starter ou 
+                  <span className="text-blue-400 font-semibold"> libere todo o potencial</span> com os planos PRO e MASTER.
+                </p>
+              </div>
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16 max-w-4xl mx-auto">
-              <div className="text-center">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-600/20 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                  <TrendingUp className="w-6 h-6 sm:w-8 sm:h-8 text-blue-400" />
+            {/* Key Features */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 mb-16 sm:mb-20 max-w-5xl mx-auto">
+              <div className="text-center group">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-blue-500/20 to-blue-600/30 rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-6 backdrop-blur-sm border border-blue-400/30 group-hover:scale-110 transition-transform duration-300">
+                  <TrendingUp className="w-8 h-8 sm:w-10 sm:h-10 text-blue-400" />
                 </div>
-                <div className="text-2xl sm:text-3xl font-bold text-white mb-1 sm:mb-2">6</div>
-                <div className="text-slate-400 text-sm sm:text-base">Estratégias Validadas</div>
+                <div className="text-3xl sm:text-4xl font-black text-white mb-2 sm:mb-3">3</div>
+                <div className="text-slate-300 text-sm sm:text-base font-medium">Scalpers Validados</div>
               </div>
-              <div className="text-center">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-emerald-600/20 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                  <Shield className="w-6 h-6 sm:w-8 sm:h-8 text-emerald-400" />
+              <div className="text-center group">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-emerald-500/20 to-emerald-600/30 rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-6 backdrop-blur-sm border border-emerald-400/30 group-hover:scale-110 transition-transform duration-300">
+                  <Shield className="w-8 h-8 sm:w-10 sm:h-10 text-emerald-400" />
                 </div>
-                <div className="text-2xl sm:text-3xl font-bold text-white mb-1 sm:mb-2">100%</div>
-                <div className="text-slate-400 text-sm sm:text-base">Controle de Risco</div>
+                <div className="text-3xl sm:text-4xl font-black text-white mb-2 sm:mb-3">100%</div>
+                <div className="text-slate-300 text-sm sm:text-base font-medium">Controle de Risco</div>
               </div>
-              <div className="text-center">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-purple-600/20 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                  <Zap className="w-6 h-6 sm:w-8 sm:h-8 text-purple-400" />
+              <div className="text-center group">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-purple-500/20 to-purple-600/30 rounded-2xl flex items-center justify-center mx-auto mb-4 sm:mb-6 backdrop-blur-sm border border-purple-400/30 group-hover:scale-110 transition-transform duration-300">
+                  <Zap className="w-8 h-8 sm:w-10 sm:h-10 text-purple-400" />
                 </div>
-                <div className="text-2xl sm:text-3xl font-bold text-white mb-1 sm:mb-2">24/7</div>
-                <div className="text-slate-400 text-sm sm:text-base">Automação Completa</div>
+                <div className="text-3xl sm:text-4xl font-black text-white mb-2 sm:mb-3">24/7</div>
+                <div className="text-slate-300 text-sm sm:text-base font-medium">Automação Completa</div>
               </div>
+              </p>
             </div>
 
             {/* CTA Buttons */}
             <div className="max-w-5xl mx-auto">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                 {/* Starter */}
                 <button 
                   onClick={() => onAuthClick?.('register')}
-                  className="group relative w-full bg-gradient-to-br from-emerald-500 via-emerald-600 to-teal-600 hover:from-emerald-400 hover:via-emerald-500 hover:to-teal-500 text-white rounded-2xl sm:rounded-3xl font-semibold transition-all duration-500 transform hover:scale-[1.02] hover:-translate-y-1 shadow-2xl hover:shadow-emerald-500/25 border border-white/20 backdrop-blur-sm overflow-hidden min-h-[44px] min-w-[44px]">
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-                  <div className="relative p-4 sm:p-6 lg:p-8">
-                    <div className="flex items-center justify-center mb-3 sm:mb-4">
-                      <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 bg-white/20 rounded-xl sm:rounded-2xl flex items-center justify-center backdrop-blur-sm">
-                        <Zap className="w-4 h-4 sm:w-5 sm:h-5 lg:w-7 lg:h-7 text-white" />
+                  className="group relative w-full bg-gradient-to-br from-emerald-500 via-emerald-600 to-teal-600 hover:from-emerald-400 hover:via-emerald-500 hover:to-teal-500 text-white rounded-3xl font-bold transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 shadow-2xl hover:shadow-emerald-500/40 border border-white/30 backdrop-blur-md overflow-hidden min-h-[180px]">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-white/10"></div>
+                  <div className="absolute top-4 right-4 w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                    <Zap className="w-6 h-6 text-white" />
+                  </div>
+                  <div className="relative p-6 lg:p-8 h-full flex flex-col justify-center">
+                    <div className="text-center">
+                      <div className="text-2xl lg:text-3xl font-black mb-2">Starter</div>
+                      <div className="text-emerald-100 text-lg lg:text-xl font-semibold mb-4">Começar Grátis</div>
+                      <div className="flex items-center justify-center opacity-70 group-hover:opacity-100 transition-opacity">
+                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
                       </div>
-                    </div>
-                    <div className="text-lg sm:text-xl lg:text-2xl font-bold mb-1">Starter</div>
-                    <div className="text-emerald-100 text-sm sm:text-base lg:text-lg font-medium mb-3 sm:mb-4">Começar Grátis</div>
-                    <div className="flex items-center justify-center opacity-70 group-hover:opacity-100 transition-opacity">
-                      <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform duration-300" />
                     </div>
                   </div>
                 </button>
@@ -452,24 +458,24 @@ const PackRobos = ({ onAuthClick }) => {
                 {/* PRO */}
                 <button 
                   onClick={() => window.open('https://buy.stripe.com/dR65nXfTSdnngmY8ww', '_blank')}
-                  className="group relative w-full bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600 hover:from-blue-400 hover:via-blue-500 hover:to-indigo-500 text-white rounded-2xl sm:rounded-3xl font-semibold transition-all duration-500 transform hover:scale-[1.02] hover:-translate-y-1 shadow-2xl hover:shadow-blue-500/25 border border-white/20 backdrop-blur-sm overflow-hidden min-h-[44px] min-w-[44px]">
-                  <div className="absolute -top-2 -right-2 sm:-top-3 sm:-right-3 w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-yellow-400 rounded-full flex items-center justify-center">
-                    <span className="text-blue-800 font-bold text-xs sm:text-sm rotate-12">POPULAR</span>
+                  className="group relative w-full bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600 hover:from-blue-400 hover:via-blue-500 hover:to-indigo-500 text-white rounded-3xl font-bold transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 shadow-2xl hover:shadow-blue-500/40 border border-white/30 backdrop-blur-md overflow-hidden min-h-[180px]">
+                  <div className="absolute -top-3 -right-3 w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-400 rounded-full flex items-center justify-center shadow-lg">
+                    <span className="text-blue-900 font-black text-xs rotate-12">POPULAR</span>
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-                  <div className="relative p-4 sm:p-6 lg:p-8">
-                    <div className="flex items-center justify-center mb-3 sm:mb-4">
-                      <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 bg-white/20 rounded-xl sm:rounded-2xl flex items-center justify-center backdrop-blur-sm">
-                        <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 lg:w-7 lg:h-7 text-white" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-white/10"></div>
+                  <div className="absolute top-4 right-4 w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                    <TrendingUp className="w-6 h-6 text-white" />
+                  </div>
+                  <div className="relative p-6 lg:p-8 h-full flex flex-col justify-center">
+                    <div className="text-center">
+                      <div className="text-2xl lg:text-3xl font-black mb-2">PRO</div>
+                      <div className="text-blue-100 text-base lg:text-lg font-semibold mb-1">
+                        R$ 800/sem
                       </div>
-                    </div>
-                    <div className="text-lg sm:text-xl lg:text-2xl font-bold mb-1">PRO</div>
-                    <div className="text-blue-100 text-sm sm:text-base lg:text-lg font-medium mb-3 sm:mb-4">
-                      <div>R$ 800/sem</div>
-                      <div className="text-xs sm:text-sm opacity-75">R$ 1.350/ano</div>
-                    </div>
-                    <div className="flex items-center justify-center opacity-70 group-hover:opacity-100 transition-opacity">
-                      <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform duration-300" />
+                      <div className="text-blue-200 text-sm opacity-75 mb-4">R$ 1.350/ano</div>
+                      <div className="flex items-center justify-center opacity-70 group-hover:opacity-100 transition-opacity">
+                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+                      </div>
                     </div>
                   </div>
                 </button>
@@ -477,21 +483,21 @@ const PackRobos = ({ onAuthClick }) => {
                 {/* MASTER */}
                 <button 
                   onClick={() => window.open('https://buy.stripe.com/dR63fPfTSfvvb2EcMN', '_blank')}
-                  className="group relative w-full bg-gradient-to-br from-purple-500 via-purple-600 to-violet-600 hover:from-purple-400 hover:via-purple-500 hover:to-violet-500 text-white rounded-2xl sm:rounded-3xl font-semibold transition-all duration-500 transform hover:scale-[1.02] hover:-translate-y-1 shadow-2xl hover:shadow-purple-500/25 border border-white/20 backdrop-blur-sm overflow-hidden min-h-[44px] min-w-[44px]">
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-                  <div className="relative p-4 sm:p-6 lg:p-8">
-                    <div className="flex items-center justify-center mb-3 sm:mb-4">
-                      <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 bg-white/20 rounded-xl sm:rounded-2xl flex items-center justify-center backdrop-blur-sm">
-                        <Shield className="w-4 h-4 sm:w-5 sm:h-5 lg:w-7 lg:h-7 text-white" />
+                  className="group relative w-full bg-gradient-to-br from-purple-500 via-purple-600 to-violet-600 hover:from-purple-400 hover:via-purple-500 hover:to-violet-500 text-white rounded-3xl font-bold transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 shadow-2xl hover:shadow-purple-500/40 border border-white/30 backdrop-blur-md overflow-hidden min-h-[180px]">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-white/10"></div>
+                  <div className="absolute top-4 right-4 w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                    <Shield className="w-6 h-6 text-white" />
+                  </div>
+                  <div className="relative p-6 lg:p-8 h-full flex flex-col justify-center">
+                    <div className="text-center">
+                      <div className="text-2xl lg:text-3xl font-black mb-2">MASTER</div>
+                      <div className="text-purple-100 text-base lg:text-lg font-semibold mb-1">
+                        R$ 1.200/sem
                       </div>
-                    </div>
-                    <div className="text-lg sm:text-xl lg:text-2xl font-bold mb-1">MASTER</div>
-                    <div className="text-purple-100 text-sm sm:text-base lg:text-lg font-medium mb-3 sm:mb-4">
-                      <div>R$ 1.200/sem</div>
-                      <div className="text-xs sm:text-sm opacity-75">R$ 1.800/ano</div>
-                    </div>
-                    <div className="flex items-center justify-center opacity-70 group-hover:opacity-100 transition-opacity">
-                      <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform duration-300" />
+                      <div className="text-purple-200 text-sm opacity-75 mb-4">R$ 1.800/ano</div>
+                      <div className="flex items-center justify-center opacity-70 group-hover:opacity-100 transition-opacity">
+                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+                      </div>
                     </div>
                   </div>
                 </button>
@@ -499,18 +505,18 @@ const PackRobos = ({ onAuthClick }) => {
                 {/* Sob Medida */}
                 <button 
                   onClick={() => window.location.href = '/white-label'}
-                  className="group relative w-full bg-gradient-to-br from-orange-500 via-red-500 to-pink-500 hover:from-orange-400 hover:via-red-400 hover:to-pink-400 text-white rounded-2xl sm:rounded-3xl font-semibold transition-all duration-500 transform hover:scale-[1.02] hover:-translate-y-1 shadow-2xl hover:shadow-orange-500/25 border border-white/20 backdrop-blur-sm overflow-hidden min-h-[44px] min-w-[44px]">
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-                  <div className="relative p-4 sm:p-6 lg:p-8">
-                    <div className="flex items-center justify-center mb-3 sm:mb-4">
-                      <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 bg-white/20 rounded-xl sm:rounded-2xl flex items-center justify-center backdrop-blur-sm">
-                        <Bot className="w-4 h-4 sm:w-5 sm:h-5 lg:w-7 lg:h-7 text-white" />
+                  className="group relative w-full bg-gradient-to-br from-orange-500 via-red-500 to-pink-500 hover:from-orange-400 hover:via-red-400 hover:to-pink-400 text-white rounded-3xl font-bold transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 shadow-2xl hover:shadow-orange-500/40 border border-white/30 backdrop-blur-md overflow-hidden min-h-[180px]">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-white/10"></div>
+                  <div className="absolute top-4 right-4 w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                    <Bot className="w-6 h-6 text-white" />
+                  </div>
+                  <div className="relative p-6 lg:p-8 h-full flex flex-col justify-center">
+                    <div className="text-center">
+                      <div className="text-2xl lg:text-3xl font-black mb-2">White Label</div>
+                      <div className="text-orange-100 text-base lg:text-lg font-semibold mb-4">Sua Marca</div>
+                      <div className="flex items-center justify-center opacity-70 group-hover:opacity-100 transition-opacity">
+                        <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
                       </div>
-                    </div>
-                    <div className="text-lg sm:text-xl lg:text-2xl font-bold mb-1">White Label</div>
-                    <div className="text-orange-100 text-sm sm:text-base lg:text-lg font-medium mb-3 sm:mb-4">Sua Marca</div>
-                    <div className="flex items-center justify-center opacity-70 group-hover:opacity-100 transition-opacity">
-                      <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform duration-300" />
                     </div>
                   </div>
                 </button>
@@ -518,9 +524,35 @@ const PackRobos = ({ onAuthClick }) => {
             </div>
 
             {/* Trust Indicator */}
-            <div className="text-center mt-12 sm:mt-16">
-              <p className="text-slate-400 text-xs sm:text-sm">
-                ✅ Compatível exclusivamente com Profit • ⚡ Configuração em 5 minutos • 🛡️ Suporte técnico incluído
+            <div className="text-center mt-16 sm:mt-20">
+              <div className="inline-flex items-center space-x-6 bg-white/10 backdrop-blur-md rounded-full px-8 py-4 border border-white/20">
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-4 h-4 text-emerald-400" />
+                  <span className="text-slate-200 text-sm font-medium">Compatível com Profit</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Zap className="w-4 h-4 text-blue-400" />
+                  <span className="text-slate-200 text-sm font-medium">Setup em 5 minutos</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Shield className="w-4 h-4 text-purple-400" />
+                  <span className="text-slate-200 text-sm font-medium">Suporte incluído</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Add custom CSS for grid pattern */}
+      <style jsx>{`
+        .bg-grid-pattern {
+          background-image: 
+            linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
+          background-size: 50px 50px;
+        }
+      `}</style>
               </p>
             </div>
           </div>
