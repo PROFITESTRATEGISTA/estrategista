@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MessageCircle, X, Zap, Bell, User } from 'lucide-react';
+import { MessageCircle, X, Zap, Bell, User, Bot, Settings } from 'lucide-react';
 
 interface FloatingButtonProps {
   onNavigateToPlans: () => void;

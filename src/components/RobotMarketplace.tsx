@@ -241,14 +241,14 @@ export function RobotMarketplace({ userPlan, onBack }: RobotMarketplaceProps) {
         {/* Plan Title */}
         <div className="text-center mb-8">
           <h2 className="text-2xl font-bold text-white mb-2">
-            {userPlan === 'pro' ? '👑 3 ROBÔS PRO' : userPlan === 'master' ? '⚡ 3 ROBÔS MASTER' : '🆓 ROBÔS STARTER'}
+            {userPlan === 'pro' ? '👑 3 ROBÔS PRO + PROFIT ULTRA' : userPlan === 'master' ? '⚡ 3 ROBÔS MASTER + PROFIT ULTRA' : '🆓 ROBÔS STARTER + WARREN'}
           </h2>
           <p className="text-gray-400">
             {userPlan === 'pro' 
-              ? 'Acesso completo: 3 robôs scalper otimizados'
+              ? 'Acesso completo: 3 robôs scalper + Profit Ultra + Módulo Warren'
               : userPlan === 'master'
-              ? 'Seleção premium: 3 robôs otimizados para máxima performance'
-              : 'Versão gratuita com funcionalidades básicas'
+              ? 'Seleção premium: 3 robôs + Profit Ultra + Módulo Warren premium'
+              : 'Versão gratuita: 3 robôs + Módulo de Automação Warren grátis'
             }
           </p>
         </div>
@@ -359,6 +359,75 @@ export function RobotMarketplace({ userPlan, onBack }: RobotMarketplaceProps) {
               </div>
             );
           })}
+          
+          {/* Warren Module Card */}
+          <div className="bg-gray-900 rounded-2xl p-8 border border-green-600 hover:border-green-500 hover:shadow-xl hover:shadow-green-600/20 transition-all duration-300">
+            {/* Header */}
+            <div className="flex items-start justify-between mb-6">
+              <div className="flex items-center space-x-4">
+                <div className="p-3 rounded-xl bg-green-600/20">
+                  <Bot className="w-8 h-8 text-green-400" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-white">Módulo Warren</h3>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm text-gray-400">Automação</span>
+                    <span className="text-xs px-2 py-1 bg-green-600 text-white rounded-full font-bold">GRÁTIS</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="text-right">
+                <div className="text-lg font-bold text-green-400">Grátis</div>
+                <div className="text-xs text-gray-400">Incluso</div>
+              </div>
+            </div>
+
+            {/* Description */}
+            <p className="text-gray-300 mb-6 leading-relaxed">
+              Módulo de automação de estratégias Warren com Profit Ultra gratuito para todos os planos
+            </p>
+
+            {/* Stats */}
+            <div className="grid grid-cols-2 gap-4 mb-6">
+              <div className="text-center p-4 bg-gray-800 rounded-xl">
+                <Clock className="w-5 h-5 text-green-400 mx-auto mb-2" />
+                <div className="text-sm font-medium text-white">Profit Ultra</div>
+                <div className="text-xs text-gray-400">Plataforma</div>
+              </div>
+              
+              <div className="text-center p-4 bg-gray-800 rounded-xl">
+                <Shield className="w-5 h-5 text-green-400 mx-auto mb-2" />
+                <div className="text-sm font-medium text-green-400">Grátis</div>
+                <div className="text-xs text-gray-400">Custo</div>
+              </div>
+            </div>
+
+            {/* Features */}
+            <div className="mb-6">
+              <div className="text-sm font-medium text-gray-400 mb-3">Características:</div>
+              <div className="flex flex-wrap gap-2">
+                <span className="text-xs px-3 py-1 bg-gray-800 text-gray-300 rounded-full">
+                  Profit Ultra incluso
+                </span>
+                <span className="text-xs px-3 py-1 bg-gray-800 text-gray-300 rounded-full">
+                  Automação Warren
+                </span>
+                <span className="text-xs px-3 py-1 bg-gray-800 text-gray-300 rounded-full">
+                  Setup gratuito
+                </span>
+              </div>
+            </div>
+
+            {/* Action Button */}
+            <button
+              onClick={() => window.open('https://warren.com.br/onboarding/elliot/desktop/login?signup=true&advisor=atendimento@elliot.com.br&isAffiliate=true&utm_source=Elliot&utm_medium=YuriDelgado&utm_campaign=PedroPardal&brand=parceiro', '_blank')}
+              className="w-full flex items-center justify-center space-x-3 py-4 px-6 rounded-xl font-semibold transition-all duration-300 bg-green-600 hover:bg-green-700 text-white shadow-lg hover:shadow-xl"
+            >
+              <ExternalLink className="w-5 h-5" />
+              <span>Acessar Módulo Warren</span>
+            </button>
+          </div>
         </div>
 
         {/* Plan Upgrade CTA */}
@@ -367,7 +436,7 @@ export function RobotMarketplace({ userPlan, onBack }: RobotMarketplaceProps) {
           <div className="mt-12 bg-gradient-to-r from-emerald-600 to-blue-600 rounded-2xl p-8 text-center">
             <h3 className="text-2xl font-bold text-white mb-4">Libere todo o potencial!</h3>
             <p className="text-emerald-100 mb-6 text-lg">
-              Upgrade para PRO ou MASTER e tenha acesso aos 3 robôs scalper com trailing stop, breakeven e muito mais
+              Upgrade para PRO ou MASTER e tenha acesso aos 3 robôs scalper + Profit Ultra + Módulo Warren premium
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button 
