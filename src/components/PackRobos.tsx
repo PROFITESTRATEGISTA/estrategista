@@ -681,8 +681,8 @@ const PackRobos = ({ onAuthClick }) => {
               </div>
                   <td className="py-3 sm:py-4 px-2 sm:px-4 font-medium text-slate-800 text-sm">Trailing Stop</td>
                   <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-emerald-50">
-        </div>
-      </section>
+                     <X className="w-4 h-4 text-red-500 mx-auto" />
+                   </td>
                   <td className="py-3 sm:py-4 px-2 sm:px-3 text-center bg-purple-50">
                     <div className="flex flex-col items-center">
                       <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
