@@ -30,6 +30,8 @@ export function TutorialSystem({ onBack }: TutorialSystemProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [showTechnicalManual, setShowTechnicalManual] = useState(false);
   const [selectedManualSection, setSelectedManualSection] = useState(0);
+  const [showTechnicalManual, setShowTechnicalManual] = useState(false);
+  const [selectedManualSection, setSelectedManualSection] = useState(0);
 
   const tutorials: Tutorial[] = [
     {
@@ -291,6 +293,143 @@ export function TutorialSystem({ onBack }: TutorialSystemProps) {
     }
   };
 
+  const handleStepComplete = (stepIndex: number) => {
+    if (selectedTutorial?.steps) {
+      const updatedSteps = [...selectedTutorial.steps];
+      updatedSteps[stepIndex].completed = true;
+      setSelectedTutorial({
+        ...selectedTutorial,
+        steps: updatedSteps
+      });
+    }
+  };
+
+  // Technical Manual Modal Component
+  const renderTechnicalManual = () => (
+    <div className="space-y-6 max-w-6xl mx-auto">
+      {/* Header */}
+      <div className="flex items-center space-x-4">
+        <button
+          onClick={() => setShowTechnicalManual(false)}
+          className="p-3 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors"
+        >
+          <ArrowLeft className="w-6 h-6 text-gray-400" />
+        </button>
+        <div>
+          <h1 className="text-3xl font-bold text-white">📋 Manual Técnico</h1>
+          <p className="text-gray-400 text-lg">Guia completo de especificações e configurações técnicas</p>
+        </div>
+      </div>
+
+      {/* Section Navigation */}
+      <div className="bg-gray-900 rounded-xl p-6 border border-gray-800">
+        <h3 className="text-lg font-semibold text-white mb-4">Índice do Manual</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          {technicalManual.sections.map((section, index) => (
+            <button
+              key={section.id}
+              onClick={() => setSelectedManualSection(index)}
+              className={`text-left p-3 rounded-lg border transition-all duration-200 ${
+                selectedManualSection === index
+                  ? 'border-blue-500 bg-blue-900/30 text-white'
+                  : 'border-gray-700 bg-gray-800/50 text-gray-300 hover:bg-gray-800 hover:border-blue-500/50'
+              }`}
+            >
+              <div className="font-medium text-sm">{index + 1}. {section.title}</div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Current Section Content */}
+      <div className="bg-gray-900 rounded-xl p-8 border border-gray-800">
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold text-white mb-4">
+            {technicalManual.sections[selectedManualSection].title}
+          </h2>
+          <p className="text-gray-300 text-lg leading-relaxed">
+            {technicalManual.sections[selectedManualSection].content.description}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Specifications Table */}
+          <div>
+            <h3 className="text-xl font-semibold text-white mb-4">Especificações</h3>
+            <div className="bg-gray-800 rounded-lg p-4">
+              <div className="space-y-3">
+                {technicalManual.sections[selectedManualSection].content.specifications.map((spec, index) => (
+                  <div key={index} className="flex justify-between items-center py-2 border-b border-gray-700 last:border-b-0">
+                    <span className="text-gray-400 text-sm">{spec.label}</span>
+                    <span className="text-white font-medium text-sm">{spec.value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Features List */}
+          <div>
+            <h3 className="text-xl font-semibold text-white mb-4">Recursos</h3>
+            <div className="space-y-3">
+              {technicalManual.sections[selectedManualSection].content.features.map((feature, index) => (
+                <div key={index} className="flex items-start space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
+                  <span className="text-gray-300 text-sm">{feature}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Navigation */}
+        <div className="flex justify-between items-center mt-8 pt-6 border-t border-gray-800">
+          <button
+            onClick={() => setSelectedManualSection(Math.max(0, selectedManualSection - 1))}
+            disabled={selectedManualSection === 0}
+            className="flex items-center space-x-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 disabled:bg-gray-800 disabled:opacity-50 text-white rounded-lg transition-colors"
+          >
+            <ChevronRight className="w-4 h-4 rotate-180" />
+            <span>Anterior</span>
+          </button>
+
+          <span className="text-gray-400 text-sm">
+            {selectedManualSection + 1} de {technicalManual.sections.length}
+          </span>
+
+          <button
+            onClick={() => setSelectedManualSection(Math.min(technicalManual.sections.length - 1, selectedManualSection + 1))}
+            disabled={selectedManualSection === technicalManual.sections.length - 1}
+            className="flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-800 disabled:opacity-50 text-white rounded-lg transition-colors"
+          >
+            <span>Próximo</span>
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="bg-blue-900/20 rounded-xl p-6 border border-blue-600/30">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <button
+            onClick={() => window.open('https://wa.me/5511975333355?text=Olá! Gostaria de solicitar o Manual Técnico em PDF dos robôs Scalper.', '_blank')}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2"
+          >
+            <FileText className="w-5 h-5" />
+            <span>Solicitar Manual PDF</span>
+          </button>
+          
+          <button
+            onClick={() => window.print()}
+            className="bg-gray-600 hover:bg-gray-700 text-white px-6 py-3 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2"
+          >
+            <Settings className="w-5 h-5" />
+            <span>Imprimir Manual</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
   if (selectedTutorial) {
     return (
       <div className="space-y-6 max-w-4xl mx-auto">
@@ -488,7 +627,10 @@ export function TutorialSystem({ onBack }: TutorialSystemProps) {
         {/* Technical Manual Card */}
         <div
           className="bg-gray-900 rounded-2xl p-8 border border-gray-800 hover:border-blue-600 transition-all duration-300 hover:shadow-lg hover:shadow-blue-600/20 cursor-pointer group"
-          onClick={() => setShowTechnicalManual(true)}
+          onClick={() => {
+            setShowTechnicalManual(true);
+            setSelectedManualSection(0);
+          }}
         >
           {/* Header */}
           <div className="text-center mb-6">
