@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Play, CheckCircle, ChevronRight, Clock, Users, Star, Wrench, Lightbulb } from 'lucide-react';
+import { ArrowLeft, Play, CheckCircle, ChevronRight, Clock, Users, Star, Wrench, Lightbulb, FileText, Bot, Settings, Shield, BarChart3, MessageSquare } from 'lucide-react';
 
 interface Tutorial {
   id: string;
