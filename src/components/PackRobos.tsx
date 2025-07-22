@@ -531,41 +531,81 @@ const PackRobos = ({ onAuthClick }) => {
       <section className="py-12 md:py-20 bg-gradient-to-br from-slate-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-800 mb-3 sm:mb-4">Performance Comprovada dos Robôs de Trading</h2>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-800 mb-3 sm:mb-4">Benefícios dos Robôs de Trading Automatizado</h2>
             <p className="text-lg sm:text-xl text-slate-600 max-w-3xl mx-auto">
-              Resultados médios das estratégias baseados em backtests e dados reais dos últimos 6 meses
+              Recursos e vantagens que tornam nossos robôs únicos no mercado
             </p>
           </div>
 
           <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 shadow-lg">
-            <h3 className="text-xl sm:text-2xl font-bold text-slate-800 mb-6 sm:mb-8 text-center">Resultados por Estratégia de Trading Automatizado</h3>
+            <h3 className="text-xl sm:text-2xl font-bold text-slate-800 mb-6 sm:mb-8 text-center">Vantagens Exclusivas dos Nossos Robôs</h3>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-              {strategies.map((strategy, index) => (
-                <div key={index} className="bg-slate-50 rounded-lg sm:rounded-xl p-4 sm:p-6 hover:bg-slate-100 transition-colors duration-200">
-                  <h4 className="font-semibold text-slate-800 mb-3 sm:mb-4 text-sm sm:text-base">{strategy.name}</h4>
-                  <div className="space-y-2">
-                    <div className="flex justify-between">
-                      <span className="text-slate-600 text-xs sm:text-sm">Taxa de acerto:</span>
-                      <span className="font-semibold text-emerald-600 text-xs sm:text-sm">{strategy.acerto}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-600 text-xs sm:text-sm">Fator de lucro:</span>
-                      <span className="font-semibold text-blue-600 text-xs sm:text-sm">{strategy.profit}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-600 text-xs sm:text-sm">Payoff:</span>
-                      <span className="font-semibold text-purple-600 text-xs sm:text-sm">{strategy.payoff}</span>
-                    </div>
-                  </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg sm:rounded-xl p-6 sm:p-8 text-center border border-green-200">
+                <div className="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Zap className="w-8 h-8 text-white" />
                 </div>
-              ))}
+                <h4 className="text-xl font-bold text-slate-800 mb-3">🆓 Teste Grátis</h4>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  Comece com o plano Starter gratuito. Teste a automação sem compromisso e veja os resultados antes de fazer upgrade.
+                </p>
+              </div>
+
+              <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-lg sm:rounded-xl p-6 sm:p-8 text-center border border-blue-200">
+                <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Settings className="w-8 h-8 text-white" />
+                </div>
+                <h4 className="text-xl font-bold text-slate-800 mb-3">⚙️ Parâmetros Personalizáveis</h4>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  Ajuste valor por contrato, horários, stops e alvos conforme seu perfil de risco. Total controle sobre suas operações.
+                </p>
+              </div>
+
+              <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-lg sm:rounded-xl p-6 sm:p-8 text-center border border-purple-200">
+                <div className="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Clock className="w-8 h-8 text-white" />
+                </div>
+                <h4 className="text-xl font-bold text-slate-800 mb-3">⏱️ Instalação em 5 Minutos</h4>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  Setup super rápido no Profit. Baixe o arquivo .pts, importe e configure. Suporte completo durante a instalação.
+                </p>
+              </div>
+
+              <div className="bg-gradient-to-br from-orange-50 to-amber-50 rounded-lg sm:rounded-xl p-6 sm:p-8 text-center border border-orange-200">
+                <div className="w-16 h-16 bg-orange-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Shield className="w-8 h-8 text-white" />
+                </div>
+                <h4 className="text-xl font-bold text-slate-800 mb-3">🛡️ Gestão de Risco Avançada</h4>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  Stop loss automático, trailing stop, breakeven e controles de drawdown. Sua conta sempre protegida.
+                </p>
+              </div>
+
+              <div className="bg-gradient-to-br from-red-50 to-pink-50 rounded-lg sm:rounded-xl p-6 sm:p-8 text-center border border-red-200">
+                <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Target className="w-8 h-8 text-white" />
+                </div>
+                <h4 className="text-xl font-bold text-slate-800 mb-3">🎯 Estratégias Validadas</h4>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  3 robôs scalper desenvolvidos por traders profissionais com anos de experiência no mercado brasileiro.
+                </p>
+              </div>
+
+              <div className="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-lg sm:rounded-xl p-6 sm:p-8 text-center border border-teal-200">
+                <div className="w-16 h-16 bg-teal-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <TrendingUp className="w-8 h-8 text-white" />
+                </div>
+                <h4 className="text-xl font-bold text-slate-800 mb-3">📈 Operação 24/7</h4>
+                <p className="text-slate-600 text-sm leading-relaxed">
+                  Robôs operam automaticamente nos horários configurados. Você pode dormir tranquilo enquanto eles trabalham.
+                </p>
+                </div>
             </div>
           </div>
 
           <div className="mt-6 sm:mt-8 text-center">
             <p className="text-xs sm:text-sm text-slate-500">
-              * Resultados passados não garantem resultados futuros. Trading envolve riscos.
+              * Trading envolve riscos. Use sempre gestão de risco adequada e comece com valores pequenos.
             </p>
           </div>
         </div>
