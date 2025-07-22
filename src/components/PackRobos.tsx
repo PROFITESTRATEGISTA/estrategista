@@ -430,7 +430,6 @@ const PackRobos = ({ onAuthClick }) => {
                 <div className="text-3xl sm:text-4xl font-black text-white mb-2 sm:mb-3">24/7</div>
                 <div className="text-slate-300 text-sm sm:text-base font-medium">Automação Completa</div>
               </div>
-              </p>
             </div>
 
             {/* CTA Buttons */}
