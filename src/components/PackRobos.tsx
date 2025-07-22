@@ -408,7 +408,7 @@ const PackRobos = ({ onAuthClick }) => {
                 <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-600/20 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
                   <TrendingUp className="w-6 h-6 sm:w-8 sm:h-8 text-blue-400" />
                 </div>
-                <div className="text-2xl sm:text-3xl font-bold text-white mb-1 sm:mb-2">6</div>
+                <div className="text-2xl sm:text-3xl font-bold text-white mb-1 sm:mb-2">3</div>
                 <div className="text-slate-400 text-sm sm:text-base">Estratégias Validadas</div>
               </div>
               <div className="text-center">
