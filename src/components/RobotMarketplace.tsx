@@ -97,18 +97,6 @@ const robotsByPlan = {
       riskLevel: 'medium' as const,
       features: ['Global', 'Crypto', 'Multi-mercado']
     },
-    {
-      id: 'warren-combo',
-      name: 'Warren Combo',
-      description: 'Estratégia básica para iniciantes - Links e tutoriais',
-      category: 'free',
-      plans: ['master'],
-      status: 'active' as const,
-      performance: 'Tutorial',
-      timeframe: 'Educativo',
-      riskLevel: 'low' as const,
-      features: ['Tutorial completo', 'Setup básico', 'VPS com desconto']
-    }
   ]
 };
 
@@ -253,13 +241,13 @@ export function RobotMarketplace({ userPlan, onBack }: RobotMarketplaceProps) {
         {/* Plan Title */}
         <div className="text-center mb-8">
           <h2 className="text-2xl font-bold text-white mb-2">
-            {userPlan === 'pro' ? '👑 ROBÔS PRO' : userPlan === 'master' ? '⚡ ROBÔS MASTER' : '🆓 ROBÔS STARTER'}
+            {userPlan === 'pro' ? '👑 3 ROBÔS PRO' : userPlan === 'master' ? '⚡ 3 ROBÔS MASTER' : '🆓 ROBÔS STARTER'}
           </h2>
           <p className="text-gray-400">
             {userPlan === 'pro' 
-              ? 'Acesso completo: 6 robôs incluindo estratégias Hunter exclusivas'
+              ? 'Acesso completo: 3 robôs scalper otimizados'
               : userPlan === 'master'
-              ? 'Seleção premium: 4 robôs otimizados para máxima performance'
+              ? 'Seleção premium: 3 robôs otimizados para máxima performance'
               : 'Versão gratuita com funcionalidades básicas'
             }
           </p>
@@ -374,40 +362,25 @@ export function RobotMarketplace({ userPlan, onBack }: RobotMarketplaceProps) {
         </div>
 
         {/* Plan Upgrade CTA */}
-        {userPlan === 'master' && robots.length < 6 && (
-          <div className="mt-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-center">
-            <h3 className="text-2xl font-bold text-white mb-4">Quer acesso aos 6 robôs PRO?</h3>
-            <p className="text-blue-100 mb-6 text-lg">
-              Faça upgrade para PRO e ganhe acesso aos robôs Hunter exclusivos (Pivot Hunter + Trap Hunter)
-            </p>
-            <button 
-              onClick={() => window.open('https://wa.me/5511975333355?text=Olá! Gostaria de fazer upgrade do MASTER para PRO para ter acesso aos 6 robôs.', '_blank')}
-              className="bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold hover:bg-blue-50 transition-colors"
-            >
-              Fazer Upgrade para PRO
-            </button>
-          </div>
-        )}
-
         {/* Free Plan Upgrade CTA */}
         {userPlan === 'free' && (
           <div className="mt-12 bg-gradient-to-r from-emerald-600 to-blue-600 rounded-2xl p-8 text-center">
             <h3 className="text-2xl font-bold text-white mb-4">Libere todo o potencial!</h3>
             <p className="text-emerald-100 mb-6 text-lg">
-              Upgrade para PRO ou MASTER e tenha acesso a robôs avançados com trailing stop, breakeven e muito mais
+              Upgrade para PRO ou MASTER e tenha acesso aos 3 robôs scalper com trailing stop, breakeven e muito mais
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button 
                 onClick={() => window.open('https://wa.me/5511999999999?text=Olá! Gostaria de fazer upgrade para o plano PRO.', '_blank')}
                 className="bg-white text-blue-600 px-6 py-3 rounded-xl font-semibold hover:bg-blue-50 transition-colors"
               >
-                Upgrade para PRO (6 robôs)
+                Upgrade para PRO (3 robôs)
               </button>
               <button 
                 onClick={() => window.open('https://wa.me/5511999999999?text=Olá! Gostaria de fazer upgrade para o plano MASTER.', '_blank')}
                 className="bg-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-purple-700 transition-colors"
               >
-                Upgrade para MASTER (4 robôs premium)
+                Upgrade para MASTER (3 robôs premium)
               </button>
             </div>
           </div>
