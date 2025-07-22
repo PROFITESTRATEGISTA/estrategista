@@ -648,6 +648,10 @@ export default function MembersArea() {
           {currentView === 'tutorials' && (
             <TutorialSystem onBack={() => setCurrentView('dashboard')} />
           )}
+
+          {currentView === 'calculator' && (
+            <DayTradeCalculator onBack={() => setCurrentView('dashboard')} />
+          )}
         </main>
       )}
 
