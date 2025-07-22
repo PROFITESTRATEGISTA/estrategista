@@ -291,10 +291,6 @@ export function TutorialSystem({ onBack }: TutorialSystemProps) {
     }
   };
 
-  if (showTechnicalManual) {
-    return renderTechnicalManual();
-  }
-
   if (selectedTutorial) {
     return (
       <div className="space-y-6 max-w-4xl mx-auto">
@@ -488,6 +484,57 @@ export function TutorialSystem({ onBack }: TutorialSystemProps) {
             </div>
           </div>
         ))}
+        
+        {/* Technical Manual Card */}
+        <div
+          className="bg-gray-900 rounded-2xl p-8 border border-gray-800 hover:border-blue-600 transition-all duration-300 hover:shadow-lg hover:shadow-blue-600/20 cursor-pointer group"
+          onClick={() => setShowTechnicalManual(true)}
+        >
+          {/* Header */}
+          <div className="text-center mb-6">
+            <div className="bg-gray-800 rounded-full p-6 w-20 h-20 mx-auto mb-4 group-hover:bg-gray-700 transition-colors">
+              <FileText className="w-8 h-8 text-blue-500" />
+            </div>
+            <span className="text-xs px-3 py-1 rounded-full font-medium bg-blue-900/50 text-blue-300">
+              Manual Técnico
+            </span>
+          </div>
+
+          {/* Content */}
+          <h3 className="text-xl font-semibold text-white mb-3 text-center">
+            📋 Manual de Utilização
+          </h3>
+          
+          <p className="text-gray-300 text-sm mb-6 leading-relaxed text-center">
+            Guia técnico completo com especificações, configurações e parâmetros dos robôs Scalper
+          </p>
+
+          {/* Features Preview */}
+          <div className="space-y-2 mb-6">
+            <div className="flex items-center text-xs text-gray-400">
+              <CheckCircle className="w-4 h-4 mr-2 text-green-400" />
+              Especificações técnicas detalhadas
+            </div>
+            <div className="flex items-center text-xs text-gray-400">
+              <CheckCircle className="w-4 h-4 mr-2 text-green-400" />
+              Configurações avançadas
+            </div>
+            <div className="flex items-center text-xs text-gray-400">
+              <CheckCircle className="w-4 h-4 mr-2 text-green-400" />
+              Sistema de gestão de risco
+            </div>
+            <div className="flex items-center text-xs text-gray-400">
+              <CheckCircle className="w-4 h-4 mr-2 text-green-400" />
+              Monitoramento e relatórios
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-gray-400">15 min</span>
+            <ChevronRight className="w-5 h-5 text-blue-400 group-hover:translate-x-1 transition-transform" />
+          </div>
+        </div>
       </div>
 
       {/* Support CTA */}
