@@ -28,6 +28,8 @@ interface TutorialSystemProps {
 export function TutorialSystem({ onBack }: TutorialSystemProps) {
   const [selectedTutorial, setSelectedTutorial] = useState<Tutorial | null>(null);
   const [currentStep, setCurrentStep] = useState(0);
+  const [showTechnicalManual, setShowTechnicalManual] = useState(false);
+  const [selectedManualSection, setSelectedManualSection] = useState(0);
 
   const tutorials: Tutorial[] = [
     {
@@ -155,6 +157,129 @@ export function TutorialSystem({ onBack }: TutorialSystemProps) {
     }
   ];
 
+  const technicalManual = {
+    id: 'technical-manual',
+    title: '📋 Manual Técnico',
+    description: 'Guia completo de especificações e configurações técnicas',
+    duration: '15 min',
+    difficulty: 'intermediate' as const,
+    type: 'interactive' as const,
+    icon: <FileText className="w-8 h-8 text-blue-500" />,
+    sections: [
+      {
+        id: 'overview',
+        title: 'Visão Geral dos Robôs Scalper',
+        content: {
+          description: 'Os robôs Scalper 1, 2 e 3 são sistemas automatizados desenvolvidos para operações de alta frequência no mercado brasileiro.',
+          specifications: [
+            { label: 'Plataforma Principal', value: 'Profit (Nelogica)' },
+            { label: 'Mercados Suportados', value: 'WIN, WDO, Ações' },
+            { label: 'Timeframes', value: '1M, 3M, 5M, 1H' },
+            { label: 'Tipo de Estratégia', value: 'Scalping Automatizado' },
+            { label: 'Execução', value: 'Totalmente Automatizada' }
+          ],
+          features: [
+            'Parâmetros totalmente personalizáveis',
+            'Execução perfeita e precisa',
+            'Setup flexível para diferentes perfis',
+            'Controle total sobre configurações',
+            'Performance máxima otimizada'
+          ]
+        }
+      },
+      {
+        id: 'technical-specs',
+        title: 'Especificações Técnicas',
+        content: {
+          description: 'Requisitos técnicos e especificações detalhadas para operação otimizada dos robôs.',
+          specifications: [
+            { label: 'Sistema Operacional', value: 'Windows 10/11 (64-bit)' },
+            { label: 'RAM Mínima', value: '4GB (Recomendado: 8GB)' },
+            { label: 'Processador', value: 'Intel i3 ou AMD equivalente' },
+            { label: 'Conexão Internet', value: 'Banda larga estável' },
+            { label: 'Latência Máxima', value: '< 50ms (Ideal: < 20ms)' },
+            { label: 'Espaço em Disco', value: '2GB livres' }
+          ],
+          features: [
+            'Compatível com VPS Windows',
+            'Suporte a múltiplas contas',
+            'Backup automático de configurações',
+            'Logs detalhados de operações',
+            'Monitoramento em tempo real'
+          ]
+        }
+      },
+      {
+        id: 'risk-management',
+        title: 'Sistema de Gestão de Risco',
+        content: {
+          description: 'Controles avançados de risco integrados para proteção do capital e otimização de resultados.',
+          specifications: [
+            { label: 'Stop Loss', value: 'Configurável por pontos/R$' },
+            { label: 'Trailing Stop', value: 'Dinâmico e personalizável' },
+            { label: 'Breakeven', value: 'Automático após lucro' },
+            { label: 'Stop Diário', value: 'Limite de perda/ganho' },
+            { label: 'Meta Diária', value: 'Objetivo configurável' },
+            { label: 'Controle de Drawdown', value: 'Proteção automática' }
+          ],
+          features: [
+            'Stop loss por pontos ou valor financeiro',
+            'Trailing stop com incremento personalizável',
+            'Breakeven automático configurável',
+            'Controle de horário de operação',
+            'Limite máximo de contratos simultâneos',
+            'Proteção contra gaps de mercado'
+          ]
+        }
+      },
+      {
+        id: 'advanced-config',
+        title: 'Configuração Avançada',
+        content: {
+          description: 'Parâmetros avançados para personalização completa da estratégia de trading.',
+          specifications: [
+            { label: 'Horário de Operação', value: '09:00 - 17:30 (Configurável)' },
+            { label: 'Filtros de Mercado', value: 'Volume, Volatilidade, Tendência' },
+            { label: 'Tamanho de Posição', value: '1-20 contratos (WIN/WDO)' },
+            { label: 'Intervalo entre Operações', value: 'Configurável (segundos)' },
+            { label: 'Modo de Entrada', value: 'Market, Limit, Stop' },
+            { label: 'Gestão de Posição', value: 'Parcial ou Total' }
+          ],
+          features: [
+            'Configuração de horários específicos',
+            'Filtros de volatilidade do mercado',
+            'Ajuste de agressividade da estratégia',
+            'Controle de frequência de operações',
+            'Personalização de sinais de entrada',
+            'Gestão inteligente de posições'
+          ]
+        }
+      },
+      {
+        id: 'monitoring',
+        title: 'Monitoramento e Relatórios',
+        content: {
+          description: 'Sistema completo de acompanhamento de performance e geração de relatórios detalhados.',
+          specifications: [
+            { label: 'Relatórios', value: 'Diário, Semanal, Mensal' },
+            { label: 'Métricas', value: 'Win Rate, Profit Factor, Drawdown' },
+            { label: 'Alertas', value: 'WhatsApp, Email, Telegram' },
+            { label: 'Dashboard', value: 'Tempo real via web' },
+            { label: 'Backup', value: 'Automático na nuvem' },
+            { label: 'Histórico', value: 'Ilimitado' }
+          ],
+          features: [
+            'Dashboard em tempo real',
+            'Relatórios automáticos por email',
+            'Alertas personalizáveis',
+            'Análise de performance detalhada',
+            'Backup automático de dados',
+            'Exportação para Excel/PDF'
+          ]
+        }
+      }
+    ]
+  };
   const handleStepComplete = (stepIndex: number) => {
     if (selectedTutorial?.steps) {
       const updatedSteps = [...selectedTutorial.steps];
