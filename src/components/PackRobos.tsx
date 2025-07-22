@@ -396,7 +396,7 @@ const PackRobos = ({ onAuthClick }) => {
               </h1>
               
               <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-slate-300 max-w-4xl mx-auto leading-relaxed font-light">
-                Pack com 6 estratégias validadas por traders profissionais.<br />
+                Pack com 3 estratégias validadas por traders profissionais.<br />
                 <span className="text-emerald-400 font-medium">Comece grátis</span> com o Starter ou 
                 <span className="text-blue-400 font-medium"> libere todo o potencial</span> com os planos PRO e MASTER.
               </p>
