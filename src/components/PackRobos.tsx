@@ -385,12 +385,6 @@ const PackRobos = ({ onAuthClick }) => {
 
             {/* Main Title */}
             <div className="text-center mb-8 sm:mb-12">
-              <div className="mb-6">
-                <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-600/20 text-blue-300 text-sm font-medium mb-6 border border-blue-500/30">
-                  <Bot className="w-4 h-4 mr-2" />
-                  Pack de Robôs Premium
-                </div>
-              </div>
               
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8 leading-[1.1]">
                 <span className="block mb-2">Automação que</span>
