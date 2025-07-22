@@ -24,78 +24,78 @@ interface RobotMarketplaceProps {
 const robotsByPlan = {
   pro: [
     {
-      id: 'take-go-scalper',
-      name: 'Take GO Scalper',
-      description: 'Scalper rápido para operações de alta frequência no timeframe de 1 minuto',
+      id: 'scalper-1',
+      name: 'Scalper 1',
+      description: 'Robô scalper com parâmetros totalmente personalizáveis para sua estratégia',
       category: 'scalper',
       plans: ['master', 'pro'],
       status: 'active' as const,
       performance: '+25.1%',
       timeframe: '1M-3M',
       riskLevel: 'high' as const,
-      features: ['Alta frequência', 'Stop tight', 'Execução rápida']
+      features: ['Personalizável', 'Execução perfeita', 'Setup flexível']
     },
     {
-      id: 'take-33-scalper',
-      name: 'Take 33 Scalper',
-      description: 'Scalper com foco em 33 pontos de ganho consistente no timeframe de 1 minuto',
+      id: 'scalper-2',
+      name: 'Scalper 2',
+      description: 'Robô scalper otimizado com configurações adaptáveis ao seu perfil de risco',
       category: 'scalper',
       plans: ['master', 'pro'],
       status: 'active' as const,
       performance: '+16.9%',
       timeframe: '1M-5M',
       riskLevel: 'medium' as const,
-      features: ['33 pontos', 'Consistência', 'Risco controlado']
+      features: ['Configurável', 'Precisão alta', 'Controle total']
     },
     {
-      id: 'gr-global',
-      name: 'GR Global',
-      description: 'Scalper para mercados globais otimizado para timeframe de 1 minuto',
+      id: 'scalper-3',
+      name: 'Scalper 3',
+      description: 'Robô scalper avançado com parâmetros ajustáveis para máxima performance',
       category: 'scalper',
       plans: ['master', 'pro'],
       status: 'active' as const,
       performance: '+20.8%',
       timeframe: '1M-5M',
       riskLevel: 'medium' as const,
-      features: ['Scalping global', 'Multi-mercado', 'Timeframe otimizado']
+      features: ['Adaptável', 'Performance máxima', 'Customizável']
     }
   ],
   master: [
     {
-      id: 'take-go-scalper',
-      name: 'Take GO Scalper',
-      description: 'Scalper rápido para operações de alta frequência',
+      id: 'scalper-1',
+      name: 'Scalper 1',
+      description: 'Robô scalper com parâmetros totalmente personalizáveis',
       category: 'scalper',
       plans: ['master'],
       status: 'active' as const,
       performance: '+25.1%',
       timeframe: '1M-3M',
       riskLevel: 'high' as const,
-      features: ['Alta frequência', 'Stop tight', 'Execução rápida']
+      features: ['Personalizável', 'Execução perfeita', 'Setup flexível']
     },
     {
-      id: 'take-33-scalper',
-      name: 'Take 33 Scalper',
-      description: 'Scalper com foco em 33 pontos de ganho consistente',
+      id: 'scalper-2',
+      name: 'Scalper 2',
+      description: 'Robô scalper otimizado com configurações adaptáveis',
       category: 'scalper',
       plans: ['master'],
       status: 'active' as const,
       performance: '+16.9%',
       timeframe: '1M-5M',
       riskLevel: 'medium' as const,
-      features: ['33 pontos', 'Consistência', 'Risco controlado']
+      features: ['Configurável', 'Precisão alta', 'Controle total']
     },
     {
-      id: 'gr-global',
-      name: 'GR Global',
-      description: 'Robô para mercados globais e criptomoedas',
+      id: 'scalper-3',
+      name: 'Scalper 3',
+      description: 'Robô scalper avançado com parâmetros ajustáveis',
       category: 'global',
       plans: ['master'],
       status: 'active' as const,
       performance: '+20.8%',
       timeframe: '5M-1H',
       riskLevel: 'medium' as const,
-      features: ['Global', 'Crypto', 'Multi-mercado']
+      features: ['Adaptável', 'Performance máxima', 'Customizável']
     },
   ]
 };
