@@ -45,11 +45,7 @@ const PackRobos = ({ onAuthClick }) => {
   const setups = [
     { nome: "Scalper 1", tipo: "Scalper", observacoes: "Operações rápidas com alvo moderado" },
     { nome: "Scalper 2", tipo: "Scalper", observacoes: "Entradas precisas com alvo curto" },
-    { nome: "Scalper 3", tipo: "Scalper", observacoes: "Scalping com alvo estendido" },
-    { nome: "Scalper 4", tipo: "Scalper", observacoes: "Fluxo" }, 
-      { nome: "Scalper 5", tipo: "Scalper", observacoes: "Movimentos Ágeis" },
-    { nome: "Scalper 6", tipo: "Scalper", observacoes: "Entrada curta" } 
-    
+    { nome: "Scalper 3", tipo: "Scalper", observacoes: "Scalping com alvo estendido" }
   ];
 
   const getTypeColor = (tipo: string) => {
