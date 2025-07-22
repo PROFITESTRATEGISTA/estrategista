@@ -66,6 +66,17 @@ const FloatingButton: React.FC<FloatingButtonProps> = ({ onNavigateToPlans, onOp
           </button>
           
           <button
+            onClick={() => window.open('https://warren.com.br/onboarding/elliot/desktop/login?signup=true&advisor=atendimento@elliot.com.br&isAffiliate=true&utm_source=Elliot&utm_medium=YuriDelgado&utm_campaign=PedroPardal&brand=parceiro', '_blank')}
+            className="flex items-center px-4 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all whitespace-nowrap"
+          >
+            <span className="bg-green-400 text-green-900 px-2 py-1 rounded-full text-xs font-bold mr-2">
+              GRÁTIS
+            </span>
+            <Bot className="h-5 w-5 mr-2" />
+            <span className="font-medium">Módulo Automação</span>
+          </button>
+          
+          <button
             onClick={() => window.open('https://www.nelogica.com.br/copy-invest/copy-invest-profit-estrategista-portf%C3%B3lio-de-ia', '_blank')}
             className="flex items-center px-4 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all whitespace-nowrap"
           >
