@@ -299,7 +299,7 @@ const PackRobos = ({ onAuthClick }) => {
     },
     {
       question: "Os robôs funcionam no MetaTrader ou MT5?",
-      answer: "❌ Não. Os robôs Starter, PRO e MASTER são exclusivos para Profit da Nelogica."
+      answer: "❌ Não. Os robôs Pack (Starter, PRO e MASTER) são exclusivos para Profit da Nelogica. Para outras plataformas, use o Robô Personalizado."
     },
     {
       question: "Em quanto tempo recebo após a compra?",

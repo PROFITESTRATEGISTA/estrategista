@@ -196,7 +196,7 @@ const VPSServicesPage: React.FC<VPSServicesPageProps> = ({ onBack }) => {
             <div className="space-y-3">
               <p>• <strong>Latência otimizada:</strong> Servidores no Brasil para menor latência</p>
               <p>• <strong>Operação contínua:</strong> Robôs funcionam 24/7 sem interrupção</p>
-              <p>• <strong>Configuração incluída:</strong> MT4/MT5 pré-instalado e configurado</p>
+              <p>• <strong>Configuração incluída:</strong> Profit pré-instalado e configurado</p>
             </div>
             <div className="space-y-3">
               <p>• <strong>Backup automático:</strong> Seus robôs e configurações sempre seguros</p>

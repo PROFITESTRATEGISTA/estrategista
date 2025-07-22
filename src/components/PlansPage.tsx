@@ -105,7 +105,7 @@ const PlansPage = ({ onAuthClick, scrollToFAQ = false }: PlansPageProps = {}) =>
     },
     {
       question: 'Os robôs funcionam com qualquer corretora?',
-      answer: 'Nossos robôs funcionam com qualquer corretora que seja compatível com o Profit da Nelogica ou MetaTrader 5. A maioria das corretoras brasileiras oferece suporte a essas plataformas gratuitamente.'
+      answer: 'Nossos robôs Pack funcionam exclusivamente com corretoras compatíveis com o Profit da Nelogica (gratuito). Para outras plataformas como BlackArrow, oferecemos desenvolvimento personalizado via Robô Personalizado.'
     },
     {
       question: 'O que é necessário para instalar os robôs?',
@@ -739,7 +739,12 @@ const PlansPage = ({ onAuthClick, scrollToFAQ = false }: PlansPageProps = {}) =>
                     <div className="mt-4 pt-4 border-t border-gray-800 flex flex-col sm:flex-row gap-3">
                       {index < 4 && (
                         <button
-                          onClick={() => handlePlanSelect(plans[1])}
+                          onClick={() => {
+                            const plansSection = document.getElementById('plans-section');
+                            if (plansSection) {
+                              plansSection.scrollIntoView({ behavior: 'smooth' });
+                            }
+                          }}
                           className="flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors text-sm"
                         >
                           <Crown className="w-4 h-4" />
