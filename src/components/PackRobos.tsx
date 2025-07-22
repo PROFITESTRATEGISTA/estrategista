@@ -13,10 +13,7 @@ const PackRobos = ({ onAuthClick }) => {
   const strategies = [
     { name: "Scalper 1", acerto: "72%", profit: "1.8", payoff: "2.4" },
     { name: "Scalper 2", acerto: "65%", profit: "1.6", payoff: "2.1" },
-    { name: "Scalper 3", acerto: "58%", profit: "1.3", payoff: "1.8" },
-    { name: "Scalper 4", acerto: "71%", profit: "1.4", payoff: "1.9" },
-    { name: "Scalper 5", acerto: "69%", profit: "1.5", payoff: "2.0" },
-    { name: "Scalper 6", acerto: "68%", profit: "1.2", payoff: "1.6" }
+    { name: "Scalper 3", acerto: "58%", profit: "1.3", payoff: "1.8" }
   ];
 
   const aboutFeatures = [
