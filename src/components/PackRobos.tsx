@@ -385,20 +385,29 @@ const PackRobos = ({ onAuthClick }) => {
 
             {/* Main Title */}
             <div className="text-center mb-8 sm:mb-12">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 sm:mb-8 leading-[0.9]">
-                <span className="block text-white mb-2 sm:mb-3">Robôs que</span>
-                <span className="block bg-gradient-to-r from-emerald-400 via-blue-400 to-emerald-400 bg-clip-text text-transparent mb-2 sm:mb-3">
-                  OPERAM
+              <div className="mb-6">
+                <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-600/20 text-blue-300 text-sm font-medium mb-6 border border-blue-500/30">
+                  <Bot className="w-4 h-4 mr-2" />
+                  Pack de Robôs Premium
+                </div>
+              </div>
+              
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8 leading-[1.1]">
+                <span className="block mb-2">Automação que</span>
+                <span className="block bg-gradient-to-r from-blue-400 via-cyan-400 to-emerald-400 bg-clip-text text-transparent mb-2">
+                  MULTIPLICA
                 </span>
-                <span className="block text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
-                  para você
+                <span className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-gray-300 font-medium">
+                  seus resultados
                 </span>
               </h1>
               
-              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-slate-300 max-w-4xl mx-auto leading-relaxed font-light">
-                Pack com 3 estratégias validadas por traders profissionais.<br />
-                <span className="text-emerald-400 font-medium">Comece grátis</span> com o Starter ou 
-                <span className="text-blue-400 font-medium"> libere todo o potencial</span> com os planos PRO e MASTER.
+              <p className="text-lg sm:text-xl md:text-2xl text-gray-300 mb-10 max-w-5xl mx-auto leading-relaxed">
+                <span className="block mb-3 text-gray-200">
+                  <strong>3 robôs scalper</strong> testados e otimizados por traders profissionais
+                </span>
+                <span className="text-green-400 font-semibold">✨ Comece grátis</span> com o Starter ou{' '}
+                <span className="text-blue-400 font-semibold">🚀 maximize resultados</span> com PRO e MASTER
               </p>
             </div>
 
