@@ -22,6 +22,44 @@ interface RobotMarketplaceProps {
 
 // Robôs específicos por plano
 const robotsByPlan = {
+  free: [
+    {
+      id: 'scalper-1',
+      name: 'Scalper 1',
+      description: 'Robô scalper gratuito com estratégia validada para iniciantes',
+      category: 'scalper',
+      plans: ['free', 'pro', 'master'],
+      status: 'active' as const,
+      performance: '+15.2%',
+      timeframe: '1M-3M',
+      riskLevel: 'medium' as const,
+      features: ['Gratuito', 'Estratégia validada', 'Fácil configuração']
+    },
+    {
+      id: 'scalper-2',
+      name: 'Scalper 2',
+      description: 'Robô scalper gratuito otimizado para operações de curto prazo',
+      category: 'scalper',
+      plans: ['free', 'pro', 'master'],
+      status: 'active' as const,
+      performance: '+12.8%',
+      timeframe: '1M-5M',
+      riskLevel: 'medium' as const,
+      features: ['Gratuito', 'Curto prazo', 'Baixo risco']
+    },
+    {
+      id: 'scalper-3',
+      name: 'Scalper 3',
+      description: 'Robô scalper gratuito avançado para traders experientes',
+      category: 'scalper',
+      plans: ['free', 'pro', 'master'],
+      status: 'active' as const,
+      performance: '+18.5%',
+      timeframe: '1M-5M',
+      riskLevel: 'medium' as const,
+      features: ['Gratuito', 'Avançado', 'Alta performance']
+    }
+  ],
   pro: [
     {
       id: 'scalper-1',
@@ -102,8 +140,22 @@ const robotsByPlan = {
 
 // Links de download por plano
 const getDownloadUrlByPlan = (plan: string, robotId: string) => {
+  // Links específicos para pack free
+  if (plan === 'free') {
+    switch (robotId) {
+      case 'scalper-1':
+        return 'https://nelogica.com.br/estrategias?id=19045';
+      case 'scalper-2':
+        return 'https://nelogica.com.br/estrategias?id=19046';
+      case 'scalper-3':
+        return 'https://nelogica.com.br/estrategias?id=19047';
+      default:
+        return 'https://www.nelogica.com.br/profit/';
+    }
+  }
+  
   if (robotId === 'warren-combo') {
-    return 'https://www.nelogica.com.br/profit/'; // Placeholder - aguardando links específicos
+    return 'https://www.nelogica.com.br/profit/';
   }
   
   switch (plan) {
@@ -111,8 +163,6 @@ const getDownloadUrlByPlan = (plan: string, robotId: string) => {
       return 'https://mega.nz/folder/c1BT2YzK#fErvdTnzOE42SJ3WWQcZ8g';
     case 'master':
       return 'https://mega.nz/folder/1lYiSAoT#8kZ4I9SewZK8N09StrvOYQ';
-    case 'free':
-      return 'https://www.nelogica.com.br/profit/'; // Placeholder - aguardando links específicos
     default:
       return '';
   }
@@ -137,7 +187,7 @@ export function RobotMarketplace({ userPlan, onBack }: RobotMarketplaceProps) {
 
 
   // Selecionar robôs baseado no plano do usuário
-  const robots = robotsByPlan[userPlan as keyof typeof robotsByPlan] || robotsByPlan.master;
+  const robots = robotsByPlan[userPlan as keyof typeof robotsByPlan] || robotsByPlan.free;
   
   // Mobile restriction screen
   if (isMobile) {
@@ -192,8 +242,14 @@ export function RobotMarketplace({ userPlan, onBack }: RobotMarketplaceProps) {
   const handleDownload = (robot: Robot) => {
     const downloadUrl = getDownloadUrlByPlan(userPlan, robot.id);
     
-    if (robot.id === 'warren-combo' || userPlan === 'free') {
+    if (robot.id === 'warren-combo') {
       // Para Warren Combo ou plano free, abrir link externo
+      window.open(downloadUrl, '_blank');
+      return;
+    }
+    
+    if (userPlan === 'free') {
+      // Para plano free, abrir links específicos da Nelogica
       window.open(downloadUrl, '_blank');
       return;
     }
@@ -431,25 +487,24 @@ export function RobotMarketplace({ userPlan, onBack }: RobotMarketplaceProps) {
         </div>
 
         {/* Plan Upgrade CTA */}
-        {/* Free Plan Upgrade CTA */}
         {userPlan === 'free' && (
           <div className="mt-12 bg-gradient-to-r from-emerald-600 to-blue-600 rounded-2xl p-8 text-center">
-            <h3 className="text-2xl font-bold text-white mb-4">Libere todo o potencial!</h3>
+            <h3 className="text-2xl font-bold text-white mb-4">🚀 Upgrade para mais robôs!</h3>
             <p className="text-emerald-100 mb-6 text-lg">
-              Upgrade para PRO ou MASTER e tenha acesso aos 3 robôs scalper + Profit Ultra + Módulo Warren premium
+              Upgrade para PRO ou MASTER e tenha acesso a robôs premium com recursos avançados como trailing stop, breakeven e filtros
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button 
-                onClick={() => window.open('https://wa.me/5511999999999?text=Olá! Gostaria de fazer upgrade para o plano PRO.', '_blank')}
+                onClick={() => window.location.href = '/planos'}
                 className="bg-white text-blue-600 px-6 py-3 rounded-xl font-semibold hover:bg-blue-50 transition-colors"
               >
-                Upgrade para PRO (3 robôs)
+                💎 Ver Planos PRO
               </button>
               <button 
-                onClick={() => window.open('https://wa.me/5511999999999?text=Olá! Gostaria de fazer upgrade para o plano MASTER.', '_blank')}
+                onClick={() => window.open('https://wa.me/5511975333355?text=Olá! Gostaria de fazer upgrade para o plano MASTER.', '_blank')}
                 className="bg-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-purple-700 transition-colors"
               >
-                Upgrade para MASTER (3 robôs premium)
+                ⚡ Falar sobre MASTER
               </button>
             </div>
           </div>
