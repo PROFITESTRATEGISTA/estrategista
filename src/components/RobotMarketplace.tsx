@@ -160,9 +160,9 @@ const getDownloadUrlByPlan = (plan: string, robotId: string) => {
   
   switch (plan) {
     case 'pro':
-      return 'https://mega.nz/folder/c1BT2YzK#fErvdTnzOE42SJ3WWQcZ8g';
+      return 'https://mega.nz/folder/85I0XSCL#FcNazLcyauA7SRywQkfZJg';
     case 'master':
-      return 'https://mega.nz/folder/1lYiSAoT#8kZ4I9SewZK8N09StrvOYQ';
+      return 'https://mega.nz/folder/ppB1mYTb#Zidz17UQGcSiE-Yktj_nUQ';
     default:
       return '';
   }
