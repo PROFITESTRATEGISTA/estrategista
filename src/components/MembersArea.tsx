@@ -620,13 +620,15 @@ export default function MembersArea() {
                       </button>
                     </div>
                       
-                      <button
-                        onClick={() => setCurrentView('financial')}
-                        className="p-2 rounded-lg bg-green-900/50 hover:bg-green-900/70 transition-colors"
-                        title="Painel Financeiro"
-                      >
-                        <DollarSign className="w-5 h-5 text-green-400" />
-                      </button>
+                      {hasAdminAccess && (
+                        <button
+                          onClick={() => setCurrentView('financial')}
+                          className="p-2 rounded-lg bg-green-900/50 hover:bg-green-900/70 transition-colors"
+                          title="Painel Financeiro"
+                        >
+                          <DollarSign className="w-5 h-5 text-green-400" />
+                        </button>
+                      )}
                   </div>
                 )}
 
