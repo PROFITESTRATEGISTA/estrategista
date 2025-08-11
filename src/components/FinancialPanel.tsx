@@ -7,8 +7,8 @@ import VPSServicesPage from './VPSServicesPage';
 import { SetPasswordModal } from './SetPasswordModal';
 import { AdminPanel } from './AdminPanel';
 import { DayTradeCalculator } from './DayTradeCalculator';
-import { Bot, BookOpen, Settings, LogOut, User, Crown, Zap, Monitor, Shield, Key, Calculator, DollarSign } from 'lucide-react';
 import FinancialPanel from './FinancialPanel';
+import { Bot, BookOpen, Settings, LogOut, User, Crown, Zap, Monitor, Shield, Key, Calculator, DollarSign } from 'lucide-react';
 
 interface User {
   id: string;
@@ -21,6 +21,7 @@ interface User {
   last_login?: string;
   phone_verified: boolean;
 }
+
 export default function MembersArea() {
   const { user, loading: authLoading, logout, updateUser } = useAuth();
   const [currentView, setCurrentView] = useState<'dashboard' | 'robots' | 'tutorials' | 'admin' | 'vps' | 'calculator' | 'financial'>('dashboard');
@@ -469,7 +470,7 @@ export default function MembersArea() {
         <VPSServicesPage onBack={() => setCurrentView('dashboard')} />
       )}
 
-      {/* Financial Panel */}
+      {/* Financial Panel - Only for admins */}
       {currentView === 'financial' && hasAdminAccess && (
         <FinancialPanel onBack={() => setCurrentView('dashboard')} />
       )}
@@ -493,13 +494,23 @@ export default function MembersArea() {
                   </div>
                   
                   {hasAdminAccess && (
-                    <button
-                      onClick={() => setCurrentView('admin')}
-                      className="p-2 rounded-lg bg-red-900/50 hover:bg-red-900/70 transition-colors"
-                      title="Admin Panel"
-                    >
-                      <Settings className="w-5 h-5 text-red-400" />
-                    </button>
+                    <>
+                      <button
+                        onClick={() => setCurrentView('admin')}
+                        className="p-2 rounded-lg bg-red-900/50 hover:bg-red-900/70 transition-colors"
+                        title="Admin Panel"
+                      >
+                        <Settings className="w-5 h-5 text-red-400" />
+                      </button>
+                      
+                      <button
+                        onClick={() => setCurrentView('financial')}
+                        className="p-2 rounded-lg bg-green-900/50 hover:bg-green-900/70 transition-colors"
+                        title="Painel Financeiro"
+                      >
+                        <DollarSign className="w-5 h-5 text-green-400" />
+                      </button>
+                    </>
                   )}
                   
                   <button
@@ -561,6 +572,7 @@ export default function MembersArea() {
                   </div>
                 </button>
 
+                {/* Financial Panel Card - Only for admins */}
                 {hasAdminAccess && (
                   <button
                     onClick={() => setCurrentView('financial')}
@@ -612,12 +624,20 @@ export default function MembersArea() {
                           </div>
                         </div>
                       </div>
-                      <button
-                        onClick={() => setCurrentView('admin')}
-                        className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors"
-                      >
-                        Admin Panel
-                      </button>
+                      <div className="flex items-center space-x-2">
+                        <button
+                          onClick={() => setCurrentView('admin')}
+                          className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors"
+                        >
+                          Admin Panel
+                        </button>
+                        <button
+                          onClick={() => setCurrentView('financial')}
+                          className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors"
+                        >
+                          Financeiro
+                        </button>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -685,3 +705,5 @@ export default function MembersArea() {
     </div>
   );
 }
+
+export default FinancialPanel
