@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Bot, Menu, X, User, LogOut, Shield } from 'lucide-react';
+import { Bot, Menu, X, User, LogOut, Shield, MessageCircle } from 'lucide-react';
 
 interface User {
   id: string;
@@ -169,6 +169,13 @@ const Navigation = ({ user, onAuthClick }: NavigationProps) => {
               ) : (
                 <div className="flex space-x-0.5 xl:space-x-1">
                   <button
+                    onClick={() => window.open('https://wa.me/5511975333355?text=Olá! Gostaria de conhecer os robôs de trading.', '_blank')}
+                    className="bg-green-600 hover:bg-green-700 text-white px-1.5 xl:px-3 py-1.5 rounded-lg font-medium transition-colors duration-300 text-xs flex items-center space-x-1"
+                  >
+                    <MessageCircle className="w-3 h-3 xl:w-4 xl:h-4" />
+                    <span className="hidden sm:inline">WhatsApp</span>
+                  </button>
+                  <button
                     onClick={() => onAuthClick('login')}
                     className="bg-transparent text-gray-300 hover:text-white hover:bg-gray-800 px-1.5 xl:px-3 py-1.5 rounded-lg font-medium transition-colors duration-300 text-xs"
                   >
@@ -287,6 +294,13 @@ const Navigation = ({ user, onAuthClick }: NavigationProps) => {
                   </div>
                 ) : (
                   <div className="space-y-3">
+                    <button
+                      onClick={() => window.open('https://wa.me/5511975333355?text=Olá! Gostaria de conhecer os robôs de trading.', '_blank')}
+                      className="w-full text-left px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg text-base flex items-center space-x-2"
+                    >
+                      <MessageCircle className="w-4 h-4" />
+                      <span>WhatsApp</span>
+                    </button>
                     <button
                       onClick={() => onAuthClick('login')}
                       className="w-full text-left px-4 py-3 text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg text-base"
