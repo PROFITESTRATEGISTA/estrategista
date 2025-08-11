@@ -38,9 +38,7 @@ const Navigation: React.FC<NavigationProps> = ({ user, onAuthClick }) => {
           {/* Logo */}
           <div className="flex-shrink-0">
             <a href="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                <Bot className="w-5 h-5 text-white" />
-              </div>
+              <Bot className="w-8 h-8 text-blue-400" />
               <span className="text-white font-bold text-lg hidden sm:block">
                 Estrategista Solutions
               </span>
