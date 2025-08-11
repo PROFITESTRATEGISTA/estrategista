@@ -189,6 +189,71 @@ export default function MembersArea() {
     }
   }, [hasAdminAccess]);
 
+  // Load users for dropdown
+  const loadUsers = async () => {
+    try {
+      if (supabase) {
+        const { data, error } = await supabase
+          .from('users')
+          .select('id, name, email, phone, plan, is_active')
+          .eq('is_active', true)
+          .order('name');
+
+        if (data && !error) {
+          setUsers(data);
+          setFilteredUsers(data);
+        } else {
+          console.error('Error loading users:', error);
+          setUsers([]);
+          setFilteredUsers([]);
+        }
+      }
+    } catch (error) {
+      console.error('Error loading users:', error);
+      setUsers([]);
+      setFilteredUsers([]);
+    }
+  };
+
+  // Filter users based on search
+  useEffect(() => {
+    if (!contractForm.user_name) {
+      setFilteredUsers(users);
+    } else {
+      const filtered = users.filter(user => 
+        user.name.toLowerCase().includes(contractForm.user_name.toLowerCase()) ||
+        user.email.toLowerCase().includes(contractForm.user_name.toLowerCase())
+      );
+      setFilteredUsers(filtered);
+    }
+  }, [contractForm.user_name, users]);
+
+  // Select user from dropdown
+  const selectUser = (user: any) => {
+    setContractForm({
+      ...contractForm,
+      user_id: user.id,
+      user_name: user.name,
+      user_email: user.email,
+      user_phone: user.phone || '',
+      plan_type: user.plan || 'starter'
+    });
+    setShowUserDropdown(false);
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element;
+      if (!target.closest('.relative')) {
+        setShowUserDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const loadUsers = async () => {
     if (!hasAdminAccess) return;
     
@@ -267,6 +332,22 @@ export default function MembersArea() {
     } finally {
       setLoadingUsers(false);
     }
+  };
+
+  const resetContractForm = () => {
+    setContractForm({
+      user_id: '',
+      user_name: '',
+      user_email: '',
+      user_phone: '',
+      plan_type: 'starter',
+      start_date: '',
+      end_date: '',
+      monthly_cost: 0,
+      total_cost: 0,
+      payment_method: 'pix',
+      notes: ''
+    });
   };
 
   // Helper function to generate mock users
