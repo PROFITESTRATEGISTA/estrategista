@@ -472,11 +472,13 @@ export default function MembersArea() {
 
       {/* Financial Panel - Only for admins */}
       {currentView === 'financial' && hasAdminAccess && (
-        <FinancialPanel onBack={() => setCurrentView('dashboard')} />
+        <div className="min-h-screen bg-gray-950">
+          <FinancialPanel onBack={() => setCurrentView('dashboard')} />
+        </div>
       )}
 
       {/* Main Content */}
-      {currentView !== 'admin' && currentView !== 'vps' && currentView !== 'financial' && (
+      {(currentView === 'dashboard' || currentView === 'robots' || currentView === 'tutorials' || currentView === 'calculator') && (
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-16">
           {currentView === 'dashboard' && (
             <div className="space-y-8">
@@ -576,7 +578,7 @@ export default function MembersArea() {
                 {hasAdminAccess && (
                   <button
                     onClick={() => setCurrentView('financial')}
-                    className="bg-gradient-to-br from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 p-8 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                    className="bg-gradient-to-br from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 p-8 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl cursor-pointer"
                   >
                     <div className="text-center">
                       <DollarSign className="w-12 h-12 text-white mx-auto mb-4" />
@@ -633,7 +635,7 @@ export default function MembersArea() {
                         </button>
                         <button
                           onClick={() => setCurrentView('financial')}
-                          className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors"
+                          className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors cursor-pointer"
                         >
                           Financeiro
                         </button>
