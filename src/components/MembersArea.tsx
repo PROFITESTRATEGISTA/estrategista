@@ -7,7 +7,8 @@ import VPSServicesPage from './VPSServicesPage';
 import { SetPasswordModal } from './SetPasswordModal';
 import { AdminPanel } from './AdminPanel';
 import { DayTradeCalculator } from './DayTradeCalculator';
-import { Bot, BookOpen, Settings, LogOut, User, Crown, Zap, Monitor, Shield, Key, Calculator } from 'lucide-react';
+import { Bot, BookOpen, Settings, LogOut, User, Crown, Zap, Monitor, Shield, Key, Calculator, DollarSign } from 'lucide-react';
+import FinancialPanel from './FinancialPanel';
 
 interface User {
   id: string;
@@ -22,7 +23,7 @@ interface User {
 }
 export default function MembersArea() {
   const { user, loading: authLoading, logout, updateUser } = useAuth();
-  const [currentView, setCurrentView] = useState<'dashboard' | 'robots' | 'tutorials' | 'admin' | 'vps' | 'calculator'>('dashboard');
+  const [currentView, setCurrentView] = useState<'dashboard' | 'robots' | 'tutorials' | 'admin' | 'vps' | 'calculator' | 'financial'>('dashboard');
   const [realTimePlan, setRealTimePlan] = useState(user?.plan || 'master');
   const [showSetPasswordModal, setShowSetPasswordModal] = useState(false);
   const [isSmsUser, setIsSmsUser] = useState(false);
@@ -468,8 +469,13 @@ export default function MembersArea() {
         <VPSServicesPage onBack={() => setCurrentView('dashboard')} />
       )}
 
+      {/* Financial Panel */}
+      {currentView === 'financial' && hasAdminAccess && (
+        <FinancialPanel onBack={() => setCurrentView('dashboard')} />
+      )}
+
       {/* Main Content */}
-      {currentView !== 'admin' && currentView !== 'vps' && (
+      {currentView !== 'admin' && currentView !== 'vps' && currentView !== 'financial' && (
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-16">
           {currentView === 'dashboard' && (
             <div className="space-y-8">
@@ -554,6 +560,19 @@ export default function MembersArea() {
                     <p className="text-green-100">Day Trade Calculator</p>
                   </div>
                 </button>
+
+                {hasAdminAccess && (
+                  <button
+                    onClick={() => setCurrentView('financial')}
+                    className="bg-gradient-to-br from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 p-8 rounded-2xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                  >
+                    <div className="text-center">
+                      <DollarSign className="w-12 h-12 text-white mx-auto mb-4" />
+                      <h3 className="text-xl font-bold text-white mb-2">Financeiro</h3>
+                      <p className="text-emerald-100">Contratos e Custos</p>
+                    </div>
+                  </button>
+                )}
               </div>
 
               {/* Plan Info */}
@@ -600,6 +619,14 @@ export default function MembersArea() {
                         Admin Panel
                       </button>
                     </div>
+                      
+                      <button
+                        onClick={() => setCurrentView('financial')}
+                        className="p-2 rounded-lg bg-green-900/50 hover:bg-green-900/70 transition-colors"
+                        title="Painel Financeiro"
+                      >
+                        <DollarSign className="w-5 h-5 text-green-400" />
+                      </button>
                   </div>
                 )}
 
